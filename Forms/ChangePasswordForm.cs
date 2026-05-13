@@ -1,6 +1,5 @@
 ﻿
-
-namespace QuanLyKhachSan.Views
+namespace HotelManagement.Forms
 {
     public partial class DoiMKForm : Form
     {

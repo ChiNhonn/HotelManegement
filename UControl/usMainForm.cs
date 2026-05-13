@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QuanLyKhachSan.Views
+namespace HotelManagement.UserControl
 {
-    public partial class usService : UserControl
+    public partial class usMainForm : UserControl
     {
-        public usService()
+        public usMainForm()
         {
             InitializeComponent();
         }

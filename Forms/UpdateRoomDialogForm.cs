@@ -1,7 +1,7 @@
 ﻿using QuanLyKhachSan.Services;
 using QuanLyKhachSan.Models;
 using Microsoft.Extensions.DependencyInjection;
-namespace QuanLyKhachSan.GUI
+namespace HotelManagement.Forms
 {
     public partial class UpdateRoomDialogForm : Form
     {

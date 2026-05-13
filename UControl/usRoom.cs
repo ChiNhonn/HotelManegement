@@ -4,7 +4,7 @@ using QuanLyKhachSan.Models;
 using Microsoft.Extensions.DependencyInjection;
 using QuanLyKhachSan.DTOs;
 
-namespace QuanLyKhachSan.Views
+namespace HotelManagement.UserControl
 {
     public partial class usRoom : UserControl
     {

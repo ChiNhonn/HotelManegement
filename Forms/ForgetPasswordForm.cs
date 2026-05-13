@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace QuanLyKhachSan.Views
+namespace HotelManagement.Forms
 {
     public partial class ForgetPasswordForm : Form
     {

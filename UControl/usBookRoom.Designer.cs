@@ -1,6 +1,6 @@
-﻿namespace QuanLyKhachSan.Views
+﻿namespace HotelManagement.UControl
 {
-    partial class usStatistics
+    partial class usBookRoom
     {
         /// <summary> 
         /// Required designer variable.
@@ -34,20 +34,20 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(449, 227);
+            label1.Location = new Point(399, 269);
             label1.Name = "label1";
-            label1.Size = new Size(254, 20);
+            label1.Size = new Size(213, 20);
             label1.TabIndex = 0;
-            label1.Text = "Chào mừng đến nơi quản lý thống kê";
+            label1.Text = "Chào mừng đến nơi đặt phòng";
+            label1.Click += label1_Click;
             // 
-            // usThongKe
+            // usDatPhong
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
-            Name = "usThongKe";
-            Size = new Size(1157, 513);
-            Load += usThongKe_Load;
+            Name = "usDatPhong";
+            Size = new Size(1139, 574);
             ResumeLayout(false);
             PerformLayout();
         }

@@ -1,4 +1,4 @@
-﻿namespace QuanLyKhachSan.Views
+﻿namespace HotelManagement.UControl
 {
     partial class usRoom
     {

@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QuanLyKhachSan.GUI
+namespace HotelManagement.Forms
 {
     public partial class UpdateRoomTypeDialogForm : Form
     {

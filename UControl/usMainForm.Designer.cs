@@ -1,6 +1,6 @@
-﻿namespace QuanLyKhachSan.Views
+﻿namespace HotelManagement.UControl
 {
-    partial class usService
+    partial class usMainForm
     {
         /// <summary> 
         /// Required designer variable.
@@ -34,19 +34,19 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(485, 255);
+            label1.Location = new Point(595, 225);
             label1.Name = "label1";
-            label1.Size = new Size(247, 20);
+            label1.Size = new Size(209, 20);
             label1.TabIndex = 0;
-            label1.Text = "Chào mừng đến nơi quản lý dịch vụ ";
+            label1.Text = "Chào mừng đến với trang chủ ";
             // 
-            // usDichVu
+            // usTrangChu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
-            Name = "usDichVu";
-            Size = new Size(1151, 561);
+            Name = "usTrangChu";
+            Size = new Size(1273, 575);
             ResumeLayout(false);
             PerformLayout();
         }

@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QuanLyKhachSan.Views
+namespace HotelManagement.Forms
 {
     public partial class RegisterForm : Form
     {

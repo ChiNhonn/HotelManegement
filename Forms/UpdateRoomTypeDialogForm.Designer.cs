@@ -1,4 +1,4 @@
-﻿namespace QuanLyKhachSan.GUI
+﻿namespace HotelManagement.Forms
 {
     partial class UpdateRoomTypeDialogForm
     {

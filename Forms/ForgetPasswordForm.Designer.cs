@@ -1,4 +1,4 @@
-﻿namespace QuanLyKhachSan.Views
+﻿namespace HotelManagement.Forms
 {
     partial class ForgetPasswordForm
     {

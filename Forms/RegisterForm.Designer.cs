@@ -1,7 +1,7 @@
-﻿using QuanLyKhachSan.Properties;
+﻿using HotelManagement.Properties;
 using System.Windows.Forms;
 
-namespace QuanLyKhachSan.Views
+namespace HotelManagement.Forms
 {
     partial class RegisterForm
     {

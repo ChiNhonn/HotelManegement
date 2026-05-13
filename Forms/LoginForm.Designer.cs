@@ -1,4 +1,4 @@
-﻿namespace QuanLyKhachSan
+﻿namespace HotelManagement.Forms
 {
     partial class LoginForm
     {
