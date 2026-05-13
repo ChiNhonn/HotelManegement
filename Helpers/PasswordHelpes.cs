@@ -1,7 +1,7 @@
-﻿using System;
-using BCrypt.Net;
+﻿using Org.BouncyCastle.Crypto.Generators;
+using System;
 
-namespace QuanLyKhachSan.Helpers
+namespace HotelManagement.Helpers
 {
     public class PasswordHelper
     {
