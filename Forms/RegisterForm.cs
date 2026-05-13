@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HotelManagement.Services;
+using Microsoft.Extensions.DependencyInjection;
 using QuanLyKhachSan.DTOs;
-using QuanLyKhachSan.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -20,48 +20,48 @@ namespace QuanLyKhachSan.Views
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            chuyentrang(new usTrangChu());
+            chuyentrang(new usMainForm());
         }
 
-        public void chuyentrang(UserControl tc)
+        public void chuyentrang(UserControl uc)
         {
-            if (!panelContainer.Controls.Contains(tc))
+            if (!panelContainer.Controls.Contains(uc))
             {
-                tc.Dock = DockStyle.Fill;
-                panelContainer.Controls.Add(tc);
+                uc.Dock = DockStyle.Fill;
+                panelContainer.Controls.Add(uc);
             }
 
-            tc.BringToFront();
+            uc.BringToFront();
         }
         private void btnPhong_Click(object sender, EventArgs e)
         {
-            var phong = Program.ServiceProvider.GetRequiredService<usPhong>();
+            var phong = Program.ServiceProvider.GetRequiredService<usRoom>();
             chuyentrang(phong);
         }
 
         private void btnKhach_Click(object sender, EventArgs e)
         {
-            chuyentrang(new usKhach());
+            chuyentrang(new uscustomer());
         }
 
         private void btnDatPhong_Click(object sender, EventArgs e)
         {
-            chuyentrang(new usDatPhong());
+            chuyentrang(new usBookRoom());
         }
 
         private void btnDichVu_Click(object sender, EventArgs e)
         {
-            chuyentrang(new usDichVu());
+            chuyentrang(new usService());
         }
 
         private void btnThongKe_Click(object sender, EventArgs e)
         {
-            chuyentrang(new usThongKe());
+            chuyentrang(new usStatistics());
         }
 
         private void btnTrangChu_Click(object sender, EventArgs e)
         {
-            chuyentrang(new usTrangChu());
+            chuyentrang(new usMainForm());
         }
 
         private void btnDangXuat_Click(object sender, EventArgs e)

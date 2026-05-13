@@ -6,8 +6,8 @@ namespace QuanLyKhachSan
 {
     public partial class LoginForm : Form
     {
-        private ITaiKhoanService _taiKhoanService;
-        public LoginForm(ITaiKhoanService taiKhoanService)
+        private IUserService _taiKhoanService;
+        public LoginForm(IUserService taiKhoanService)
         {
             InitializeComponent();
             this._taiKhoanService = taiKhoanService;
@@ -57,7 +57,7 @@ namespace QuanLyKhachSan
 
         private void linkQuenMK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            QuenMKForm quenMKForm = new QuenMKForm();
+            ForgetPasswordForm quenMKForm = new ForgetPasswordForm();
             quenMKForm.Show();
             this.Hide();
         }

@@ -5,10 +5,10 @@ namespace QuanLyKhachSan.GUI
 {
     public partial class UpdateRoomDialogForm : Form
     {
-        private readonly IPhongService _phongService;
-        private readonly ILoaiPhongService _loaiPhongService;
+        private readonly IRoomService _phongService;
+        private readonly IRoomTypeService _loaiPhongService;
         private int _maPhong;
-        public UpdateRoomDialogForm(IPhongService phongService, ILoaiPhongService loaiPhongService, int maPhong)
+        public UpdateRoomDialogForm(IRoomService phongService, IRoomTypeService loaiPhongService, int maPhong)
         {
             InitializeComponent();
             _phongService = phongService;

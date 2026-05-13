@@ -9,9 +9,9 @@ namespace QuanLyKhachSan.GUI
     {
         public int MaLoaiPhong { get; set; }
         public bool IsFromLoaiPhong { get; set; }
-        private readonly ILoaiPhongService _loaiPhongService;
-        private readonly IPhongService _phongService;
-        public AddRoomDialogForm(ILoaiPhongService loaiPhongService, IPhongService phongService)
+        private readonly IRoomTypeService _loaiPhongService;
+        private readonly IRoomService _phongService;
+        public AddRoomDialogForm(IRoomTypeService loaiPhongService, IRoomService phongService)
         {
             InitializeComponent();
             _loaiPhongService = loaiPhongService;

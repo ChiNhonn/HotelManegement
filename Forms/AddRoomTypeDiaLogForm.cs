@@ -16,9 +16,9 @@ namespace QuanLyKhachSan.GUI
     public partial class AddRoomTypeDiaLogForm : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILoaiPhongService _loaiPhongService;
-        private readonly IPhongService _phongService;
-        public AddRoomTypeDiaLogForm(IServiceProvider serviceProvider, ILoaiPhongService loaiPhongService, IPhongService phongService)
+        private readonly IRoomTypeService _loaiPhongService;
+        private readonly IRoomService _phongService;
+        public AddRoomTypeDiaLogForm(IServiceProvider serviceProvider, IRoomTypeService loaiPhongService, IRoomService phongService)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
