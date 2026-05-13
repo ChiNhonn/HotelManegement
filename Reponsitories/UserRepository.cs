@@ -1,35 +1,55 @@
-﻿using HotelManagement.Interfaces;
-
+﻿using HotelManagement.Data;
+using HotelManagement.Models;
+using HotelManagement.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using HotelManagement.Services;
 namespace HotelManagement.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private QuanLyKhachSanContext _context;
-        public UserRepository(QuanLyKhachSanContext context)
+        private readonly HotelDbContext _context;
+
+        public UserRepository(HotelDbContext context)
         {
             _context = context;
         }
 
-        public TaiKhoan DangNhap(string username, string passwordHash)
+        public Userr Login(string username, string passwordHash)
         {
-            return _context.TaiKhoans.FirstOrDefault(x => x.TenDangNhap == username && x.MatKhauHash == passwordHash);
+            return _context.Users
+                .Include(x => x.UserProfile)
+                .FirstOrDefault(x =>
+                    x.UserName == username &&
+                    x.Password == passwordHash);
         }
 
-        public bool KiemTraTenDangNhapTonTai(string username)
+        public bool CheckUsernameExists(string username)
         {
-            return _context.TaiKhoans.Any(x => x.TenDangNhap == username);
+            return _context.Users
+                .Any(x => x.UserName == username);
         }
 
-        public bool ThemTaiKhoan(TaiKhoan taiKhoanMoi)
+        public bool Register(Userr user, UserProfile profile)
         {
+            using var transaction = _context.Database.BeginTransaction();
+
             try
             {
-                _context.TaiKhoans.Add(taiKhoanMoi);
-                int result = _context.SaveChanges();
-                return result > 0;
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                profile.IdUser = user.Id;
+
+                _context.UserProfiles.Add(profile);
+                _context.SaveChanges();
+
+                transaction.Commit();
+
+                return true;
             }
-            catch (Exception ex)
+            catch
             {
+                transaction.Rollback();
                 return false;
             }
         }

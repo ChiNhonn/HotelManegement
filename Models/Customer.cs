@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace QuanLyKhachSan.Models;
+namespace HotelManagement.Models;
 
 public partial class Customer
 {

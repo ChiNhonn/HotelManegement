@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QuanLyKhachSan.DTOs
+﻿
+namespace HotelManagement.ViewModels
 {
-    public class LoaiPhongView
+    public class RoomTypeView
     {
         public int MaLoaiPhong { get; set; }
         public string TenLoaiPhong { get; set; }

@@ -1,13 +1,12 @@
-﻿using QuanLyKhachSan.Models;
-using QuanLyKhachSan.Data;
-using QuanLyKhachSan.DTOs;
-
-namespace QuanLyKhachSan.Repositories
+﻿using HotelManagement.Models;
+using HotelManagement.ViewModels;
+using HotelManagement.Data;
+namespace HotelManagement.Repositories
 {
     public class RoomTypeRepository : IRoomTypeRepository
     {
-        private QuanLyKhachSanContext _context;
-        public RoomTypeRepository(QuanLyKhachSanContext context)
+        private HotelDbContext _context;
+        public RoomTypeRepository(HotelDbContext context)
         {
             _context = context;
         }
@@ -44,9 +43,9 @@ namespace QuanLyKhachSan.Repositories
         {
             return _context.LoaiPhongs.ToList();
         }
-        public List<LoaiPhongView> GetAllWithRoomCount()
+        public List<RoomTypeView> GetAllWithRoomCount()
         {
-            return _context.LoaiPhongs.Select(lp => new LoaiPhongView
+            return _context.LoaiPhongs.Select(lp => new RoomTypeView
             {
                 MaLoaiPhong = lp.MaLoaiPhong,
                 TenLoaiPhong = lp.TenLoaiPhong,
@@ -56,9 +55,9 @@ namespace QuanLyKhachSan.Repositories
                 MoTa = lp.MoTa
             }).ToList();
         }
-        public List<LoaiPhongView> Search(string keyword)
+        public List<RoomTypeView> Search(string keyword)
         {
-            return _context.LoaiPhongs.Where(lp => lp.TenLoaiPhong.Contains(keyword) || lp.MoTa.Contains(keyword)).Select(lp => new LoaiPhongView
+            return _context.LoaiPhongs.Where(lp => lp.TenLoaiPhong.Contains(keyword) || lp.MoTa.Contains(keyword)).Select(lp => new RoomTypeView
             {
                 MaLoaiPhong = lp.MaLoaiPhong,
                 TenLoaiPhong = lp.TenLoaiPhong,
@@ -68,9 +67,9 @@ namespace QuanLyKhachSan.Repositories
                 MoTa = lp.MoTa
             }).ToList();
         }
-        public List<LoaiPhongView> GetByRoomType(int roomTypeId)
+        public List<RoomTypeView> GetByRoomType(int roomTypeId)
         {
-            return _context.LoaiPhongs.Where(lp => lp.MaLoaiPhong == roomTypeId).Select(lp => new LoaiPhongView
+            return _context.LoaiPhongs.Where(lp => lp.MaLoaiPhong == roomTypeId).Select(lp => new RoomTypeView
             {
                 MaLoaiPhong = lp.MaLoaiPhong,
                 TenLoaiPhong = lp.TenLoaiPhong,
@@ -80,9 +79,9 @@ namespace QuanLyKhachSan.Repositories
                 MoTa = lp.MoTa
             }).ToList();
         }
-        public List<LoaiPhongView> GetByPriceRange(decimal minPrice, decimal maxPrice)
+        public List<RoomTypeView> GetByPriceRange(decimal minPrice, decimal maxPrice)
         {
-            return _context.LoaiPhongs.Where(lp => lp.GiaCoBan >= minPrice && lp.GiaCoBan <= maxPrice).Select(lp => new LoaiPhongView
+            return _context.LoaiPhongs.Where(lp => lp.GiaCoBan >= minPrice && lp.GiaCoBan <= maxPrice).Select(lp => new RoomTypeView
             {
                 MaLoaiPhong = lp.MaLoaiPhong,
                 TenLoaiPhong = lp.TenLoaiPhong,

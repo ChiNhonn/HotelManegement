@@ -1,18 +1,18 @@
-﻿using QuanLyKhachSan.Repositories;
-using QuanLyKhachSan.Models;
-using QuanLyKhachSan.DTOs;
-namespace QuanLyKhachSan.Services
+﻿using HotelManagement.Models;
+using HotelManagement.Repositories;
+using HotelManagement.ViewModels;
+namespace HotelManagement.Services
 {
     public class RoomService : IRoomService
     {
-        private IRoomRepository _phongRepo;
-        public RoomService(IRoomRepository Repo)
+        private IRoomRepository _roomRepo;
+        public RoomService(IRoomRepository roomRepo)
         {
-            _phongRepo = Repo;
+            _roomRepo = roomRepo;
         }
-        public List<PhongView> GetAll()
+        public List<RoomView> GetAll()
         {
-            return _phongRepo.GetAll();
+            return _roomRepo.GetAll();
         }
         public void Add(Room phong)
         {
@@ -20,12 +20,12 @@ namespace QuanLyKhachSan.Services
             {
                 throw new Exception("Chưa nhập số phòng!");
             }
-            var existing = _phongRepo.GetByName(phong.SoPhong);
+            var existing = _roomRepo.GetByName(phong.SoPhong);
             if (existing != null)
             {
                 throw new Exception("Số phòng đã tồn tại!");
             }
-            _phongRepo.Add(phong);
+            _roomRepo.Add(phong);
         }
         public void Update(Room phong)
         {
@@ -37,43 +37,43 @@ namespace QuanLyKhachSan.Services
             {
                 throw new Exception("Chưa nhập số phòng!");
             }
-            var existingPhong = _phongRepo.GetById(phong.MaPhong);
+            var existingPhong = _roomRepo.GetById(phong.MaPhong);
             if(existingPhong == null)
             {
                 throw new Exception("Phòng không tồn tại!");
             }
-            var checkTrung = _phongRepo.GetByName(phong.SoPhong);
+            var checkTrung = _roomRepo.GetByName(phong.SoPhong);
             if(checkTrung != null && checkTrung.MaPhong != phong.MaPhong)
             {
                 throw new Exception("Số phòng đã tồn tại!");
             }
-            _phongRepo.Update(phong);
+            _roomRepo.Update(phong);
         }
         public void Delete(int maPhong)
         {
-            _phongRepo.Delete(maPhong);
+            _roomRepo.Delete(maPhong);
         }
-        public List<PhongView> Search(string keyword)
+        public List<RoomView> Search(string keyword)
         {
-            return _phongRepo.Search(keyword);
+            return _roomRepo.Search(keyword);
         }
-        public List<PhongView> GetByRoomType(int roomTypeId)
+        public List<RoomView> GetByRoomType(int roomTypeId)
         {
             if (roomTypeId == 0)
-                return _phongRepo.GetAll();
+                return _roomRepo.GetAll();
 
-            return _phongRepo.GetByRoomType(roomTypeId);
+            return _roomRepo.GetByRoomType(roomTypeId);
         }
-        public List<PhongView> GetByStatus(string status)
+        public List<RoomView> GetByStatus(string status)
         {
             if (string.IsNullOrWhiteSpace(status) || status == "--Chọn trạng thái--")
-                return _phongRepo.GetAll();
+                return _roomRepo.GetAll();
 
-            return _phongRepo.GetByStatus(status);
+            return _roomRepo.GetByStatus(status);
         }
         public Room GetById(int maPhong)
         {
-            return _phongRepo.GetById(maPhong);
+            return _roomRepo.GetById(maPhong);
         }
     }
 }

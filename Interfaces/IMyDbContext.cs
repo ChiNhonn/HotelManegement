@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using QuanLyKhachSan.Models;
+using HotelManagement.Models;
 
-namespace QuanLyKhachSan.Interfaces
+namespace HotelManagement.Interfaces
 {
     public interface IMyDbContext : IDisposable
     {

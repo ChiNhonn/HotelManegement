@@ -1,8 +1,7 @@
-﻿using QuanLyKhachSan.Services;
-using QuanLyKhachSan.Views;
-using QuanLyKhachSan.Models;
+﻿using HotelManagement.Services;
+using HotelManagement.Models;
 using Microsoft.Extensions.DependencyInjection;
-namespace QuanLyKhachSan
+namespace HotelManagement.Forms
 {
     public partial class LoginForm : Form
     {

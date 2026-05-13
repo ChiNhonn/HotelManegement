@@ -36,7 +36,7 @@ namespace QuanLyKhachSan.Views
 
             MessageBox.Show("Đăng ký thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            var registerDto = new RegisterDTO
+            var registerDto = new RegisterView
             {
                 Username = username,
                 Password = password,

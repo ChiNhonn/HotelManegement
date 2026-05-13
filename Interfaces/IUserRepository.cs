@@ -1,12 +1,12 @@
-﻿using QuanLyKhachSan.Models;
+﻿using HotelManagement.Models;
 
-namespace QuanLyKhachSan.Repositories
+namespace HotelManagement.Interfaces
 {
     public interface IUserRepository
     {
         Userr Login(string username, string passwordHash);
 
         bool CheckUsernameExists(string username);
-        bool AddUser(Userr newUser);
+        bool Register(Userr user, UserProfile profile);
     }
 }

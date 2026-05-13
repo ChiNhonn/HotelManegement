@@ -1,9 +1,12 @@
-﻿using QuanLyKhachSan.Models;
+﻿using HotelManagement.Models;
+using HotelManagement.ViewModels;
 
-namespace QuanLyKhachSan.Services
+namespace HotelManagement.Interfaces
 {
     public interface IUserService
     {
         Userr Login(string username, string password);
+
+        (bool IsSuccess, string Message)RegisterUser(RegisterView dto);
     }
 }

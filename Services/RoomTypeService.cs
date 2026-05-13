@@ -1,19 +1,18 @@
-﻿using QuanLyKhachSan.DTOs;
-using QuanLyKhachSan.Models;
-using QuanLyKhachSan.Repositories;
-
-namespace QuanLyKhachSan.Services
+﻿using HotelManagement.Models;
+using HotelManagement.Repositories;
+using HotelManagement.ViewModels;
+namespace HotelManagement.Services
 {
     public class RoomTypeService : IRoomTypeService
     {
-        private IRoomTypeRepository loaiPhongRepo;
-        public RoomTypeService(IRoomTypeRepository loaiPhongRepo)
+        private IRoomTypeRepository _roomTypeRepo;
+        public RoomTypeService(IRoomTypeRepository roomTypeRepo)
         {
-            this.loaiPhongRepo = loaiPhongRepo;
+            _roomTypeRepo = roomTypeRepo;
         }
         public void Add(RoomType lp)
         {
-            var existing = loaiPhongRepo.GetByName(lp.TenLoaiPhong);
+            var existing = _roomTypeRepo.GetByName(lp.TenLoaiPhong);
             if (existing != null)
                 throw new Exception("Tên loại phòng đã tồn tại");
             if (lp.GiaCoBan < 0)
@@ -22,65 +21,65 @@ namespace QuanLyKhachSan.Services
             if (lp.SucChuaToiDa <= 0)
                 throw new Exception("Sức chứa không hợp lệ");
 
-            loaiPhongRepo.Add(lp);
+            _roomTypeRepo.Add(lp);
         }
         public void Delete(int maLoaiPhong)
         {
-            var existing = loaiPhongRepo.GetById(maLoaiPhong);
+            var existing = _roomTypeRepo.GetById(maLoaiPhong);
             if (existing == null)
                 throw new Exception("Loại phòng không tồn tại");
 
-            int count = loaiPhongRepo.CheckPhong(maLoaiPhong);
+            int count = _roomTypeRepo.CheckPhong(maLoaiPhong);
             if (count > 0)
                 throw new Exception($"Loại phòng '{existing.TenLoaiPhong}' đang có {count} phòng, không thể xóa");
-            loaiPhongRepo.Delete(maLoaiPhong);
+            _roomTypeRepo.Delete(maLoaiPhong);
         }
         public void Update(RoomType lp)
         {
-            var existing = loaiPhongRepo.GetById(lp.MaLoaiPhong);
+            var existing = _roomTypeRepo.GetById(lp.MaLoaiPhong);
             if (existing == null)
                 throw new Exception("Loại phòng không tồn tại");
             if (string.IsNullOrEmpty(lp.TenLoaiPhong))
                 throw new Exception("Tên loại phòng không được để trống");
-            var duplicate = loaiPhongRepo.GetByName(lp.TenLoaiPhong);
+            var duplicate = _roomTypeRepo.GetByName(lp.TenLoaiPhong);
             if (duplicate != null && duplicate.MaLoaiPhong != lp.MaLoaiPhong)
                 throw new Exception("Tên loại phòng đã tồn tại");
             if (lp.GiaCoBan < 0)
                 throw new Exception("Giá không hợp lệ");
             if (lp.SucChuaToiDa <= 0)
                 throw new Exception("Sức chứa không hợp lệ");
-            loaiPhongRepo.Update(lp);
+            _roomTypeRepo.Update(lp);
         }
         public List<RoomType> GetAll()
         {
-            return loaiPhongRepo.GetAll();
+            return _roomTypeRepo.GetAll();
         }
-        public List<LoaiPhongView> GetAllWithRoomCount()
+        public List<RoomTypeView> GetAllWithRoomCount()
         {
-            return loaiPhongRepo.GetAllWithRoomCount();
+            return _roomTypeRepo.GetAllWithRoomCount();
         }
-        public List<LoaiPhongView> Search(string keyword)
+        public List<RoomTypeView> Search(string keyword)
         {
-            return loaiPhongRepo.Search(keyword);
+            return _roomTypeRepo.Search(keyword);
         }
-        public List<LoaiPhongView> GetByRoomType(int roomTypeId)
+        public List<RoomTypeView> GetByRoomType(int roomTypeId)
         {
             if (roomTypeId == 0)
-                return loaiPhongRepo.GetAllWithRoomCount();
+                return _roomTypeRepo.GetAllWithRoomCount();
 
-            return loaiPhongRepo.GetByRoomType(roomTypeId);
+            return _roomTypeRepo.GetByRoomType(roomTypeId);
         }
-        public List<LoaiPhongView> GetByPriceRange(decimal minPrice, decimal maxPrice)
+        public List<RoomTypeView> GetByPriceRange(decimal minPrice, decimal maxPrice)
         {
-            return loaiPhongRepo.GetByPriceRange(minPrice, maxPrice);
+            return _roomTypeRepo.GetByPriceRange(minPrice, maxPrice);
         }
         public RoomType GetByName(string tenLoaiPhong)
         {
-            return loaiPhongRepo.GetByName(tenLoaiPhong);
+            return _roomTypeRepo.GetByName(tenLoaiPhong);
         }
         public RoomType GetById(int maLoaiPhong)
         {
-            return loaiPhongRepo.GetById(maLoaiPhong);
+            return _roomTypeRepo.GetById(maLoaiPhong);
         }
     }
 }

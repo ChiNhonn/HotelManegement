@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QuanLyKhachSan.DTOs
+﻿
+namespace HotelManagement.ViewModels
 {
-    public class PhongView
+    public class RoomView
     {
         public int MaPhong { get; set; }
 

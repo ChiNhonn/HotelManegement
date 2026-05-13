@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyKhachSan.Models
+namespace HotelManagement.Models
 {
     public class ServiceCategory
     {

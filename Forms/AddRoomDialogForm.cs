@@ -1,26 +1,25 @@
-﻿
-using QuanLyKhachSan.Models;
-using QuanLyKhachSan.Services;
+﻿using HotelManagement.Models;
+using HotelManagement.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace QuanLyKhachSan.GUI
+namespace HotelManagement.Forms
 {
     public partial class AddRoomDialogForm : Form
     {
         public int MaLoaiPhong { get; set; }
         public bool IsFromLoaiPhong { get; set; }
-        private readonly IRoomTypeService _loaiPhongService;
-        private readonly IRoomService _phongService;
+        private readonly IRoomTypeService _roomTypeService;
+        private readonly IRoomService _roomService;
         public AddRoomDialogForm(IRoomTypeService loaiPhongService, IRoomService phongService)
         {
             InitializeComponent();
-            _loaiPhongService = loaiPhongService;
-            _phongService = phongService;
+            _roomTypeService = loaiPhongService;
+            _roomService = phongService;
         }
 
         private void loadComboRoomType()
         {
-            var ds = _loaiPhongService.GetAll();
+            var ds = _roomTypeService.GetAll();
             cboLoaiPhong.DataSource = ds;
             cboLoaiPhong.DisplayMember = "TenLoaiPhong";
             cboLoaiPhong.ValueMember = "MaLoaiPhong";
@@ -62,7 +61,7 @@ namespace QuanLyKhachSan.GUI
             };
             try
             {
-                _phongService.Add(phong);
+                _roomService.Add(phong);
                 MessageBox.Show("Thêm phòng thành công");
                 this.DialogResult = DialogResult.OK;
                 this.Close();

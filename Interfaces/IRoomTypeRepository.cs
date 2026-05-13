@@ -1,7 +1,6 @@
-﻿using QuanLyKhachSan.DTOs;
-using QuanLyKhachSan.Models;
-
-namespace QuanLyKhachSan.Repositories
+﻿using HotelManagement.Models;
+using HotelManagement.ViewModels;
+namespace HotelManagement.Repositories
 {
     public interface IRoomTypeRepository
     {
@@ -10,10 +9,10 @@ namespace QuanLyKhachSan.Repositories
         void Update(RoomType rt);
         int CheckPhong(int Id);
         List<RoomType> GetAll();
-        List<LoaiPhongView> GetAllWithRoomCount();
-        List<LoaiPhongView> Search(string keyword);
-        List<LoaiPhongView> GetByRoomType(int roomTypeId);
-        List<LoaiPhongView> GetByPriceRange(decimal minPrice, decimal maxPrice);
+        List<RoomTypeView> GetAllWithRoomCount();
+        List<RoomTypeView> Search(string keyword);
+        List<RoomTypeView> GetByRoomType(int roomTypeId);
+        List<RoomTypeView> GetByPriceRange(decimal minPrice, decimal maxPrice);
         RoomType GetByName(string Name);
         RoomType GetById(int Id);
     }

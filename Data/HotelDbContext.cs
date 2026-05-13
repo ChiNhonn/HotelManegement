@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuanLyKhachSan.Interfaces;
-using QuanLyKhachSan.Models;
+using HotelManagement.Interfaces;
+using HotelManagement.Models;
 
-namespace QuanLyKhachSan.Data
+namespace HotelManagement.Data
 {
     public class HotelDbContext : DbContext, IMyDbContext
     {

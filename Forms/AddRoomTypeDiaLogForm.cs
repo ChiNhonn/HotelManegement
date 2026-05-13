@@ -1,29 +1,22 @@
-﻿using QuanLyKhachSan.Services;
-using QuanLyKhachSan.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using HotelManagement.Services;
+using HotelManagement.Models;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace QuanLyKhachSan.GUI
+namespace HotelManagement.Forms
 {
     public partial class AddRoomTypeDiaLogForm : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IRoomTypeService _loaiPhongService;
+        private readonly IRoomTypeService _roomTypeService;
         private readonly IRoomService _phongService;
-        public AddRoomTypeDiaLogForm(IServiceProvider serviceProvider, IRoomTypeService loaiPhongService, IRoomService phongService)
+        public AddRoomTypeDiaLogForm(IServiceProvider serviceProvider, IRoomTypeService roomTypeService, IRoomService roomService)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
-            _loaiPhongService = loaiPhongService;
-            _phongService = phongService;
+            _roomTypeService = roomTypeService;
+            _roomService = roomService;
         }
 
         private void btnHuy_Click(object sender, EventArgs e)
@@ -55,7 +48,7 @@ namespace QuanLyKhachSan.GUI
             };
             try
             {
-                _loaiPhongService.Add(them);
+                _roomTypeService.Add(them);
                 MessageBox.Show("Thêm loại phòng thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 var result = MessageBox.Show("Bạn có muốn thêm phòng cho loại phòng này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if(result == DialogResult.Yes)

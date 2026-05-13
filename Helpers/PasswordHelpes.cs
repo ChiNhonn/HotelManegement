@@ -1,9 +1,9 @@
-﻿using Org.BouncyCastle.Crypto.Generators;
-using System;
+﻿using System;
+using BCrypt.Net;
 
 namespace HotelManagement.Helpers
 {
-    public class PasswordHelper
+    public static class PasswordHelper
     {
         public static string HashPassword(string password)
         {
