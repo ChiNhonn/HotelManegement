@@ -1,4 +1,4 @@
-﻿namespace HotelManagement.UControl
+﻿namespace HotelManagement.CustomControls
 {
     partial class usBookRoom
     {

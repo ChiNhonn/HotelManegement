@@ -1,5 +1,5 @@
-﻿using QuanLyKhachSan.Services;
-using QuanLyKhachSan.Models;
+﻿using HotelManagement.Models;
+using HotelManagement.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

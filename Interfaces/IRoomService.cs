@@ -11,6 +11,7 @@ namespace HotelManagement.Services
         List<RoomView> Search(string keyword);
         List<RoomView> GetByRoomType(int roomTypeId);
         List<RoomView> GetByStatus(string status);
-        Room GetById(int Id);
+        Room? GetById(int Id);
+        List<Floor> GetAllFloors();
     }
 }

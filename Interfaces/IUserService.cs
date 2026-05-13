@@ -5,7 +5,7 @@ namespace HotelManagement.Interfaces
 {
     public interface IUserService
     {
-        Userr Login(string username, string password);
+        Userr? Login(string username, string password);
 
         (bool IsSuccess, string Message)RegisterUser(RegisterView dto);
     }

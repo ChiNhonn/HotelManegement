@@ -1,5 +1,4 @@
-﻿using HotelManagement.Properties;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace HotelManagement.Forms
 {

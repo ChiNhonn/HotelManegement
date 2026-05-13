@@ -16,11 +16,9 @@ namespace HotelManagement.Services
             _userRepo = userRepo;
         }
 
-        public Userr Login(string username, string password)
+        public Userr? Login(string username, string password)
         {
-            string hash = PasswordHelper.HashPassword(password);
-
-            return _userRepo.Login(username, hash);
+            return _userRepo.Login(username, password);
         }
 
         public (bool IsSuccess, string Message)
@@ -75,8 +73,7 @@ namespace HotelManagement.Services
 
                     SoftDelete = null,
 
-                    // branch mặc định
-                    IdBranch = dto.IdBranch
+                    IdBranch = dto.IdBranch > 0 ? dto.IdBranch : null
                 };
 
                 // tạo profile

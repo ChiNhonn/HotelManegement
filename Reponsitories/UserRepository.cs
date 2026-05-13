@@ -1,4 +1,5 @@
 ﻿using HotelManagement.Data;
+using HotelManagement.Helpers;
 using HotelManagement.Models;
 using HotelManagement.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,19 @@ namespace HotelManagement.Repositories
             _context = context;
         }
 
-        public Userr Login(string username, string passwordHash)
+        public Userr? Login(string username, string password)
         {
-            return _context.Users
+            var user = _context.Users
                 .Include(x => x.UserProfile)
-                .FirstOrDefault(x =>
-                    x.UserName == username &&
-                    x.Password == passwordHash);
+                .FirstOrDefault(x => x.UserName == username);
+
+            if (user == null)
+                return null;
+
+            if (!PasswordHelper.VerifyPassword(password, user.Password))
+                return null;
+
+            return user;
         }
 
         public bool CheckUsernameExists(string username)

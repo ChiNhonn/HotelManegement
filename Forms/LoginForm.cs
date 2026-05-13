@@ -1,5 +1,6 @@
-﻿using HotelManagement.Services;
+﻿using HotelManagement.Interfaces;
 using HotelManagement.Models;
+using HotelManagement.Services;
 using Microsoft.Extensions.DependencyInjection;
 namespace HotelManagement.Forms
 {
@@ -33,8 +34,8 @@ namespace HotelManagement.Forms
                 txtMatKhau.Focus();
                 return;
             }
-            TaiKhoan tk = _taiKhoanService.DangNhap(tendangnhap, matkhau);
-            if (tk != null)
+            Userr? user = _taiKhoanService.Login(tendangnhap, matkhau);
+            if (user != null)
             {
                 MessageBox.Show("Đăng nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 MainForm mainForm = Program.ServiceProvider.GetRequiredService<MainForm>();
@@ -51,7 +52,9 @@ namespace HotelManagement.Forms
         }
         private void btnDangKy_Click(object sender, EventArgs e)
         {
-
+            var registerForm = Program.ServiceProvider.GetRequiredService<RegisterForm>();
+            registerForm.Show();
+            Hide();
         }
 
         private void linkQuenMK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

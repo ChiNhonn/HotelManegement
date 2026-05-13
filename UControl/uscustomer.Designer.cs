@@ -1,6 +1,6 @@
-﻿namespace HotelManagement.UControl
+﻿namespace HotelManagement.CustomControls
 {
-    partial class uscustomer
+    partial class usCustomer
     {
         /// <summary> 
         /// Required designer variable.

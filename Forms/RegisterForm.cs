@@ -1,6 +1,6 @@
-﻿using HotelManagement.Services;
+﻿using HotelManagement.Interfaces;
+using HotelManagement.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using QuanLyKhachSan.DTOs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,38 +34,26 @@ namespace HotelManagement.Forms
                 return;
             }
 
-            MessageBox.Show("Đăng ký thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
             var registerDto = new RegisterView
             {
+                FullName = username,
                 Username = username,
                 Password = password,
                 Phone = phone,
-                Email = email
+                Email = email,
+                IdBranch = 0
             };
 
-            var registerService = Program.ServiceProvider.GetService<RegisterService>();
-
-            if (registerService == null)
-            {
-                MessageBox.Show("Lỗi: Chưa cấu hình RegisterService trong hệ thống!", "Lỗi nghiêm trọng", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var result = registerService.RegisterUser(registerDto);
+            var userService = Program.ServiceProvider.GetRequiredService<IUserService>();
+            var result = userService.RegisterUser(registerDto);
 
             if (result.IsSuccess)
             {
-                // Thông báo thành công
                 MessageBox.Show(result.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Chuyển sang form đăng nhập
-                LoginForm loginForm = Program.ServiceProvider.GetService<LoginForm>();
-                if (loginForm != null)
-                {
-                    loginForm.Show();
-                    this.Hide();
-                }
+                LoginForm loginForm = Program.ServiceProvider.GetRequiredService<LoginForm>();
+                loginForm.Show();
+                this.Hide();
             }
             else
             {
@@ -80,7 +68,7 @@ namespace HotelManagement.Forms
 
         private void linkLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            LoginForm loginForm = Program.ServiceProvider.GetService<LoginForm>();
+            LoginForm loginForm = Program.ServiceProvider.GetRequiredService<LoginForm>();
             if (loginForm != null)
             {
                 loginForm.Show();

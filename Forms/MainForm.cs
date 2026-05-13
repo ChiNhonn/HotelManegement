@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelManagement.CustomControls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -41,7 +42,7 @@ namespace HotelManagement.Forms
 
         private void btnKhach_Click(object sender, EventArgs e)
         {
-            chuyentrang(new uscustomer());
+            chuyentrang(new usCustomer());
         }
 
         private void btnDatPhong_Click(object sender, EventArgs e)
@@ -66,7 +67,7 @@ namespace HotelManagement.Forms
 
         private void btnDangXuat_Click(object sender, EventArgs e)
         {
-            LoginForm login = Program.ServiceProvider.GetService<LoginForm>();
+            LoginForm login = Program.ServiceProvider.GetRequiredService<LoginForm>();
             this.Hide();
             login.Show();
             this.Close();

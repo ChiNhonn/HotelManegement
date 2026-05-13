@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HotelManagement.UserControl
+namespace HotelManagement.CustomControls
 {
     public partial class usMainForm : UserControl
     {

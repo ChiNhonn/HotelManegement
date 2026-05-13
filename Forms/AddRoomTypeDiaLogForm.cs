@@ -1,8 +1,7 @@
-﻿using HotelManagement.Services;
-using HotelManagement.Models;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using HotelManagement.Models;
+using HotelManagement.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Forms;
 
 namespace HotelManagement.Forms
 {
@@ -10,13 +9,12 @@ namespace HotelManagement.Forms
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IRoomTypeService _roomTypeService;
-        private readonly IRoomService _phongService;
-        public AddRoomTypeDiaLogForm(IServiceProvider serviceProvider, IRoomTypeService roomTypeService, IRoomService roomService)
+
+        public AddRoomTypeDiaLogForm(IServiceProvider serviceProvider, IRoomTypeService roomTypeService)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
             _roomTypeService = roomTypeService;
-            _roomService = roomService;
         }
 
         private void btnHuy_Click(object sender, EventArgs e)

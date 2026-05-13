@@ -1,10 +1,13 @@
-﻿using QuanLyKhachSan.GUI;
-using QuanLyKhachSan.Services;
-using QuanLyKhachSan.Models;
+﻿using HotelManagement.Forms;
+using HotelManagement.Models;
+using HotelManagement.Services;
+using HotelManagement.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using QuanLyKhachSan.DTOs;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 
-namespace HotelManagement.UserControl
+namespace HotelManagement.CustomControls
 {
     public partial class usRoom : UserControl
     {
@@ -18,11 +21,32 @@ namespace HotelManagement.UserControl
             _serviceProvider = serviceProvider;
             _phongService = phongService;
             _loaiPhongService = loaiPhongService;
+            dgvDSPhong.DataBindingComplete += DgvDSPhong_DataBindingComplete;
+        }
+
+        private void DgvDSPhong_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (dgvDSPhong.Columns.Count == 0) return;
+
+            if (dgvDSPhong.Columns["MaPhong"] != null)
+                dgvDSPhong.Columns["MaPhong"].Visible = false;
+
+            if (dgvDSPhong.Columns["SoPhong"] != null)
+                dgvDSPhong.Columns["SoPhong"].HeaderText = "Số phòng";
+
+            if (dgvDSPhong.Columns["LoaiPhong"] != null)
+                dgvDSPhong.Columns["LoaiPhong"].HeaderText = "Loại phòng";
+
+            if (dgvDSPhong.Columns["Tang"] != null)
+                dgvDSPhong.Columns["Tang"].HeaderText = "Tầng (Floors.Name)";
+
+            if (dgvDSPhong.Columns["TrangThai"] != null)
+                dgvDSPhong.Columns["TrangThai"].HeaderText = "Trạng thái";
         }
 
         private void btnThemPhong_Click(object sender, EventArgs e)
         {
-            var them = _serviceProvider.GetRequiredService<ThemPhongDialogForm>();
+            var them = _serviceProvider.GetRequiredService<AddRoomDialogForm>();
             if (them.ShowDialog() == DialogResult.OK)
             {
                 loadPhong();
@@ -75,7 +99,7 @@ namespace HotelManagement.UserControl
             cboLocLoaiPhong.ValueMember = "MaLoaiPhong";
 
             var dsLoaiPhongView = _loaiPhongService.GetAllWithRoomCount();
-            dsLoaiPhongView.Insert(0, new LoaiPhongView { MaLoaiPhong = 0, TenLoaiPhong = "--Chọn loại phòng--" });
+            dsLoaiPhongView.Insert(0, new RoomTypeView { MaLoaiPhong = 0, TenLoaiPhong = "--Chọn loại phòng--" });
             cboLoaiPhong.DataSource = dsLoaiPhongView;
             cboLoaiPhong.DisplayMember = "TenLoaiPhong";
             cboLoaiPhong.ValueMember = "MaLoaiPhong";
@@ -102,21 +126,22 @@ namespace HotelManagement.UserControl
             loadComboRoomType();
             loadComboSapXep();
             GanSuKienBoChon(this);
-            //Day la cua tab Phong
-            dgvDSPhong.Columns["MaPhong"].Visible = false;
-            dgvDSPhong.Columns["SoPhong"].HeaderText = "Số Phòng";
-            dgvDSPhong.Columns["LoaiPhong"].HeaderText = "Loại Phòng";
-            dgvDSPhong.Columns["Tang"].HeaderText = "Tầng";
-            dgvDSPhong.Columns["TrangThai"].HeaderText = "Trạng Thái";
-            dgvDSPhong.Columns["GhiChu"].HeaderText = "Ghi Chú";
-            //Day la cua tab LoaiPhong
-            dgvDSLoaiPhong.Columns["MaLoaiPhong"].Visible = false;
-            dgvDSLoaiPhong.Columns["TenLoaiPhong"].HeaderText = "Tên Loại Phòng";
-            dgvDSLoaiPhong.Columns["SucChuaToiDa"].HeaderText = "Sức Chứa Tối Đa";
-            dgvDSLoaiPhong.Columns["Gia"].DefaultCellStyle.Format = "C0";
-            dgvDSLoaiPhong.Columns["Gia"].HeaderText = "Giá Cơ Bản";
-            dgvDSLoaiPhong.Columns["SoLuongPhong"].HeaderText = "Số Lượng Phòng";
-            dgvDSLoaiPhong.Columns["MoTa"].HeaderText = "Mô Tả";
+            // Tab Loại phòng — cấu hình cột sau khi đã bind dữ liệu
+            if (dgvDSLoaiPhong.Columns["MaLoaiPhong"] != null)
+                dgvDSLoaiPhong.Columns["MaLoaiPhong"].Visible = false;
+            if (dgvDSLoaiPhong.Columns["TenLoaiPhong"] != null)
+                dgvDSLoaiPhong.Columns["TenLoaiPhong"].HeaderText = "Tên Loại Phòng";
+            if (dgvDSLoaiPhong.Columns["SucChuaToiDa"] != null)
+                dgvDSLoaiPhong.Columns["SucChuaToiDa"].HeaderText = "Sức Chứa Tối Đa";
+            if (dgvDSLoaiPhong.Columns["Gia"] != null)
+            {
+                dgvDSLoaiPhong.Columns["Gia"].DefaultCellStyle.Format = "C0";
+                dgvDSLoaiPhong.Columns["Gia"].HeaderText = "Giá Cơ Bản";
+            }
+            if (dgvDSLoaiPhong.Columns["SoLuongPhong"] != null)
+                dgvDSLoaiPhong.Columns["SoLuongPhong"].HeaderText = "Số Lượng Phòng";
+            if (dgvDSLoaiPhong.Columns["MoTa"] != null)
+                dgvDSLoaiPhong.Columns["MoTa"].HeaderText = "Mô Tả";
         }
 
         private void txtTimKiem_TextChanged(object sender, EventArgs e)
@@ -209,7 +234,7 @@ namespace HotelManagement.UserControl
                 return;
             }
             int maPhong = Convert.ToInt32(dgvDSPhong.CurrentRow.Cells["MaPhong"].Value);
-            using (var sua = ActivatorUtilities.CreateInstance<SuaPhongDialogForm>(_serviceProvider, maPhong))
+            using (var sua = ActivatorUtilities.CreateInstance<UpdateRoomDialogForm>(_serviceProvider, maPhong))
             {
                 if (sua.ShowDialog() == DialogResult.OK)
                 {
@@ -236,7 +261,7 @@ namespace HotelManagement.UserControl
         {
             if (cboLoaiPhong.SelectedValue == null) return;
 
-            LoaiPhongView lpv = (LoaiPhongView)cboLoaiPhong.SelectedItem;
+            RoomTypeView lpv = (RoomTypeView)cboLoaiPhong.SelectedItem;
 
             int roomTypeId = lpv.MaLoaiPhong;
             dgvDSLoaiPhong.DataSource = _loaiPhongService.GetByRoomType(roomTypeId);
@@ -298,14 +323,14 @@ namespace HotelManagement.UserControl
 
         private void btnThem2_Click(object sender, EventArgs e)
         {
-            var formthemloai = _serviceProvider.GetRequiredService<ThemLPhongDiaLogForm>();
+            var formthemloai = _serviceProvider.GetRequiredService<AddRoomTypeDiaLogForm>();
             if (formthemloai.ShowDialog() == DialogResult.OK)
             {
                 loadPhong();
                 var loaiphong = formthemloai.Tag as RoomType;
                 if (loaiphong != null)
                 {
-                    var frmThemPhong = _serviceProvider.GetRequiredService<ThemPhongDialogForm>();
+                    var frmThemPhong = _serviceProvider.GetRequiredService<AddRoomDialogForm>();
                     frmThemPhong.MaLoaiPhong = loaiphong.MaLoaiPhong;
                     frmThemPhong.IsFromLoaiPhong = true;
                     frmThemPhong.ShowDialog();
@@ -350,7 +375,7 @@ namespace HotelManagement.UserControl
                 return;
             }
             int maLoaiPhong = Convert.ToInt32(dgvDSLoaiPhong.CurrentRow.Cells["MaLoaiPhong"].Value);
-            using (var sua = ActivatorUtilities.CreateInstance<SuaLPhongDialogForm>(_serviceProvider, maLoaiPhong))
+            using (var sua = ActivatorUtilities.CreateInstance<UpdateRoomTypeDialogForm>(_serviceProvider, maLoaiPhong))
             {
                 if (sua.ShowDialog() == DialogResult.OK)
                 {

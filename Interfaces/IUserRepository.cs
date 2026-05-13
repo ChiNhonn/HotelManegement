@@ -4,7 +4,7 @@ namespace HotelManagement.Interfaces
 {
     public interface IUserRepository
     {
-        Userr Login(string username, string passwordHash);
+        Userr? Login(string username, string password);
 
         bool CheckUsernameExists(string username);
         bool Register(Userr user, UserProfile profile);

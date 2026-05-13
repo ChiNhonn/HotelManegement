@@ -1,13 +1,15 @@
-﻿using QuanLyKhachSan.Services;
-using QuanLyKhachSan.Models;
-using Microsoft.Extensions.DependencyInjection;
+﻿using HotelManagement.Helpers;
+using HotelManagement.Models;
+using HotelManagement.Services;
+
 namespace HotelManagement.Forms
 {
     public partial class UpdateRoomDialogForm : Form
     {
         private readonly IRoomService _phongService;
         private readonly IRoomTypeService _loaiPhongService;
-        private int _maPhong;
+        private readonly int _maPhong;
+
         public UpdateRoomDialogForm(IRoomService phongService, IRoomTypeService loaiPhongService, int maPhong)
         {
             InitializeComponent();
@@ -15,6 +17,7 @@ namespace HotelManagement.Forms
             _loaiPhongService = loaiPhongService;
             _maPhong = maPhong;
         }
+
         private void loadComboRoomType()
         {
             var ds = _loaiPhongService.GetAll();
@@ -22,6 +25,15 @@ namespace HotelManagement.Forms
             cboLoaiPhong.DisplayMember = "TenLoaiPhong";
             cboLoaiPhong.ValueMember = "MaLoaiPhong";
         }
+
+        private void loadFloors()
+        {
+            cboFloor.Items.Clear();
+            cboFloor.Items.Add(new FloorListItem(null, "-- Không gán tầng --"));
+            foreach (var f in _phongService.GetAllFloors())
+                cboFloor.Items.Add(new FloorListItem(f.Id, f.Name));
+        }
+
         private void loadStatus()
         {
             cboTrangThai.Items.Add("Sẵn sàng");
@@ -29,42 +41,68 @@ namespace HotelManagement.Forms
             cboTrangThai.Items.Add("Bảo trì");
             cboTrangThai.SelectedIndex = 0;
         }
+
         private void loadData()
         {
             var phong = _phongService.GetById(_maPhong);
-            if (phong != null)
+            if (phong == null)
             {
-                txtSoPhong.Text = phong.SoPhong;
-                cboLoaiPhong.SelectedValue = phong.MaLoaiPhong;
-                cboTrangThai.SelectedItem = phong.TrangThai;
-                numTang.Value = (byte)phong.Tang;
-                txtMoTa.Text = phong.GhiChu;
+                MessageBox.Show("Không tìm thấy phòng.");
+                return;
             }
+
+            txtSoPhong.Text = phong.SoPhong;
+            if (phong.MaLoaiPhong is { } lp)
+                cboLoaiPhong.SelectedValue = lp;
+
+            var displayStatus = RoomStatusMap.ToDisplay(phong.Status);
+            if (!cboTrangThai.Items.Contains(displayStatus))
+                cboTrangThai.Items.Add(displayStatus);
+            cboTrangThai.SelectedItem = displayStatus;
+
+            for (var i = 0; i < cboFloor.Items.Count; i++)
+            {
+                if (cboFloor.Items[i] is FloorListItem fl && fl.Id == phong.IdFloor)
+                {
+                    cboFloor.SelectedIndex = i;
+                    return;
+                }
+            }
+
+            cboFloor.SelectedIndex = 0;
         }
 
         private void btnHuy_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void btnSua_Click(object sender, EventArgs e)
         {
+            if (cboLoaiPhong.SelectedValue is not int loaiId || loaiId <= 0)
+            {
+                MessageBox.Show("Chọn loại phòng hợp lệ");
+                return;
+            }
+
+            int? idFloor = (cboFloor.SelectedItem as FloorListItem)?.Id;
+
             var phong = new Room
             {
                 MaPhong = _maPhong,
-                SoPhong = txtSoPhong.Text,
-                MaLoaiPhong = (int)cboLoaiPhong.SelectedValue,
-                Tang = (byte)numTang.Value,
-                TrangThai = cboTrangThai.SelectedItem.ToString(),
-                GhiChu = txtMoTa.Text
+                SoPhong = txtSoPhong.Text.Trim(),
+                MaLoaiPhong = loaiId,
+                IdFloor = idFloor,
+                TrangThai = cboTrangThai.SelectedItem?.ToString() ?? "Sẵn sàng",
             };
+
             try
             {
                 _phongService.Update(phong);
                 MessageBox.Show("Cập nhập phòng thành công");
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
@@ -75,21 +113,9 @@ namespace HotelManagement.Forms
         private void SuaPhongDialogForm_Load(object sender, EventArgs e)
         {
             loadComboRoomType();
+            loadFloors();
             loadStatus();
             loadData();
-        }
-
-        private void txtSoPhong_TextChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtSoPhong.Text))
-            {
-                numTang.Value = 0;
-                return;
-            }
-            if (int.TryParse(txtSoPhong.Text, out int soPhong))
-            {
-                numTang.Value = (soPhong / 100);
-            }
         }
     }
 }

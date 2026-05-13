@@ -1,97 +1,140 @@
-﻿using HotelManagement.Models;
+﻿using HotelManagement.Data;
+using HotelManagement.Helpers;
+using HotelManagement.Models;
 using HotelManagement.ViewModels;
-using HotelManagement.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace HotelManagement.Repositories
 {
     public class RoomRepository : IRoomRepository
     {
-        private HotelDbContext _context;
+        private readonly HotelDbContext _context;
+
         public RoomRepository(HotelDbContext context)
         {
             _context = context;
         }
+
+        private IQueryable<Room> ActiveRooms => _context.Rooms.Where(p => p.SoftDelete == null);
+
+        public List<Floor> GetAllFloors()
+        {
+            return _context.Floors.AsNoTracking().OrderBy(f => f.Name).ToList();
+        }
+
         public List<RoomView> GetAll()
         {
-            return _context.Phongs.Select(p => new RoomView
-            {
-                MaPhong = p.MaPhong,
-                SoPhong = p.SoPhong,
-                LoaiPhong = p.MaLoaiPhongNavigation.TenLoaiPhong,
-                Tang = p.Tang,
-                TrangThai = p.TrangThai,
-                GhiChu = p.GhiChu
-            }).ToList();
+            return ActiveRooms
+                .AsNoTracking()
+                .Include(p => p.RoomType)
+                .Include(p => p.Floor)
+                .Select(p => new RoomView
+                {
+                    MaPhong = p.Id,
+                    SoPhong = p.Name,
+                    LoaiPhong = p.RoomType != null ? p.RoomType.Name : "",
+                    Tang = p.Floor != null ? p.Floor.Name : "",
+                    TrangThai = RoomStatusMap.ToDisplay(p.Status),
+                })
+                .ToList();
         }
+
         public void Add(Room phong)
         {
-            _context.Phongs.Add(phong);
+            _context.Rooms.Add(phong);
             _context.SaveChanges();
         }
+
         public void Update(Room phong)
         {
-            var data = _context.Phongs.FirstOrDefault(x => x.MaPhong == phong.MaPhong);
-            if (data != null)
-            {
-                data.SoPhong = phong.SoPhong;
-                data.MaLoaiPhong = phong.MaLoaiPhong;
-                data.Tang = phong.Tang;
-                data.TrangThai = phong.TrangThai;
-                data.GhiChu = phong.GhiChu;
-                _context.SaveChanges();
-            }
-        }
-        public void Delete(int maPhong)
-        {
-            var phong = _context.Phongs.Find(maPhong);
-            if(phong == null)
-                throw new Exception("Không tìm thấy phòng");
+            var data = _context.Rooms.FirstOrDefault(x => x.Id == phong.Id);
+            if (data == null)
+                return;
 
-            _context.Phongs.Remove(phong);
+            data.Name = phong.Name;
+            data.IdRoomType = phong.IdRoomType;
+            data.IdFloor = phong.IdFloor;
+            data.Status = phong.Status;
+            data.UpdateAt = DateTime.Now;
             _context.SaveChanges();
         }
+
+        public void Delete(int maPhong)
+        {
+            var phong = _context.Rooms.Find(maPhong);
+            if (phong == null)
+                throw new Exception("Không tìm thấy phòng");
+
+            _context.Rooms.Remove(phong);
+            _context.SaveChanges();
+        }
+
         public List<RoomView> Search(string keyword)
         {
-            return _context.Phongs.Where(x => x.SoPhong.Contains(keyword) || x.GhiChu.Contains(keyword)).Select(p => new RoomView
-            {
-                MaPhong = p.MaPhong,
-                SoPhong = p.SoPhong,
-                LoaiPhong = p.MaLoaiPhongNavigation.TenLoaiPhong,
-                Tang = p.Tang,
-                TrangThai = p.TrangThai,
-                GhiChu = p.GhiChu
-            }).ToList();
+            var k = keyword.Trim();
+            return ActiveRooms
+                .AsNoTracking()
+                .Include(p => p.RoomType)
+                .Include(p => p.Floor)
+                .Where(x => x.Name.Contains(k))
+                .Select(p => new RoomView
+                {
+                    MaPhong = p.Id,
+                    SoPhong = p.Name,
+                    LoaiPhong = p.RoomType != null ? p.RoomType.Name : "",
+                    Tang = p.Floor != null ? p.Floor.Name : "",
+                    TrangThai = RoomStatusMap.ToDisplay(p.Status),
+                })
+                .ToList();
         }
+
         public List<RoomView> GetByRoomType(int roomTypeId)
         {
-            return _context.Phongs.Where(p => p.MaLoaiPhong == roomTypeId).Select(p => new RoomView
-            {
-                MaPhong = p.MaPhong,
-                SoPhong = p.SoPhong,
-                LoaiPhong = p.MaLoaiPhongNavigation.TenLoaiPhong,
-                Tang = p.Tang,
-                TrangThai = p.TrangThai,
-                GhiChu = p.GhiChu
-            }).ToList();
+            return ActiveRooms
+                .AsNoTracking()
+                .Include(p => p.RoomType)
+                .Include(p => p.Floor)
+                .Where(p => p.IdRoomType == roomTypeId)
+                .Select(p => new RoomView
+                {
+                    MaPhong = p.Id,
+                    SoPhong = p.Name,
+                    LoaiPhong = p.RoomType != null ? p.RoomType.Name : "",
+                    Tang = p.Floor != null ? p.Floor.Name : "",
+                    TrangThai = RoomStatusMap.ToDisplay(p.Status),
+                })
+                .ToList();
         }
+
         public List<RoomView> GetByStatus(string status)
         {
-            return _context.Phongs.Where(p => p.TrangThai == status).Select(p => new RoomView
-            {
-                MaPhong = p.MaPhong,
-                SoPhong = p.SoPhong,
-                LoaiPhong = p.MaLoaiPhongNavigation.TenLoaiPhong,
-                Tang = p.Tang,
-                TrangThai = p.TrangThai,
-                GhiChu = p.GhiChu
-            }).ToList();
+            return ActiveRooms
+                .AsNoTracking()
+                .Include(p => p.RoomType)
+                .Include(p => p.Floor)
+                .Where(p => RoomStatusMap.MatchesFilter(p.Status, status))
+                .Select(p => new RoomView
+                {
+                    MaPhong = p.Id,
+                    SoPhong = p.Name,
+                    LoaiPhong = p.RoomType != null ? p.RoomType.Name : "",
+                    Tang = p.Floor != null ? p.Floor.Name : "",
+                    TrangThai = RoomStatusMap.ToDisplay(p.Status),
+                })
+                .ToList();
         }
-        public Room GetById(int maPhong)
+
+        public Room? GetById(int maPhong)
         {
-            return _context.Phongs.FirstOrDefault(x => x.MaPhong == maPhong);
+            return _context.Rooms
+                .Include(r => r.RoomType)
+                .Include(r => r.Floor)
+                .FirstOrDefault(x => x.Id == maPhong);
         }
-        public Room GetByName(string soPhong)
+
+        public Room? GetByName(string soPhong)
         {
-            return _context.Phongs.FirstOrDefault(x => x.SoPhong == soPhong);
+            return _context.Rooms.FirstOrDefault(x => x.Name == soPhong && x.SoftDelete == null);
         }
     }
 }

@@ -55,12 +55,6 @@ public partial class Room
 
     public int? IdFloor { get; set; }
 
-    [NotMapped]
-    public byte? Tang { get; set; }
-
-    [NotMapped]
-    public string? GhiChu { get; set; }
-
     [ForeignKey("IdFloor")]
     public virtual Floor? Floor { get; set; }
 

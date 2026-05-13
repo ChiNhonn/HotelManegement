@@ -13,7 +13,7 @@ namespace HotelManagement.Repositories
         List<RoomTypeView> Search(string keyword);
         List<RoomTypeView> GetByRoomType(int roomTypeId);
         List<RoomTypeView> GetByPriceRange(decimal minPrice, decimal maxPrice);
-        RoomType GetByName(string Name);
-        RoomType GetById(int Id);
+        RoomType? GetByName(string Name);
+        RoomType? GetById(int Id);
     }
 }
