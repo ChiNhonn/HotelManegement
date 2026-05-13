@@ -1,387 +1,484 @@
-﻿using HotelManagement.Forms;
-using HotelManagement.Models;
+﻿using System;
+using System.Linq;
+using System.Windows.Forms;
+using HotelManagement.Forms;
+using HotelManagement.Helpers;
 using HotelManagement.Services;
 using HotelManagement.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Windows.Forms;
 
-namespace HotelManagement.CustomControls
+namespace HotelManagement.CustomControls;
+
+public partial class usRoom : UserControl
 {
-    public partial class usRoom : UserControl
+    private readonly IRoomService _roomService;
+    private readonly IRoomTypeService _roomTypeService;
+    private readonly IFloorService _floorService;
+    private bool _syncingOperationalUi;
+    private bool _suspendFilterReload;
+
+    public usRoom(IRoomService roomService, IRoomTypeService roomTypeService, IFloorService floorService)
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IRoomService _phongService;
-        private readonly IRoomTypeService _loaiPhongService;
+        _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
+        _roomTypeService = roomTypeService ?? throw new ArgumentNullException(nameof(roomTypeService));
+        _floorService = floorService ?? throw new ArgumentNullException(nameof(floorService));
+        InitializeComponent();
+    }
 
-        public usRoom(IServiceProvider serviceProvider, IRoomService phongService, IRoomTypeService loaiPhongService)
+    private void usRoom_Load(object? sender, EventArgs e)
+    {
+        LoadOperationalCombo();
+        _suspendFilterReload = true;
+        LoadFilterCombos();
+        _suspendFilterReload = false;
+        ReloadGrid();
+        ReloadRoomTypesGrid();
+        ReloadFloorsGrid();
+    }
+
+    private void TxtSearch_TextChanged(object? sender, EventArgs e) => ReloadGrid();
+
+    private void BtnRefreshList_Click(object? sender, EventArgs e)
+    {
+        txtSearch.Clear();
+        cmbFilterFloor.SelectedIndex = 0;
+        cmbFilterRoomType.SelectedIndex = 0;
+        ReloadGrid();
+    }
+
+    private void CmbFilterFloor_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (_suspendFilterReload || !IsHandleCreated) return;
+        ReloadGrid();
+    }
+
+    private void CmbFilterRoomType_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (_suspendFilterReload || !IsHandleCreated) return;
+        ReloadGrid();
+    }
+
+    private void CmbOperationalApply_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (_syncingOperationalUi || !IsHandleCreated)
+            return;
+
+        var sel = GetSelectedRoom();
+        if (sel == null || cmbOperationalApply.SelectedItem is not OperationalPick pick)
+            return;
+
+        try
         {
-            InitializeComponent();
-            _serviceProvider = serviceProvider;
-            _phongService = phongService;
-            _loaiPhongService = loaiPhongService;
-            dgvDSPhong.DataBindingComplete += DgvDSPhong_DataBindingComplete;
+            _roomService.SetOperationalStatus(sel.RoomId, pick.Mode);
+            ReloadGrid();
         }
-
-        private void DgvDSPhong_DataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
+        catch (Exception ex)
         {
-            if (dgvDSPhong.Columns.Count == 0) return;
-
-            if (dgvDSPhong.Columns["MaPhong"] != null)
-                dgvDSPhong.Columns["MaPhong"].Visible = false;
-
-            if (dgvDSPhong.Columns["SoPhong"] != null)
-                dgvDSPhong.Columns["SoPhong"].HeaderText = "Số phòng";
-
-            if (dgvDSPhong.Columns["LoaiPhong"] != null)
-                dgvDSPhong.Columns["LoaiPhong"].HeaderText = "Loại phòng";
-
-            if (dgvDSPhong.Columns["Tang"] != null)
-                dgvDSPhong.Columns["Tang"].HeaderText = "Tầng (Floors.Name)";
-
-            if (dgvDSPhong.Columns["TrangThai"] != null)
-                dgvDSPhong.Columns["TrangThai"].HeaderText = "Trạng thái";
+            MessageBox.Show(ex.Message, "Vận hành / khóa", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            SyncOperationalComboFromGrid();
         }
+    }
 
-        private void btnThemPhong_Click(object sender, EventArgs e)
+    private void DgvRooms_SelectionChanged(object? sender, EventArgs e) => SyncOperationalComboFromGrid();
+
+    private void SyncOperationalComboFromGrid()
+    {
+        _syncingOperationalUi = true;
+        try
         {
-            var them = _serviceProvider.GetRequiredService<AddRoomDialogForm>();
-            if (them.ShowDialog() == DialogResult.OK)
+            var sel = GetSelectedRoom();
+            if (sel == null)
             {
-                loadPhong();
-
-                dgvDSPhong.DataSource = _phongService.GetAll().OrderByDescending(x => x.MaPhong).ToList();
+                cmbOperationalApply.SelectedIndex = 0;
+                return;
             }
-        }
-        private void GanSuKienBoChon(Control parent)
-        {
-            foreach (Control control in parent.Controls)
+
+            var mode = RoomStatusMap.DeriveOperationalMode(sel.StatusDb);
+            for (var i = 0; i < cmbOperationalApply.Items.Count; i++)
             {
-                if (control is Button) continue;
-
-                control.MouseDown += BoChonDGV;
-                if (control.HasChildren)
-                    GanSuKienBoChon(control);
-            }
-        }
-        private void BoChonDGV(object sender, MouseEventArgs e)
-        {
-            dgvDSPhong.ClearSelection();
-            dgvDSPhong.CurrentCell = null;
-
-            dgvDSLoaiPhong.ClearSelection();
-            dgvDSLoaiPhong.CurrentCell = null;
-        }
-        private void loadPhong()
-        {
-            dgvDSPhong.DataSource = _phongService.GetAll();
-
-            dgvDSLoaiPhong.DataSource = _loaiPhongService.GetAllWithRoomCount();
-            this.BeginInvoke(
-                new Action(() =>
+                if (cmbOperationalApply.Items[i] is OperationalPick p && p.Mode == mode)
                 {
-                    dgvDSPhong.ClearSelection();
-                    dgvDSPhong.CurrentCell = null;
-
-                    dgvDSLoaiPhong.ClearSelection();
-                    dgvDSLoaiPhong.CurrentCell = null;
-                })
-            );
-        }
-
-        private void loadComboRoomType()
-        {
-            var ds = _loaiPhongService.GetAll();
-            ds.Insert(0, new RoomType { MaLoaiPhong = 0, TenLoaiPhong = "--Chọn loại phòng--" });
-            cboLocLoaiPhong.DataSource = ds;
-            cboLocLoaiPhong.DisplayMember = "TenLoaiPhong";
-            cboLocLoaiPhong.ValueMember = "MaLoaiPhong";
-
-            var dsLoaiPhongView = _loaiPhongService.GetAllWithRoomCount();
-            dsLoaiPhongView.Insert(0, new RoomTypeView { MaLoaiPhong = 0, TenLoaiPhong = "--Chọn loại phòng--" });
-            cboLoaiPhong.DataSource = dsLoaiPhongView;
-            cboLoaiPhong.DisplayMember = "TenLoaiPhong";
-            cboLoaiPhong.ValueMember = "MaLoaiPhong";
-        }
-        private void loadTrangThai()
-        {
-            cboLocTrangThai.Items.Add("--Chọn trạng thái--");
-            cboLocTrangThai.Items.Add("Sẵn sàng");
-            cboLocTrangThai.Items.Add("Đang ở");
-            cboLocTrangThai.Items.Add("Bảo trì");
-            cboLocTrangThai.SelectedIndex = 0;
-        }
-        private void loadComboSapXep()
-        {
-            cboSapXep.Items.Add("--Chọn sắp xếp--");
-            cboSapXep.Items.Add("Giá tăng dần");
-            cboSapXep.Items.Add("Giá giảm dần");
-            cboSapXep.SelectedIndex = 0;
-        }
-        private void usPhong_Load(object sender, EventArgs e)
-        {
-            loadPhong();
-            loadTrangThai();
-            loadComboRoomType();
-            loadComboSapXep();
-            GanSuKienBoChon(this);
-            // Tab Loại phòng — cấu hình cột sau khi đã bind dữ liệu
-            if (dgvDSLoaiPhong.Columns["MaLoaiPhong"] != null)
-                dgvDSLoaiPhong.Columns["MaLoaiPhong"].Visible = false;
-            if (dgvDSLoaiPhong.Columns["TenLoaiPhong"] != null)
-                dgvDSLoaiPhong.Columns["TenLoaiPhong"].HeaderText = "Tên Loại Phòng";
-            if (dgvDSLoaiPhong.Columns["SucChuaToiDa"] != null)
-                dgvDSLoaiPhong.Columns["SucChuaToiDa"].HeaderText = "Sức Chứa Tối Đa";
-            if (dgvDSLoaiPhong.Columns["Gia"] != null)
-            {
-                dgvDSLoaiPhong.Columns["Gia"].DefaultCellStyle.Format = "C0";
-                dgvDSLoaiPhong.Columns["Gia"].HeaderText = "Giá Cơ Bản";
-            }
-            if (dgvDSLoaiPhong.Columns["SoLuongPhong"] != null)
-                dgvDSLoaiPhong.Columns["SoLuongPhong"].HeaderText = "Số Lượng Phòng";
-            if (dgvDSLoaiPhong.Columns["MoTa"] != null)
-                dgvDSLoaiPhong.Columns["MoTa"].HeaderText = "Mô Tả";
-        }
-
-        private void txtTimKiem_TextChanged(object sender, EventArgs e)
-        {
-            string search = txtTimKiem.Text.Trim();
-            if (search == "")
-            {
-                loadPhong();
-                return;
-            }
-            else
-            {
-                dgvDSPhong.DataSource = _phongService.Search(search);
-            }
-        }
-
-        private void cboLocLoaiPhong_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cboLocLoaiPhong.SelectedValue == null) return;
-
-            RoomType lp = (RoomType)cboLocLoaiPhong.SelectedItem;
-
-            int roomTypeId = lp.MaLoaiPhong;
-            dgvDSPhong.DataSource = _phongService.GetByRoomType(roomTypeId);
-            dgvDSPhong.ClearSelection();
-        }
-        private void cboLocTrangThai_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string trangthai = cboLocTrangThai.Text;
-            if (trangthai == "--Chọn trạng thái--")
-            {
-                loadPhong();
-                return;
-            }
-            else
-            {
-                dgvDSPhong.DataSource = _phongService.GetByStatus(trangthai);
-            }
-        }
-
-        private void dgvDSPhong_MouseDown(object sender, MouseEventArgs e)
-        {
-            var hit = dgvDSPhong.HitTest(e.X, e.Y);
-            if (hit.RowIndex == -1)
-            {
-                dgvDSPhong.ClearSelection();
-                dgvDSPhong.CurrentCell = null;
-            }
-        }
-
-        private void btnLamMoi_Click(object sender, EventArgs e)
-        {
-            txtTimKiem.Clear();
-            cboLocLoaiPhong.SelectedIndex = 0;
-            cboLocTrangThai.SelectedIndex = 0;
-            loadPhong();
-            dgvDSPhong.ClearSelection();
-            dgvDSPhong.CurrentCell = null;
-        }
-
-        private void btnXoaPhong_Click(object sender, EventArgs e)
-        {
-            if (dgvDSPhong.CurrentRow == null)
-            {
-                MessageBox.Show("Chưa chọn phòng để xóa");
-                return;
-            }
-            int maPhong = Convert.ToInt32(dgvDSPhong.CurrentRow.Cells["MaPhong"].Value);
-            var confirm = MessageBox.Show("Bạn có chắc muốn xóa phòng này?", "Xác nhận", MessageBoxButtons.YesNo);
-            if (confirm == DialogResult.No)
-                return;
-
-            try
-            {
-                _phongService.Delete(maPhong);
-                MessageBox.Show("Xóa phòng thành công");
-                loadPhong();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void btnChinhSua_Click(object sender, EventArgs e)
-        {
-            if (dgvDSPhong.CurrentRow == null)
-            {
-                MessageBox.Show("Chưa chọn phòng để chỉnh sửa");
-                return;
-            }
-            int maPhong = Convert.ToInt32(dgvDSPhong.CurrentRow.Cells["MaPhong"].Value);
-            using (var sua = ActivatorUtilities.CreateInstance<UpdateRoomDialogForm>(_serviceProvider, maPhong))
-            {
-                if (sua.ShowDialog() == DialogResult.OK)
-                {
-                    loadPhong();
+                    cmbOperationalApply.SelectedIndex = i;
+                    return;
                 }
             }
+
+            cmbOperationalApply.SelectedIndex = 0;
+        }
+        finally
+        {
+            _syncingOperationalUi = false;
+        }
+    }
+
+    private void LoadOperationalCombo()
+    {
+        cmbOperationalApply.Items.Clear();
+        cmbOperationalApply.Items.Add(new OperationalPick(RoomOperationalMode.Active, "Đang mở — hiển thị trên sơ đồ"));
+        cmbOperationalApply.Items.Add(new OperationalPick(RoomOperationalMode.Inactive, "Ngưng dùng — ô xám trên sơ đồ"));
+        cmbOperationalApply.Items.Add(new OperationalPick(RoomOperationalMode.OutOfOrder, "Hỏng / bảo trì — ô xám trên sơ đồ"));
+        cmbOperationalApply.DisplayMember = nameof(OperationalPick.Caption);
+        cmbOperationalApply.SelectedIndex = 0;
+    }
+
+    private sealed class OperationalPick(RoomOperationalMode mode, string caption)
+    {
+        public RoomOperationalMode Mode { get; } = mode;
+        public string Caption { get; } = caption;
+    }
+
+    private void LoadFilterCombos()
+    {
+        cmbFilterFloor.Items.Clear();
+        cmbFilterFloor.Items.Add(new FloorListItem(null, "Tất cả tầng"));
+        foreach (var f in _roomService.GetAllFloors().OrderBy(x => x.Name))
+            cmbFilterFloor.Items.Add(new FloorListItem(f.Id, f.Name));
+        cmbFilterFloor.SelectedIndex = 0;
+
+        cmbFilterRoomType.Items.Clear();
+        cmbFilterRoomType.Items.Add(new RoomTypeFilterPick(null, "Tất cả loại"));
+        foreach (var t in _roomTypeService.GetAll().OrderBy(x => x.Id))
+            cmbFilterRoomType.Items.Add(new RoomTypeFilterPick(t.Id, t.Name));
+        cmbFilterRoomType.SelectedIndex = 0;
+    }
+
+    private sealed class RoomTypeFilterPick(int? id, string text)
+    {
+        public int? Id { get; } = id;
+        public string Text { get; } = text;
+        public override string ToString() => Text;
+    }
+
+    private int? GetSelectedFloorFilterId() =>
+        (cmbFilterFloor.SelectedItem as FloorListItem)?.Id;
+
+    private int? GetSelectedRoomTypeFilterId() =>
+        (cmbFilterRoomType.SelectedItem as RoomTypeFilterPick)?.Id;
+
+    private void ReloadGrid()
+    {
+        var keyword = string.IsNullOrWhiteSpace(txtSearch.Text) ? null : txtSearch.Text;
+        var list = _roomService.GetFiltered(keyword, GetSelectedFloorFilterId(), GetSelectedRoomTypeFilterId());
+
+        dgvRooms.Rows.Clear();
+        foreach (var r in list)
+        {
+            var rowIdx = dgvRooms.Rows.Add();
+            var row = dgvRooms.Rows[rowIdx];
+            row.Cells["colRoomNumber"].Value = r.RoomNumber;
+            row.Cells["colRoomTypeName"].Value = r.RoomTypeName;
+            row.Cells["colFloorName"].Value = r.FloorName;
+            row.Cells["colStatusDisplay"].Value = r.StatusDisplay;
+            row.Cells["colOperational"].Value = RoomStatusMap.OperationalUiLabel(r.StatusDb);
+            row.Tag = r;
         }
 
-        private void txtThanhTimKiem2_TextChanged(object sender, EventArgs e)
+        SyncOperationalComboFromGrid();
+    }
+
+    private RoomView? GetSelectedRoom()
+        => dgvRooms.CurrentRow?.Tag as RoomView;
+
+    private void BtnAddRoom_Click(object? sender, EventArgs e)
+    {
+        try
         {
-            string search = txtThanhTimKiem2.Text.Trim();
-            if (search == "")
-            {
-                loadPhong();
+            var dlg = Program.ServiceProvider.GetRequiredService<AddRoomDialogForm>();
+            if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
                 return;
-            }
-            else
-            {
-                dgvDSLoaiPhong.DataSource = _loaiPhongService.Search(search);
-            }
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Thêm phòng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void BtnEditRoom_Click(object? sender, EventArgs e)
+    {
+        var sel = GetSelectedRoom();
+        if (sel == null)
+        {
+            MessageBox.Show("Chọn một phòng trong danh sách.", "Sửa phòng", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+            return;
         }
 
-        private void cboLoaiPhong_SelectedIndexChanged(object sender, EventArgs e)
+        try
         {
-            if (cboLoaiPhong.SelectedValue == null) return;
-
-            RoomTypeView lpv = (RoomTypeView)cboLoaiPhong.SelectedItem;
-
-            int roomTypeId = lpv.MaLoaiPhong;
-            dgvDSLoaiPhong.DataSource = _loaiPhongService.GetByRoomType(roomTypeId);
-            dgvDSLoaiPhong.ClearSelection();
-        }
-
-        private void cboSapXep_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var list = _loaiPhongService.GetAllWithRoomCount();
-            if (cboSapXep.Text == "Giá tăng dần")
-            {
-                list = list.OrderBy(x => x.Gia).ToList();
-            }
-            else if (cboSapXep.Text == "Giá giảm dần")
-            {
-                list = list.OrderByDescending(x => x.Gia).ToList();
-            }
-            dgvDSLoaiPhong.DataSource = list;
-            dgvDSLoaiPhong.ClearSelection();
-        }
-
-        private void btnLocTheoGia_Click(object sender, EventArgs e)
-        {
-            decimal giaMin = numGiaMin.Value;
-            decimal giaMax = numGiaMax.Value;
-            if (giaMin < 0 || giaMax < 0)
-            {
-                MessageBox.Show("Giá không được âm!");
+            using var dlg = new UpdateRoomDialogForm(_roomService, _roomTypeService, sel.RoomId);
+            if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
                 return;
-            }
-            if (giaMin > giaMax)
-            {
-                MessageBox.Show("Giá tối thiểu không được lớn hơn giá tối đa!");
-                return;
-            }
-            else if (giaMax < giaMin)
-            {
-                MessageBox.Show("Giá tối đa không được nhỏ hơn giá tối thiểu!");
-                return;
-            }
-            var list = _loaiPhongService.GetByPriceRange(giaMin, giaMax);
-            var result = list.Where(x => x.Gia >= giaMin && x.Gia <= giaMax).ToList();
-            dgvDSLoaiPhong.DataSource = result;
-            dgvDSLoaiPhong.ClearSelection();
-            dgvDSLoaiPhong.CurrentCell = null;
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Sửa phòng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void BtnDeleteRoom_Click(object? sender, EventArgs e)
+    {
+        var sel = GetSelectedRoom();
+        if (sel == null)
+        {
+            MessageBox.Show("Chọn phòng cần xóa.", "Xóa phòng", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
         }
 
-        private void btnLamMoi2_Click(object sender, EventArgs e)
-        {
-            txtThanhTimKiem2.Clear();
-            cboLoaiPhong.SelectedIndex = 0;
-            cboSapXep.SelectedIndex = 0;
-            numGiaMax.Value = 0;
-            numGiaMin.Value = 0;
-            loadPhong();
-            dgvDSLoaiPhong.ClearSelection();
-            dgvDSLoaiPhong.CurrentCell = null;
-        }
+        if (MessageBox.Show(
+                $"Xóa (ẩn) phòng «{sel.RoomNumber}» khỏi hệ thống?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+            return;
 
-        private void btnThem2_Click(object sender, EventArgs e)
+        try
         {
-            var formthemloai = _serviceProvider.GetRequiredService<AddRoomTypeDiaLogForm>();
-            if (formthemloai.ShowDialog() == DialogResult.OK)
-            {
-                loadPhong();
-                var loaiphong = formthemloai.Tag as RoomType;
-                if (loaiphong != null)
-                {
-                    var frmThemPhong = _serviceProvider.GetRequiredService<AddRoomDialogForm>();
-                    frmThemPhong.MaLoaiPhong = loaiphong.MaLoaiPhong;
-                    frmThemPhong.IsFromLoaiPhong = true;
-                    frmThemPhong.ShowDialog();
-                }
-            }
-            loadPhong();
+            _roomService.Delete(sel.RoomId);
+            ReloadGrid();
         }
-
-        private void btnXoa2_Click(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            if (dgvDSLoaiPhong.CurrentRow == null)
-            {
-                MessageBox.Show("Chưa chọn loại phòng để xóa");
+            MessageBox.Show(ex.Message, "Xóa phòng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void BtnBulkCreate_Click(object? sender, EventArgs e)
+    {
+        try
+        {
+            var dlg = Program.ServiceProvider.GetRequiredService<BulkCreateRoomsDialog>();
+            if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
                 return;
-            }
-            int maLoaiPhong = Convert.ToInt32(dgvDSLoaiPhong.CurrentRow.Cells["MaLoaiPhong"].Value);
-            var confirm = MessageBox.Show(
-                    "Bạn có chắc chắn muốn xóa loại phòng này không?",
-                    "Xác nhận",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-                );
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Tạo hàng loạt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
 
-            if (confirm == DialogResult.No) return;
-            try
-            {
-                _loaiPhongService.Delete(maLoaiPhong);
-                MessageBox.Show("Xóa loại phòng thành công");
-                loadPhong();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+    private void ReloadRoomTypesGrid()
+    {
+        var keyword = string.IsNullOrWhiteSpace(txtRoomTypeSearch.Text)
+            ? null
+            : txtRoomTypeSearch.Text.Trim();
+
+        var list = string.IsNullOrEmpty(keyword)
+            ? _roomTypeService.GetAllWithRoomCount()
+            : _roomTypeService.Search(keyword);
+
+        dgvRoomTypes.DataSource = null;
+        dgvRoomTypes.DataSource = list;
+    }
+
+    private RoomTypeView? GetSelectedRoomTypeView()
+    {
+        if (dgvRoomTypes.CurrentRow?.DataBoundItem is RoomTypeView v)
+            return v;
+        return null;
+    }
+
+    private void TxtRoomTypeSearch_TextChanged(object? sender, EventArgs e) => ReloadRoomTypesGrid();
+
+    private void BtnRoomTypeRefresh_Click(object? sender, EventArgs e)
+    {
+        txtRoomTypeSearch.Clear();
+        ReloadRoomTypesGrid();
+    }
+
+    private void BtnRoomTypeAdd_Click(object? sender, EventArgs e)
+    {
+        try
+        {
+            var dlg = Program.ServiceProvider.GetRequiredService<AddRoomTypeDiaLogForm>();
+            if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
+                return;
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadRoomTypesGrid();
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Loại phòng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void BtnRoomTypeEdit_Click(object? sender, EventArgs e)
+    {
+        var sel = GetSelectedRoomTypeView();
+        if (sel == null)
+        {
+            MessageBox.Show("Chọn một dòng loại phòng.", "Loại phòng", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
         }
 
-        private void btnSua2_Click(object sender, EventArgs e)
+        try
         {
-            if (dgvDSLoaiPhong.CurrentRow == null)
-            {
-                MessageBox.Show("Chưa chọn phòng để chỉnh sửa");
+            using var dlg = new UpdateRoomTypeDialogForm(_roomTypeService, sel.RoomTypeId);
+            if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
                 return;
-            }
-            int maLoaiPhong = Convert.ToInt32(dgvDSLoaiPhong.CurrentRow.Cells["MaLoaiPhong"].Value);
-            using (var sua = ActivatorUtilities.CreateInstance<UpdateRoomTypeDialogForm>(_serviceProvider, maLoaiPhong))
-            {
-                if (sua.ShowDialog() == DialogResult.OK)
-                {
-                    loadPhong();
-                }
-            }
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadRoomTypesGrid();
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Loại phòng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void ReloadFloorsGrid()
+    {
+        var keyword = string.IsNullOrWhiteSpace(txtFloorSearch.Text) ? null : txtFloorSearch.Text.Trim();
+        var list = string.IsNullOrEmpty(keyword)
+            ? _floorService.GetAllGridRows()
+            : _floorService.SearchGrid(keyword);
+
+        dgvFloors.DataSource = null;
+        dgvFloors.DataSource = list;
+    }
+
+    private FloorView? GetSelectedFloorView()
+    {
+        if (dgvFloors.CurrentRow?.DataBoundItem is FloorView v)
+            return v;
+        return null;
+    }
+
+    private void TxtFloorSearch_TextChanged(object? sender, EventArgs e) => ReloadFloorsGrid();
+
+    private void BtnFloorRefresh_Click(object? sender, EventArgs e)
+    {
+        txtFloorSearch.Clear();
+        ReloadFloorsGrid();
+    }
+
+    private void BtnFloorAdd_Click(object? sender, EventArgs e)
+    {
+        try
+        {
+            using var dlg = new FloorEditDialogForm(_floorService, null);
+            if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
+                return;
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadFloorsGrid();
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Tầng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void BtnFloorEdit_Click(object? sender, EventArgs e)
+    {
+        var sel = GetSelectedFloorView();
+        if (sel == null)
+        {
+            MessageBox.Show("Chọn một tầng trong danh sách.", "Tầng", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        try
+        {
+            using var dlg = new FloorEditDialogForm(_floorService, sel.FloorId);
+            if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
+                return;
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadFloorsGrid();
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Tầng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void BtnFloorDelete_Click(object? sender, EventArgs e)
+    {
+        var sel = GetSelectedFloorView();
+        if (sel == null)
+        {
+            MessageBox.Show("Chọn tầng cần xóa.", "Tầng", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        if (sel.RoomCount > 0)
+        {
+            MessageBox.Show(
+                $"Tầng «{sel.FloorName}» đang có {sel.RoomCount} phòng. Chỉ xóa được khi không còn phòng.",
+                "Tầng",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (MessageBox.Show(
+                $"Xóa tầng «{sel.FloorName}»?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+            return;
+
+        try
+        {
+            _floorService.Delete(sel.FloorId);
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadFloorsGrid();
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Tầng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void BtnRoomTypeDelete_Click(object? sender, EventArgs e)
+    {
+        var sel = GetSelectedRoomTypeView();
+        if (sel == null)
+        {
+            MessageBox.Show("Chọn loại phòng cần xóa.", "Loại phòng", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        if (MessageBox.Show(
+                $"Xóa loại phòng «{sel.TypeName}»? Chỉ được xóa khi không còn phòng nào thuộc loại này.",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+            return;
+
+        try
+        {
+            _roomTypeService.Delete(sel.RoomTypeId);
+            _suspendFilterReload = true;
+            LoadFilterCombos();
+            _suspendFilterReload = false;
+            ReloadRoomTypesGrid();
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Loại phòng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

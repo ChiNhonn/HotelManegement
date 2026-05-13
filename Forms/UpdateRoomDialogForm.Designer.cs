@@ -17,96 +17,97 @@
 
         private void InitializeComponent()
         {
-            grpThongTin = new GroupBox();
-            btnSua = new Button();
-            btnHuy = new Button();
-            lblSoPhong = new Label();
-            lblLoaiPhong = new Label();
-            cboTrangThai = new ComboBox();
+            grpDetails = new GroupBox();
+            btnSave = new Button();
+            btnCancel = new Button();
+            lblRoomNumber = new Label();
+            lblRoomType = new Label();
+            cboStatus = new ComboBox();
             cboFloor = new ComboBox();
-            lblTang = new Label();
-            lblTrangThai = new Label();
-            cboLoaiPhong = new ComboBox();
-            txtSoPhong = new TextBox();
-            grpThongTin.SuspendLayout();
+            lblFloor = new Label();
+            lblStatus = new Label();
+            cboRoomType = new ComboBox();
+            txtRoomNumber = new TextBox();
+            grpDetails.SuspendLayout();
             SuspendLayout();
             //
-            // grpThongTin
+            // grpDetails
             //
-            grpThongTin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            grpThongTin.Controls.Add(btnSua);
-            grpThongTin.Controls.Add(btnHuy);
-            grpThongTin.Controls.Add(lblSoPhong);
-            grpThongTin.Controls.Add(lblLoaiPhong);
-            grpThongTin.Controls.Add(cboTrangThai);
-            grpThongTin.Controls.Add(cboFloor);
-            grpThongTin.Controls.Add(lblTang);
-            grpThongTin.Controls.Add(lblTrangThai);
-            grpThongTin.Controls.Add(cboLoaiPhong);
-            grpThongTin.Controls.Add(txtSoPhong);
-            grpThongTin.Dock = DockStyle.Fill;
-            grpThongTin.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            grpThongTin.Location = new Point(0, 0);
-            grpThongTin.Name = "grpThongTin";
-            grpThongTin.Size = new Size(539, 460);
-            grpThongTin.TabIndex = 25;
-            grpThongTin.TabStop = false;
-            grpThongTin.Text = "Thông tin cần sửa";
+            grpDetails.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            grpDetails.Controls.Add(btnSave);
+            grpDetails.Controls.Add(btnCancel);
+            grpDetails.Controls.Add(lblRoomNumber);
+            grpDetails.Controls.Add(lblRoomType);
+            grpDetails.Controls.Add(cboStatus);
+            grpDetails.Controls.Add(cboFloor);
+            grpDetails.Controls.Add(lblFloor);
+            grpDetails.Controls.Add(lblStatus);
+            grpDetails.Controls.Add(cboRoomType);
+            grpDetails.Controls.Add(txtRoomNumber);
+            grpDetails.Dock = DockStyle.Fill;
+            grpDetails.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            grpDetails.Location = new Point(0, 0);
+            grpDetails.Name = "grpDetails";
+            grpDetails.Size = new Size(539, 460);
+            grpDetails.TabIndex = 25;
+            grpDetails.TabStop = false;
+            grpDetails.Text = "Thông tin phòng";
             //
-            // btnSua
+            // btnSave
             //
-            btnSua.Location = new Point(341, 360);
-            btnSua.Name = "btnSua";
-            btnSua.Size = new Size(119, 60);
-            btnSua.TabIndex = 15;
-            btnSua.Text = "Sửa ";
-            btnSua.UseVisualStyleBackColor = true;
-            btnSua.Click += btnSua_Click;
+            btnSave.Location = new Point(341, 360);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(119, 60);
+            btnSave.TabIndex = 15;
+            btnSave.Text = "Lưu";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += BtnSave_Click;
             //
-            // btnHuy
+            // btnCancel
             //
-            btnHuy.Location = new Point(74, 360);
-            btnHuy.Name = "btnHuy";
-            btnHuy.Size = new Size(119, 60);
-            btnHuy.TabIndex = 14;
-            btnHuy.Text = "Hủy";
-            btnHuy.UseVisualStyleBackColor = true;
-            btnHuy.Click += btnHuy_Click;
+            btnCancel.Location = new Point(74, 360);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(119, 60);
+            btnCancel.TabIndex = 14;
+            btnCancel.Text = "Hủy";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += BtnCancel_Click;
             //
-            // lblSoPhong
+            // lblRoomNumber
             //
-            lblSoPhong.AutoSize = true;
-            lblSoPhong.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblSoPhong.Location = new Point(46, 75);
-            lblSoPhong.Name = "lblSoPhong";
-            lblSoPhong.Size = new Size(123, 31);
-            lblSoPhong.TabIndex = 1;
-            lblSoPhong.Text = "Số Phòng:";
+            lblRoomNumber.AutoSize = true;
+            lblRoomNumber.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblRoomNumber.Location = new Point(46, 75);
+            lblRoomNumber.Name = "lblRoomNumber";
+            lblRoomNumber.Size = new Size(123, 31);
+            lblRoomNumber.TabIndex = 1;
+            lblRoomNumber.Text = "Số phòng:";
             //
-            // lblLoaiPhong
+            // lblRoomType
             //
-            lblLoaiPhong.AutoSize = true;
-            lblLoaiPhong.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblLoaiPhong.Location = new Point(46, 138);
-            lblLoaiPhong.Name = "lblLoaiPhong";
-            lblLoaiPhong.Size = new Size(147, 31);
-            lblLoaiPhong.TabIndex = 8;
-            lblLoaiPhong.Text = "Loại Phòng: ";
-            lblLoaiPhong.TextAlign = ContentAlignment.MiddleCenter;
+            lblRoomType.AutoSize = true;
+            lblRoomType.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            lblRoomType.Location = new Point(46, 138);
+            lblRoomType.Name = "lblRoomType";
+            lblRoomType.Size = new Size(147, 31);
+            lblRoomType.TabIndex = 8;
+            lblRoomType.Text = "Loại phòng:";
+            lblRoomType.TextAlign = ContentAlignment.MiddleCenter;
             //
-            // cboTrangThai
+            // cboStatus
             //
-            cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboTrangThai.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            cboTrangThai.FormattingEnabled = true;
-            cboTrangThai.Location = new Point(208, 284);
-            cboTrangThai.Name = "cboTrangThai";
-            cboTrangThai.Size = new Size(316, 36);
-            cboTrangThai.TabIndex = 7;
+            cboStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboStatus.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            cboStatus.FormattingEnabled = true;
+            cboStatus.Location = new Point(208, 284);
+            cboStatus.Name = "cboStatus";
+            cboStatus.Size = new Size(316, 36);
+            cboStatus.TabIndex = 7;
             //
             // cboFloor
             //
             cboFloor.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboFloor.Enabled = false;
             cboFloor.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
             cboFloor.FormattingEnabled = true;
             cboFloor.Location = new Point(208, 210);
@@ -114,72 +115,72 @@
             cboFloor.Size = new Size(316, 36);
             cboFloor.TabIndex = 13;
             //
-            // lblTang
+            // lblFloor
             //
-            lblTang.AutoSize = true;
-            lblTang.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lblTang.Location = new Point(46, 210);
-            lblTang.Name = "lblTang";
-            lblTang.Size = new Size(138, 31);
-            lblTang.TabIndex = 12;
-            lblTang.Text = "Tầng (DB):";
+            lblFloor.AutoSize = true;
+            lblFloor.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
+            lblFloor.Location = new Point(46, 210);
+            lblFloor.Name = "lblFloor";
+            lblFloor.Size = new Size(138, 31);
+            lblFloor.TabIndex = 12;
+            lblFloor.Text = "Tầng (tự động):";
             //
-            // lblTrangThai
+            // lblStatus
             //
-            lblTrangThai.AutoSize = true;
-            lblTrangThai.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lblTrangThai.Location = new Point(46, 289);
-            lblTrangThai.Name = "lblTrangThai";
-            lblTrangThai.Size = new Size(138, 31);
-            lblTrangThai.TabIndex = 3;
-            lblTrangThai.Text = "Trạng Thái: ";
+            lblStatus.AutoSize = true;
+            lblStatus.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
+            lblStatus.Location = new Point(46, 289);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(138, 31);
+            lblStatus.TabIndex = 3;
+            lblStatus.Text = "Trạng thái:";
             //
-            // cboLoaiPhong
+            // cboRoomType
             //
-            cboLoaiPhong.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboLoaiPhong.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            cboLoaiPhong.FormattingEnabled = true;
-            cboLoaiPhong.Location = new Point(208, 137);
-            cboLoaiPhong.Name = "cboLoaiPhong";
-            cboLoaiPhong.Size = new Size(316, 36);
-            cboLoaiPhong.TabIndex = 9;
+            cboRoomType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboRoomType.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            cboRoomType.FormattingEnabled = true;
+            cboRoomType.Location = new Point(208, 137);
+            cboRoomType.Name = "cboRoomType";
+            cboRoomType.Size = new Size(316, 36);
+            cboRoomType.TabIndex = 9;
             //
-            // txtSoPhong
+            // txtRoomNumber
             //
-            txtSoPhong.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            txtSoPhong.Location = new Point(208, 72);
-            txtSoPhong.Name = "txtSoPhong";
-            txtSoPhong.PlaceholderText = "Nhập số phòng....";
-            txtSoPhong.Size = new Size(316, 34);
-            txtSoPhong.TabIndex = 4;
+            txtRoomNumber.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 163);
+            txtRoomNumber.Location = new Point(208, 72);
+            txtRoomNumber.Name = "txtRoomNumber";
+            txtRoomNumber.PlaceholderText = "VD: 101 → tầng 1 (tự động)";
+            txtRoomNumber.Size = new Size(316, 34);
+            txtRoomNumber.TabIndex = 4;
             //
             // UpdateRoomDialogForm
             //
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(539, 460);
-            Controls.Add(grpThongTin);
+            Controls.Add(grpDetails);
             Name = "UpdateRoomDialogForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Chỉnh sửa thông tin Phòng";
-            Load += SuaPhongDialogForm_Load;
-            grpThongTin.ResumeLayout(false);
-            grpThongTin.PerformLayout();
+            Text = "Sửa phòng";
+            Load += UpdateRoomDialogForm_Load;
+            grpDetails.ResumeLayout(false);
+            grpDetails.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private GroupBox grpThongTin;
-        private Button btnSua;
-        private Button btnHuy;
-        private Label lblSoPhong;
-        private Label lblLoaiPhong;
-        private ComboBox cboTrangThai;
+        private GroupBox grpDetails;
+        private Button btnSave;
+        private Button btnCancel;
+        private Label lblRoomNumber;
+        private Label lblRoomType;
+        private ComboBox cboStatus;
         private ComboBox cboFloor;
-        private Label lblTang;
-        private Label lblTrangThai;
-        private ComboBox cboLoaiPhong;
-        private TextBox txtSoPhong;
+        private Label lblFloor;
+        private Label lblStatus;
+        private ComboBox cboRoomType;
+        private TextBox txtRoomNumber;
     }
 }

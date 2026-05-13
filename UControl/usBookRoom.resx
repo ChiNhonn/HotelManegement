@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="lblMapLegend.Text" xml:space="preserve">
+    <value>Trống (xanh): «Đặt phòng» mở form nhập khách và ngày ở — Giá dự kiến = đơn giá × số đêm. Đỏ «Hủy phòng» chỉ khi giữ chỗ nhanh (booked), không áp cho đơn có khách. Kéo chuột trái trên viền trắng hoặc ô lưới trống để di chuyển sơ đồ.</value>
+  </data>
 </root>

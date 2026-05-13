@@ -2,176 +2,267 @@
 {
     partial class AddRoomTypeDiaLogForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            lblLoaiPhong = new Label();
-            lblSucChua = new Label();
-            lblGia = new Label();
-            lblMoTa = new Label();
-            txtThemLoaiPhong = new TextBox();
-            numSucChuaToiDa = new NumericUpDown();
-            numGia = new NumericUpDown();
-            txtMoTa = new TextBox();
-            btnHuy = new Button();
-            btnThem = new Button();
-            ((System.ComponentModel.ISupportInitialize)numSucChuaToiDa).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numGia).BeginInit();
+            pnlRoot = new Panel();
+            lblTypeCode = new Label();
+            txtTypeCode = new TextBox();
+            lblDisplayName = new Label();
+            txtDisplayName = new TextBox();
+            lblBasePrice = new Label();
+            numBasePrice = new NumericUpDown();
+            lblMaxAdults = new Label();
+            numMaxAdults = new NumericUpDown();
+            lblMaxChildren = new Label();
+            numMaxChildren = new NumericUpDown();
+            lblBedType = new Label();
+            cmbBedType = new ComboBox();
+            lblNotes = new Label();
+            txtNotes = new TextBox();
+            btnCancel = new Button();
+            btnAdd = new Button();
+            ((System.ComponentModel.ISupportInitialize)numBasePrice).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numMaxAdults).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numMaxChildren).BeginInit();
+            pnlRoot.SuspendLayout();
             SuspendLayout();
             // 
-            // lblLoaiPhong
+            // pnlRoot
             // 
-            lblLoaiPhong.AutoSize = true;
-            lblLoaiPhong.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lblLoaiPhong.Location = new Point(38, 44);
-            lblLoaiPhong.Name = "lblLoaiPhong";
-            lblLoaiPhong.Size = new Size(179, 31);
-            lblLoaiPhong.TabIndex = 0;
-            lblLoaiPhong.Text = "Ten loại phòng:";
+            pnlRoot.AutoScroll = true;
+            pnlRoot.Controls.Add(lblTypeCode);
+            pnlRoot.Controls.Add(txtTypeCode);
+            pnlRoot.Controls.Add(lblDisplayName);
+            pnlRoot.Controls.Add(txtDisplayName);
+            pnlRoot.Controls.Add(lblBasePrice);
+            pnlRoot.Controls.Add(numBasePrice);
+            pnlRoot.Controls.Add(lblMaxAdults);
+            pnlRoot.Controls.Add(numMaxAdults);
+            pnlRoot.Controls.Add(lblMaxChildren);
+            pnlRoot.Controls.Add(numMaxChildren);
+            pnlRoot.Controls.Add(lblBedType);
+            pnlRoot.Controls.Add(cmbBedType);
+            pnlRoot.Controls.Add(lblNotes);
+            pnlRoot.Controls.Add(txtNotes);
+            pnlRoot.Controls.Add(btnCancel);
+            pnlRoot.Controls.Add(btnAdd);
+            pnlRoot.Dock = DockStyle.Fill;
+            pnlRoot.Name = "pnlRoot";
+            pnlRoot.Padding = new Padding(12);
+            pnlRoot.Size = new Size(598, 428);
             // 
-            // lblSucChua
+            // lblTypeCode
             // 
-            lblSucChua.AutoSize = true;
-            lblSucChua.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lblSucChua.Location = new Point(38, 125);
-            lblSucChua.Name = "lblSucChua";
-            lblSucChua.Size = new Size(186, 31);
-            lblSucChua.TabIndex = 1;
-            lblSucChua.Text = "Sức chứa tối đa:";
+            lblTypeCode.AutoSize = true;
+            lblTypeCode.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTypeCode.Location = new Point(16, 18);
+            lblTypeCode.Name = "lblTypeCode";
+            lblTypeCode.Size = new Size(201, 25);
+            lblTypeCode.TabIndex = 0;
+            lblTypeCode.Text = "Mã loại (STD, DLX, SUI)";
             // 
-            // lblGia
+            // txtTypeCode
             // 
-            lblGia.AutoSize = true;
-            lblGia.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lblGia.Location = new Point(38, 195);
-            lblGia.Name = "lblGia";
-            lblGia.Size = new Size(55, 31);
-            lblGia.TabIndex = 2;
-            lblGia.Text = "Giá:";
+            txtTypeCode.Font = new Font("Segoe UI", 11F);
+            txtTypeCode.Location = new Point(260, 14);
+            txtTypeCode.MaxLength = 20;
+            txtTypeCode.Name = "txtTypeCode";
+            txtTypeCode.PlaceholderText = "VD: STD";
+            txtTypeCode.Size = new Size(300, 32);
+            txtTypeCode.TabIndex = 1;
             // 
-            // lblMoTa
+            // lblDisplayName
             // 
-            lblMoTa.AutoSize = true;
-            lblMoTa.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            lblMoTa.Location = new Point(38, 284);
-            lblMoTa.Name = "lblMoTa";
-            lblMoTa.Size = new Size(83, 31);
-            lblMoTa.TabIndex = 3;
-            lblMoTa.Text = "Mô tả:";
+            lblDisplayName.AutoSize = true;
+            lblDisplayName.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblDisplayName.Location = new Point(16, 62);
+            lblDisplayName.Name = "lblDisplayName";
+            lblDisplayName.Size = new Size(150, 25);
+            lblDisplayName.TabIndex = 2;
+            lblDisplayName.Text = "Tên loại phòng *";
             // 
-            // txtThemLoaiPhong
+            // txtDisplayName
             // 
-            txtThemLoaiPhong.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            txtThemLoaiPhong.Location = new Point(246, 41);
-            txtThemLoaiPhong.Name = "txtThemLoaiPhong";
-            txtThemLoaiPhong.PlaceholderText = "Nhập tên loại phòng...";
-            txtThemLoaiPhong.Size = new Size(245, 34);
-            txtThemLoaiPhong.TabIndex = 4;
+            txtDisplayName.Font = new Font("Segoe UI", 11F);
+            txtDisplayName.Location = new Point(260, 58);
+            txtDisplayName.Name = "txtDisplayName";
+            txtDisplayName.PlaceholderText = "Ví dụ: Phòng Deluxe hướng biển";
+            txtDisplayName.Size = new Size(300, 32);
+            txtDisplayName.TabIndex = 2;
             // 
-            // numSucChuaToiDa
+            // lblBasePrice
             // 
-            numSucChuaToiDa.Location = new Point(241, 132);
-            numSucChuaToiDa.Name = "numSucChuaToiDa";
-            numSucChuaToiDa.Size = new Size(152, 27);
-            numSucChuaToiDa.TabIndex = 5;
+            lblBasePrice.AutoSize = true;
+            lblBasePrice.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblBasePrice.Location = new Point(16, 106);
+            lblBasePrice.Name = "lblBasePrice";
+            lblBasePrice.Size = new Size(201, 25);
+            lblBasePrice.TabIndex = 4;
+            lblBasePrice.Text = "Giá mặc định (VNĐ/đêm)*";
             // 
-            // numGia
+            // numBasePrice
             // 
-            numGia.Location = new Point(241, 202);
-            numGia.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
-            numGia.Name = "numGia";
-            numGia.Size = new Size(152, 27);
-            numGia.TabIndex = 6;
+            numBasePrice.Font = new Font("Segoe UI", 11F);
+            numBasePrice.Location = new Point(260, 102);
+            numBasePrice.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
+            numBasePrice.Name = "numBasePrice";
+            numBasePrice.Size = new Size(300, 32);
+            numBasePrice.TabIndex = 3;
+            numBasePrice.ThousandsSeparator = true;
             // 
-            // txtMoTa
+            // lblMaxAdults
             // 
-            txtMoTa.Location = new Point(241, 291);
-            txtMoTa.Multiline = true;
-            txtMoTa.Name = "txtMoTa";
-            txtMoTa.ScrollBars = ScrollBars.Both;
-            txtMoTa.Size = new Size(245, 81);
-            txtMoTa.TabIndex = 7;
+            lblMaxAdults.AutoSize = true;
+            lblMaxAdults.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblMaxAdults.Location = new Point(16, 150);
+            lblMaxAdults.Name = "lblMaxAdults";
+            lblMaxAdults.Size = new Size(169, 25);
+            lblMaxAdults.TabIndex = 6;
+            lblMaxAdults.Text = "Số người lớn tối đa*";
             // 
-            // btnHuy
+            // numMaxAdults
             // 
-            btnHuy.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            btnHuy.Location = new Point(38, 425);
-            btnHuy.Name = "btnHuy";
-            btnHuy.Size = new Size(148, 57);
-            btnHuy.TabIndex = 8;
-            btnHuy.Text = "Hủy";
-            btnHuy.UseVisualStyleBackColor = true;
-            btnHuy.Click += btnHuy_Click;
+            numMaxAdults.Font = new Font("Segoe UI", 11F);
+            numMaxAdults.Location = new Point(260, 146);
+            numMaxAdults.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
+            numMaxAdults.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numMaxAdults.Name = "numMaxAdults";
+            numMaxAdults.Size = new Size(120, 32);
+            numMaxAdults.TabIndex = 4;
+            numMaxAdults.Value = new decimal(new int[] { 2, 0, 0, 0 });
             // 
-            // btnThem
+            // lblMaxChildren
             // 
-            btnThem.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            btnThem.Location = new Point(319, 425);
-            btnThem.Name = "btnThem";
-            btnThem.Size = new Size(148, 57);
-            btnThem.TabIndex = 9;
-            btnThem.Text = "Thêm";
-            btnThem.UseVisualStyleBackColor = true;
-            btnThem.Click += btnThem_Click;
+            lblMaxChildren.AutoSize = true;
+            lblMaxChildren.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblMaxChildren.Location = new Point(16, 190);
+            lblMaxChildren.Name = "lblMaxChildren";
+            lblMaxChildren.Size = new Size(166, 25);
+            lblMaxChildren.TabIndex = 8;
+            lblMaxChildren.Text = "Số trẻ em tối đa";
             // 
-            // ThemLPhongDiaLogForm
+            // numMaxChildren
+            // 
+            numMaxChildren.Font = new Font("Segoe UI", 11F);
+            numMaxChildren.Location = new Point(260, 186);
+            numMaxChildren.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            numMaxChildren.Name = "numMaxChildren";
+            numMaxChildren.Size = new Size(120, 32);
+            numMaxChildren.TabIndex = 5;
+            // 
+            // lblBedType
+            // 
+            lblBedType.AutoSize = true;
+            lblBedType.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblBedType.Location = new Point(16, 234);
+            lblBedType.Name = "lblBedType";
+            lblBedType.Size = new Size(191, 25);
+            lblBedType.TabIndex = 10;
+            lblBedType.Text = "Loại giường / bố trí";
+            // 
+            // cmbBedType
+            // 
+            cmbBedType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbBedType.Font = new Font("Segoe UI", 11F);
+            cmbBedType.FormattingEnabled = true;
+            cmbBedType.Location = new Point(260, 230);
+            cmbBedType.Name = "cmbBedType";
+            cmbBedType.Size = new Size(300, 33);
+            cmbBedType.TabIndex = 6;
+            // 
+            // lblNotes
+            // 
+            lblNotes.AutoSize = true;
+            lblNotes.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblNotes.Location = new Point(16, 282);
+            lblNotes.Name = "lblNotes";
+            lblNotes.Size = new Size(120, 25);
+            lblNotes.TabIndex = 12;
+            lblNotes.Text = "Mô tả / ghi chú";
+            // 
+            // txtNotes
+            // 
+            txtNotes.Font = new Font("Segoe UI", 10.5F);
+            txtNotes.Location = new Point(260, 278);
+            txtNotes.Multiline = true;
+            txtNotes.Name = "txtNotes";
+            txtNotes.PlaceholderText = "Tiện nghi, view, ghi chú hiển thị nội bộ…";
+            txtNotes.ScrollBars = ScrollBars.Vertical;
+            txtNotes.Size = new Size(300, 84);
+            txtNotes.TabIndex = 7;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnCancel.Location = new Point(16, 376);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(148, 44);
+            btnCancel.TabIndex = 8;
+            btnCancel.Text = "Hủy";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // btnAdd
+            // 
+            btnAdd.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnAdd.Location = new Point(412, 376);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(148, 44);
+            btnAdd.TabIndex = 9;
+            btnAdd.Text = "Thêm loại phòng";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // AddRoomTypeDiaLogForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(506, 517);
-            Controls.Add(btnThem);
-            Controls.Add(btnHuy);
-            Controls.Add(txtMoTa);
-            Controls.Add(numGia);
-            Controls.Add(numSucChuaToiDa);
-            Controls.Add(txtThemLoaiPhong);
-            Controls.Add(lblMoTa);
-            Controls.Add(lblGia);
-            Controls.Add(lblSucChua);
-            Controls.Add(lblLoaiPhong);
-            Name = "ThemLPhongDiaLogForm";
-            StartPosition = FormStartPosition.CenterScreen;
+            ClientSize = new Size(598, 450);
+            Controls.Add(pnlRoot);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "AddRoomTypeDiaLogForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Thêm loại phòng";
-            ((System.ComponentModel.ISupportInitialize)numSucChuaToiDa).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numGia).EndInit();
+            Load += AddRoomTypeDiaLogForm_Load;
+            ((System.ComponentModel.ISupportInitialize)numBasePrice).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numMaxAdults).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numMaxChildren).EndInit();
+            pnlRoot.ResumeLayout(false);
+            pnlRoot.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Label lblLoaiPhong;
-        private Label lblSucChua;
-        private Label lblGia;
-        private Label lblMoTa;
-        private TextBox txtThemLoaiPhong;
-        private NumericUpDown numSucChuaToiDa;
-        private NumericUpDown numGia;
-        private TextBox txtMoTa;
-        private Button btnHuy;
-        private Button btnThem;
+        private Panel pnlRoot;
+        private Label lblTypeCode;
+        private TextBox txtTypeCode;
+        private Label lblDisplayName;
+        private TextBox txtDisplayName;
+        private Label lblBasePrice;
+        private NumericUpDown numBasePrice;
+        private Label lblMaxAdults;
+        private NumericUpDown numMaxAdults;
+        private Label lblMaxChildren;
+        private NumericUpDown numMaxChildren;
+        private Label lblBedType;
+        private ComboBox cmbBedType;
+        private Label lblNotes;
+        private TextBox txtNotes;
+        private Button btnCancel;
+        private Button btnAdd;
     }
 }

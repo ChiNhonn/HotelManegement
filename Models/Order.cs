@@ -13,7 +13,8 @@ public partial class Order
     public DateTime DateCheckIn { get; set; }
     public DateTime? DateCheckOut { get; set; } = null;
     
-    public int? DepositAmount { get; set; } = null;
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? DepositAmount { get; set; }
 
     [Required, MaxLength(100)]
     public string Status { get; set; } = "Pending";

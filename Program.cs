@@ -30,18 +30,31 @@ internal static class Program
             options.UseSqlServer(
                 @"Server=.\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
 
+        services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
+        services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
+
+        services.AddScoped<IDashboardRepository, DashboardRepository>();
+
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+        services.AddScoped<IFloorRepository, FloorRepository>();
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IRoomTypeService, RoomTypeService>();
+        services.AddScoped<IFloorService, FloorService>();
+        services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<IBookingService, BookingService>();
+
+        services.AddTransient<usBookRoom>();
 
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
         services.AddTransient<RegisterForm>();
         services.AddTransient<usRoom>();
+        services.AddTransient<usMainForm>();
+        services.AddTransient<BulkCreateRoomsDialog>();
         services.AddTransient<AddRoomDialogForm>();
         services.AddTransient<AddRoomTypeDiaLogForm>();
 
@@ -62,6 +75,7 @@ internal static class Program
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
                 db.Database.Migrate();
+                DemoHotelRoomsSeed.EnsureSeed(db);
             }
         }
         catch (Exception ex)

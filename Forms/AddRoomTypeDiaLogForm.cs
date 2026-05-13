@@ -1,69 +1,88 @@
 ﻿using HotelManagement.Models;
 using HotelManagement.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System.Windows.Forms;
 
 namespace HotelManagement.Forms
 {
     public partial class AddRoomTypeDiaLogForm : Form
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly IRoomTypeService _roomTypeService;
 
-        public AddRoomTypeDiaLogForm(IServiceProvider serviceProvider, IRoomTypeService roomTypeService)
+        public AddRoomTypeDiaLogForm(IRoomTypeService roomTypeService)
         {
-            InitializeComponent();
-            _serviceProvider = serviceProvider;
             _roomTypeService = roomTypeService;
+            InitializeComponent();
         }
 
-        private void btnHuy_Click(object sender, EventArgs e)
+        private void AddRoomTypeDiaLogForm_Load(object? sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            cmbBedType.Items.Clear();
+            cmbBedType.Items.AddRange(new object[]
+            {
+                "1 giường đôi (King / Queen)",
+                "2 giường đơn (Twin)",
+                "1 giường đôi + sofa bed",
+                "2 giường đôi (2 King — Suite lớn)",
+                "Giường tầng (Bunk) — phòng gia đình",
+                "Phòng studio — giường + bếp nhỏ"
+            });
+            cmbBedType.SelectedIndex = 0;
+
+            numBasePrice.Value = 800_000;
         }
 
-        private void btnThem_Click(object sender, EventArgs e)
+        private static string? BedTypeFromCombo(ComboBox cmb) =>
+            cmb.SelectedItem is not null ? cmb.SelectedItem.ToString()?.Trim() : null;
+
+        private void btnCancel_Click(object? sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtThemLoaiPhong.Text))
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        private void btnAdd_Click(object? sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtDisplayName.Text))
             {
-                MessageBox.Show("Tên loại phòng không được để trống", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtThemLoaiPhong.Focus();
+                MessageBox.Show("Nhập tên loại phòng.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDisplayName.Focus();
                 return;
             }
-            if (txtThemLoaiPhong.Text.Any(char.IsDigit))
+
+            var bedType = BedTypeFromCombo(cmbBedType);
+            var rt = new RoomType
             {
-                MessageBox.Show("Tên loại phòng không được chứa số!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtThemLoaiPhong.Focus();
-                return;
-            }
-            var them = new RoomType
-            {
-                TenLoaiPhong = txtThemLoaiPhong.Text,
-                SucChuaToiDa = (byte)numSucChuaToiDa.Value,
-                GiaCoBan = numGia.Value,
-                MoTa = txtMoTa.Text
+                Code = txtTypeCode.Text.Trim(),
+                Name = txtDisplayName.Text.Trim(),
+                UnitPrice = numBasePrice.Value,
+                MaxAdults = (int)numMaxAdults.Value,
+                MaxChildren = (int)numMaxChildren.Value,
+                BedTypeDescription = string.IsNullOrWhiteSpace(bedType) ? null : bedType,
             };
+
+            if (!string.IsNullOrWhiteSpace(txtNotes.Text))
+            {
+                rt.DescriptionRoom = new DescriptionRoom
+                {
+                    Content = txtNotes.Text.Trim(),
+                };
+            }
+
             try
             {
-                _roomTypeService.Add(them);
-                MessageBox.Show("Thêm loại phòng thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                var result = MessageBox.Show("Bạn có muốn thêm phòng cho loại phòng này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if(result == DialogResult.Yes)
-                {
-                    this.Tag = them;
-                    this.DialogResult = DialogResult.OK;
-                }
-                else
-                {
-                    this.Tag = null;
-                    this.DialogResult = DialogResult.OK;
-                }
-                this.Close();
+                _roomTypeService.Add(rt);
+                MessageBox.Show("Đã thêm loại phòng.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var addRooms = MessageBox.Show(
+                    "Bạn có muốn thêm phòng cho loại này ngay không?",
+                    Text,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                Tag = addRooms == DialogResult.Yes ? rt : null;
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi thêm loại phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
