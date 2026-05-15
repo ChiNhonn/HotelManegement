@@ -12,4 +12,11 @@ public class FloorView
     public int RoomCount { get; set; }
 
     public int? IdBranch { get; set; }
+
+    /// <summary>Giá trị DB: open, maintenance, closed.</summary>
+    public string StatusDb { get; set; } = "open";
+
+    public string StatusDisplay { get; set; } = "";
+
+    public bool IsLockedForBooking { get; set; }
 }

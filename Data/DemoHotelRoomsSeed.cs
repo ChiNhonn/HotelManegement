@@ -173,6 +173,7 @@ public static class DemoHotelRoomsSeed
                 {
                     Name = nm,
                     IdBranch = branchId,
+                    Status = "open",
                     Rooms = new List<Room>()
                 };
                 db.Floors.Add(f);

@@ -21,6 +21,11 @@
             tabRooms = new TabPage();
             pnlRoomsRoot = new Panel();
             dgvRooms = new DataGridView();
+            colRoomNumber = new DataGridViewTextBoxColumn();
+            colRoomTypeName = new DataGridViewTextBoxColumn();
+            colFloorName = new DataGridViewTextBoxColumn();
+            colStatusDisplay = new DataGridViewTextBoxColumn();
+            colOperational = new DataGridViewTextBoxColumn();
             pnlRoomToolbar = new TableLayoutPanel();
             lblSearch = new Label();
             txtSearch = new TextBox();
@@ -47,7 +52,8 @@
             btnRoomTypeDelete = new Button();
             tabFloors = new TabPage();
             pnlFloorsRoot = new Panel();
-            dgvFloors = new DataGridView();
+            pnlFloorsScroll = new Panel();
+            flowFloorMgmtLayout = new FlowLayoutPanel();
             pnlFloorsToolbar = new Panel();
             lblFloorsTitle = new Label();
             txtFloorSearch = new TextBox();
@@ -55,20 +61,6 @@
             btnFloorAdd = new Button();
             btnFloorEdit = new Button();
             btnFloorDelete = new Button();
-            colRoomNumber = new DataGridViewTextBoxColumn();
-            colRoomTypeName = new DataGridViewTextBoxColumn();
-            colFloorName = new DataGridViewTextBoxColumn();
-            colStatusDisplay = new DataGridViewTextBoxColumn();
-            colOperational = new DataGridViewTextBoxColumn();
-            colRtCode = new DataGridViewTextBoxColumn();
-            colRtTypeName = new DataGridViewTextBoxColumn();
-            colRtUnitPrice = new DataGridViewTextBoxColumn();
-            colRtCapacity = new DataGridViewTextBoxColumn();
-            colRtRoomCount = new DataGridViewTextBoxColumn();
-            colFlListId = new DataGridViewTextBoxColumn();
-            colFlListName = new DataGridViewTextBoxColumn();
-            colFlListBranch = new DataGridViewTextBoxColumn();
-            colFlListRoomCount = new DataGridViewTextBoxColumn();
             tabMain.SuspendLayout();
             tabRooms.SuspendLayout();
             pnlRoomsRoot.SuspendLayout();
@@ -80,7 +72,7 @@
             pnlTypesToolbar.SuspendLayout();
             tabFloors.SuspendLayout();
             pnlFloorsRoot.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvFloors).BeginInit();
+            pnlFloorsScroll.SuspendLayout();
             pnlFloorsToolbar.SuspendLayout();
             SuspendLayout();
             // 
@@ -92,8 +84,7 @@
             tabMain.Dock = DockStyle.Fill;
             tabMain.Font = new Font("Segoe UI", 10F);
             tabMain.Location = new Point(0, 0);
-            const int pad = 2;
-            tabMain.Margin = new Padding(pad);
+            tabMain.Margin = new Padding(2);
             tabMain.Name = "tabMain";
             tabMain.Padding = new Point(10, 8);
             tabMain.SelectedIndex = 0;
@@ -103,11 +94,11 @@
             // tabRooms
             // 
             tabRooms.Controls.Add(pnlRoomsRoot);
-            tabRooms.Location = new Point(4, 35);
+            tabRooms.Location = new Point(4, 42);
             tabRooms.Margin = new Padding(3, 4, 3, 4);
             tabRooms.Name = "tabRooms";
             tabRooms.Padding = new Padding(10, 12, 10, 10);
-            tabRooms.Size = new Size(1092, 513);
+            tabRooms.Size = new Size(1092, 506);
             tabRooms.TabIndex = 0;
             tabRooms.Text = "Quản lý phòng";
             tabRooms.UseVisualStyleBackColor = true;
@@ -121,8 +112,73 @@
             pnlRoomsRoot.Location = new Point(10, 12);
             pnlRoomsRoot.Name = "pnlRoomsRoot";
             pnlRoomsRoot.Padding = new Padding(0, 0, 0, 6);
-            pnlRoomsRoot.Size = new Size(1072, 491);
+            pnlRoomsRoot.Size = new Size(1072, 484);
             pnlRoomsRoot.TabIndex = 0;
+            // 
+            // dgvRooms
+            // 
+            dgvRooms.AllowUserToAddRows = false;
+            dgvRooms.AllowUserToDeleteRows = false;
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRooms.BackgroundColor = Color.White;
+            dgvRooms.BorderStyle = BorderStyle.None;
+            dgvRooms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRooms.Columns.AddRange(new DataGridViewColumn[] { colRoomNumber, colRoomTypeName, colFloorName, colStatusDisplay, colOperational });
+            dgvRooms.Dock = DockStyle.Fill;
+            dgvRooms.Location = new Point(0, 112);
+            dgvRooms.Name = "dgvRooms";
+            dgvRooms.ReadOnly = true;
+            dgvRooms.RowHeadersVisible = false;
+            dgvRooms.RowHeadersWidth = 51;
+            dgvRooms.RowTemplate.Height = 40;
+            dgvRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRooms.Size = new Size(1072, 366);
+            dgvRooms.TabIndex = 1;
+            dgvRooms.SelectionChanged += DgvRooms_SelectionChanged;
+            // 
+            // colRoomNumber
+            // 
+            colRoomNumber.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colRoomNumber.FillWeight = 90F;
+            colRoomNumber.HeaderText = "Số phòng";
+            colRoomNumber.MinimumWidth = 70;
+            colRoomNumber.Name = "colRoomNumber";
+            colRoomNumber.ReadOnly = true;
+            // 
+            // colRoomTypeName
+            // 
+            colRoomTypeName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colRoomTypeName.FillWeight = 120F;
+            colRoomTypeName.HeaderText = "Loại phòng";
+            colRoomTypeName.MinimumWidth = 6;
+            colRoomTypeName.Name = "colRoomTypeName";
+            colRoomTypeName.ReadOnly = true;
+            // 
+            // colFloorName
+            // 
+            colFloorName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colFloorName.FillWeight = 80F;
+            colFloorName.HeaderText = "Tầng";
+            colFloorName.MinimumWidth = 6;
+            colFloorName.Name = "colFloorName";
+            colFloorName.ReadOnly = true;
+            // 
+            // colStatusDisplay
+            // 
+            colStatusDisplay.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colStatusDisplay.HeaderText = "Trạng thái phòng / lưu trú";
+            colStatusDisplay.MinimumWidth = 6;
+            colStatusDisplay.Name = "colStatusDisplay";
+            colStatusDisplay.ReadOnly = true;
+            // 
+            // colOperational
+            // 
+            colOperational.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colOperational.FillWeight = 110F;
+            colOperational.HeaderText = "Vận hành / khóa";
+            colOperational.MinimumWidth = 6;
+            colOperational.Name = "colOperational";
+            colOperational.ReadOnly = true;
             // 
             // pnlRoomToolbar
             // 
@@ -141,7 +197,6 @@
             pnlRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 118F));
             pnlRoomToolbar.Controls.Add(lblSearch, 0, 0);
             pnlRoomToolbar.Controls.Add(txtSearch, 1, 0);
-            pnlRoomToolbar.SetColumnSpan(txtSearch, 2);
             pnlRoomToolbar.Controls.Add(btnRefreshList, 3, 0);
             pnlRoomToolbar.Controls.Add(lblFloor, 4, 0);
             pnlRoomToolbar.Controls.Add(cmbFilterFloor, 5, 0);
@@ -151,15 +206,13 @@
             pnlRoomToolbar.Controls.Add(btnEditRoom, 0, 1);
             pnlRoomToolbar.Controls.Add(btnDeleteRoom, 1, 1);
             pnlRoomToolbar.Controls.Add(lblOperational, 2, 1);
-            pnlRoomToolbar.SetColumnSpan(lblOperational, 2);
             pnlRoomToolbar.Controls.Add(cmbOperationalApply, 4, 1);
-            pnlRoomToolbar.SetColumnSpan(cmbOperationalApply, 4);
             pnlRoomToolbar.Controls.Add(btnBulkCreate, 8, 1);
             pnlRoomToolbar.Dock = DockStyle.Top;
             pnlRoomToolbar.Location = new Point(0, 0);
             pnlRoomToolbar.Margin = new Padding(0, 0, 0, 10);
             pnlRoomToolbar.Name = "pnlRoomToolbar";
-            pnlRoomToolbar.Padding = new Padding(12, 12, 12, 12);
+            pnlRoomToolbar.Padding = new Padding(12);
             pnlRoomToolbar.RowCount = 2;
             pnlRoomToolbar.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
             pnlRoomToolbar.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
@@ -170,27 +223,27 @@
             // 
             lblSearch.Anchor = AnchorStyles.Left;
             lblSearch.AutoSize = true;
-            lblSearch.Location = new Point(15, 21);
-            lblSearch.Margin = new Padding(3, 0, 3, 0);
+            lblSearch.Location = new Point(15, 12);
             lblSearch.Name = "lblSearch";
-            lblSearch.Size = new Size(38, 23);
+            lblSearch.Size = new Size(46, 44);
             lblSearch.TabIndex = 0;
             lblSearch.Text = "Tìm kiếm";
             // 
             // txtSearch
             // 
             txtSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            txtSearch.Location = new Point(71, 17);
+            pnlRoomToolbar.SetColumnSpan(txtSearch, 2);
+            txtSearch.Location = new Point(97, 19);
             txtSearch.Margin = new Padding(3, 4, 3, 4);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "Tìm theo số phòng…";
-            txtSearch.Size = new Size(369, 30);
+            txtSearch.Size = new Size(354, 30);
             txtSearch.TabIndex = 1;
             // 
             // btnRefreshList
             // 
             btnRefreshList.Anchor = AnchorStyles.Right;
-            btnRefreshList.Location = new Point(446, 12);
+            btnRefreshList.Location = new Point(461, 16);
             btnRefreshList.Margin = new Padding(3, 4, 3, 4);
             btnRefreshList.Name = "btnRefreshList";
             btnRefreshList.Size = new Size(76, 36);
@@ -203,10 +256,9 @@
             // 
             lblFloor.Anchor = AnchorStyles.Left;
             lblFloor.AutoSize = true;
-            lblFloor.Location = new Point(616, 21);
-            lblFloor.Margin = new Padding(3, 0, 3, 0);
+            lblFloor.Location = new Point(543, 12);
             lblFloor.Name = "lblFloor";
-            lblFloor.Size = new Size(42, 23);
+            lblFloor.Size = new Size(38, 44);
             lblFloor.TabIndex = 4;
             lblFloor.Text = "Tầng";
             // 
@@ -215,10 +267,10 @@
             cmbFilterFloor.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             cmbFilterFloor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFilterFloor.FormattingEnabled = true;
-            cmbFilterFloor.Location = new Point(664, 17);
+            cmbFilterFloor.Location = new Point(593, 20);
             cmbFilterFloor.Margin = new Padding(3, 4, 3, 4);
             cmbFilterFloor.Name = "cmbFilterFloor";
-            cmbFilterFloor.Size = new Size(134, 31);
+            cmbFilterFloor.Size = new Size(122, 31);
             cmbFilterFloor.TabIndex = 5;
             cmbFilterFloor.SelectedIndexChanged += CmbFilterFloor_SelectedIndexChanged;
             // 
@@ -226,10 +278,9 @@
             // 
             lblRoomType.Anchor = AnchorStyles.Left;
             lblRoomType.AutoSize = true;
-            lblRoomType.Location = new Point(804, 21);
-            lblRoomType.Margin = new Padding(3, 0, 3, 0);
+            lblRoomType.Location = new Point(721, 12);
             lblRoomType.Name = "lblRoomType";
-            lblRoomType.Size = new Size(42, 23);
+            lblRoomType.Size = new Size(60, 44);
             lblRoomType.TabIndex = 6;
             lblRoomType.Text = "Loại phòng";
             // 
@@ -238,10 +289,10 @@
             cmbFilterRoomType.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             cmbFilterRoomType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFilterRoomType.FormattingEnabled = true;
-            cmbFilterRoomType.Location = new Point(852, 17);
+            cmbFilterRoomType.Location = new Point(816, 20);
             cmbFilterRoomType.Margin = new Padding(3, 4, 3, 4);
             cmbFilterRoomType.Name = "cmbFilterRoomType";
-            cmbFilterRoomType.Size = new Size(134, 31);
+            cmbFilterRoomType.Size = new Size(122, 31);
             cmbFilterRoomType.TabIndex = 7;
             cmbFilterRoomType.SelectedIndexChanged += CmbFilterRoomType_SelectedIndexChanged;
             // 
@@ -251,10 +302,10 @@
             btnAddRoom.BackColor = Color.FromArgb(21, 128, 61);
             btnAddRoom.FlatStyle = FlatStyle.Flat;
             btnAddRoom.ForeColor = Color.White;
-            btnAddRoom.Location = new Point(936, 12);
+            btnAddRoom.Location = new Point(944, 16);
             btnAddRoom.Margin = new Padding(3, 4, 3, 4);
             btnAddRoom.Name = "btnAddRoom";
-            btnAddRoom.Size = new Size(121, 36);
+            btnAddRoom.Size = new Size(113, 36);
             btnAddRoom.TabIndex = 8;
             btnAddRoom.Text = "Thêm phòng";
             btnAddRoom.UseVisualStyleBackColor = false;
@@ -263,10 +314,10 @@
             // btnEditRoom
             // 
             btnEditRoom.Anchor = AnchorStyles.Left;
-            btnEditRoom.Location = new Point(15, 59);
+            btnEditRoom.Location = new Point(15, 61);
             btnEditRoom.Margin = new Padding(3, 4, 3, 4);
             btnEditRoom.Name = "btnEditRoom";
-            btnEditRoom.Size = new Size(100, 34);
+            btnEditRoom.Size = new Size(76, 34);
             btnEditRoom.TabIndex = 9;
             btnEditRoom.Text = "Sửa";
             btnEditRoom.UseVisualStyleBackColor = true;
@@ -276,7 +327,7 @@
             // 
             btnDeleteRoom.Anchor = AnchorStyles.Left;
             btnDeleteRoom.ForeColor = Color.FromArgb(185, 28, 28);
-            btnDeleteRoom.Location = new Point(121, 59);
+            btnDeleteRoom.Location = new Point(97, 61);
             btnDeleteRoom.Margin = new Padding(3, 4, 3, 4);
             btnDeleteRoom.Name = "btnDeleteRoom";
             btnDeleteRoom.Size = new Size(100, 34);
@@ -289,108 +340,46 @@
             // 
             lblOperational.Anchor = AnchorStyles.Left;
             lblOperational.AutoSize = true;
-            lblOperational.Location = new Point(227, 64);
-            lblOperational.Margin = new Padding(3, 0, 3, 0);
+            pnlRoomToolbar.SetColumnSpan(lblOperational, 2);
+            lblOperational.Location = new Point(295, 66);
             lblOperational.Name = "lblOperational";
-            lblOperational.Size = new Size(121, 23);
+            lblOperational.Size = new Size(138, 23);
             lblOperational.TabIndex = 11;
             lblOperational.Text = "Vận hành / khóa";
             // 
             // cmbOperationalApply
             // 
             cmbOperationalApply.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            pnlRoomToolbar.SetColumnSpan(cmbOperationalApply, 4);
             cmbOperationalApply.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbOperationalApply.FormattingEnabled = true;
-            cmbOperationalApply.Location = new Point(376, 60);
+            cmbOperationalApply.Location = new Point(543, 64);
             cmbOperationalApply.Margin = new Padding(3, 4, 3, 4);
             cmbOperationalApply.Name = "cmbOperationalApply";
-            cmbOperationalApply.Size = new Size(322, 31);
+            cmbOperationalApply.Size = new Size(395, 31);
             cmbOperationalApply.TabIndex = 12;
             cmbOperationalApply.SelectedIndexChanged += CmbOperationalApply_SelectedIndexChanged;
             // 
             // btnBulkCreate
             // 
             btnBulkCreate.Anchor = AnchorStyles.Right;
-            btnBulkCreate.Location = new Point(936, 60);
+            btnBulkCreate.Location = new Point(944, 61);
             btnBulkCreate.Margin = new Padding(3, 4, 3, 4);
             btnBulkCreate.Name = "btnBulkCreate";
-            btnBulkCreate.Size = new Size(121, 34);
+            btnBulkCreate.Size = new Size(113, 34);
             btnBulkCreate.TabIndex = 14;
             btnBulkCreate.Text = "Tạo hàng loạt";
             btnBulkCreate.UseVisualStyleBackColor = true;
             btnBulkCreate.Click += BtnBulkCreate_Click;
             // 
-            // colRoomNumber
-            // 
-            colRoomNumber.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colRoomNumber.DataPropertyName = "RoomNumber";
-            colRoomNumber.FillWeight = 90F;
-            colRoomNumber.HeaderText = "Số phòng";
-            colRoomNumber.MinimumWidth = 70;
-            colRoomNumber.Name = "colRoomNumber";
-            // 
-            // colRoomTypeName
-            // 
-            colRoomTypeName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colRoomTypeName.DataPropertyName = "RoomTypeName";
-            colRoomTypeName.FillWeight = 120F;
-            colRoomTypeName.HeaderText = "Loại phòng";
-            colRoomTypeName.Name = "colRoomTypeName";
-            // 
-            // colFloorName
-            // 
-            colFloorName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colFloorName.DataPropertyName = "FloorName";
-            colFloorName.FillWeight = 80F;
-            colFloorName.HeaderText = "Tầng";
-            colFloorName.Name = "colFloorName";
-            // 
-            // colStatusDisplay
-            // 
-            colStatusDisplay.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colStatusDisplay.DataPropertyName = "StatusDisplay";
-            colStatusDisplay.FillWeight = 100F;
-            colStatusDisplay.HeaderText = "Trạng thái phòng / lưu trú";
-            colStatusDisplay.Name = "colStatusDisplay";
-            // 
-            // colOperational
-            // 
-            colOperational.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colOperational.FillWeight = 110F;
-            colOperational.HeaderText = "Vận hành / khóa";
-            colOperational.Name = "colOperational";
-            colOperational.ReadOnly = true;
-            // 
-            // dgvRooms
-            // 
-            dgvRooms.AllowUserToAddRows = false;
-            dgvRooms.AllowUserToDeleteRows = false;
-            dgvRooms.AutoGenerateColumns = false;
-            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvRooms.BackgroundColor = Color.White;
-            dgvRooms.BorderStyle = BorderStyle.None;
-            dgvRooms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRooms.Columns.AddRange(colRoomNumber, colRoomTypeName, colFloorName, colStatusDisplay, colOperational);
-            dgvRooms.Dock = DockStyle.Fill;
-            dgvRooms.Location = new Point(0, 112);
-            dgvRooms.Margin = new Padding(3, 4, 3, 4);
-            dgvRooms.Name = "dgvRooms";
-            dgvRooms.ReadOnly = true;
-            dgvRooms.RowHeadersVisible = false;
-            dgvRooms.RowTemplate.Height = 40;
-            dgvRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRooms.Size = new Size(1072, 373);
-            dgvRooms.TabIndex = 1;
-            dgvRooms.SelectionChanged += DgvRooms_SelectionChanged;
-            // 
             // tabRoomTypes
             // 
             tabRoomTypes.Controls.Add(pnlRoomTypesRoot);
-            tabRoomTypes.Location = new Point(4, 35);
+            tabRoomTypes.Location = new Point(4, 42);
             tabRoomTypes.Margin = new Padding(3, 4, 3, 4);
             tabRoomTypes.Name = "tabRoomTypes";
-            tabRoomTypes.Padding = new Padding(10, 10, 10, 10);
-            tabRoomTypes.Size = new Size(1092, 513);
+            tabRoomTypes.Padding = new Padding(10);
+            tabRoomTypes.Size = new Size(1092, 506);
             tabRoomTypes.TabIndex = 1;
             tabRoomTypes.Text = "Quản lý loại phòng";
             tabRoomTypes.UseVisualStyleBackColor = true;
@@ -401,10 +390,31 @@
             pnlRoomTypesRoot.Controls.Add(dgvRoomTypes);
             pnlRoomTypesRoot.Controls.Add(pnlTypesToolbar);
             pnlRoomTypesRoot.Dock = DockStyle.Fill;
+            pnlRoomTypesRoot.Location = new Point(10, 10);
             pnlRoomTypesRoot.Name = "pnlRoomTypesRoot";
             pnlRoomTypesRoot.Padding = new Padding(0, 0, 0, 6);
-            pnlRoomTypesRoot.Size = new Size(1072, 493);
+            pnlRoomTypesRoot.Size = new Size(1072, 486);
             pnlRoomTypesRoot.TabIndex = 0;
+            // 
+            // dgvRoomTypes
+            // 
+            dgvRoomTypes.AllowUserToAddRows = false;
+            dgvRoomTypes.AllowUserToDeleteRows = false;
+            dgvRoomTypes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRoomTypes.BackgroundColor = Color.White;
+            dgvRoomTypes.BorderStyle = BorderStyle.None;
+            dgvRoomTypes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRoomTypes.Dock = DockStyle.Fill;
+            dgvRoomTypes.Location = new Point(0, 108);
+            dgvRoomTypes.Margin = new Padding(3, 4, 3, 4);
+            dgvRoomTypes.Name = "dgvRoomTypes";
+            dgvRoomTypes.ReadOnly = true;
+            dgvRoomTypes.RowHeadersVisible = false;
+            dgvRoomTypes.RowHeadersWidth = 51;
+            dgvRoomTypes.RowTemplate.Height = 40;
+            dgvRoomTypes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRoomTypes.Size = new Size(1072, 372);
+            dgvRoomTypes.TabIndex = 1;
             // 
             // pnlTypesToolbar
             // 
@@ -428,7 +438,7 @@
             lblRoomTypesTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblRoomTypesTitle.Location = new Point(16, 14);
             lblRoomTypesTitle.Name = "lblRoomTypesTitle";
-            lblRoomTypesTitle.Size = new Size(310, 23);
+            lblRoomTypesTitle.Size = new Size(432, 23);
             lblRoomTypesTitle.TabIndex = 0;
             lblRoomTypesTitle.Text = "Danh sách loại phòng — mã, giá, sức chứa, số phòng";
             // 
@@ -491,129 +501,52 @@
             btnRoomTypeDelete.UseVisualStyleBackColor = true;
             btnRoomTypeDelete.Click += BtnRoomTypeDelete_Click;
             // 
-            // colRtCode
-            // 
-            colRtCode.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colRtCode.DataPropertyName = "Code";
-            colRtCode.FillWeight = 70F;
-            colRtCode.HeaderText = "Mã loại";
-            colRtCode.MinimumWidth = 60;
-            colRtCode.Name = "colRtCode";
-            // 
-            // colRtTypeName
-            // 
-            colRtTypeName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colRtTypeName.DataPropertyName = "TypeName";
-            colRtTypeName.FillWeight = 140F;
-            colRtTypeName.HeaderText = "Tên loại";
-            colRtTypeName.Name = "colRtTypeName";
-            // 
-            // colRtUnitPrice
-            // 
-            colRtUnitPrice.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colRtUnitPrice.DataPropertyName = "UnitPrice";
-            colRtUnitPrice.DefaultCellStyle.Format = "N0";
-            colRtUnitPrice.FillWeight = 100F;
-            colRtUnitPrice.HeaderText = "Giá gốc (VNĐ)";
-            colRtUnitPrice.Name = "colRtUnitPrice";
-            // 
-            // colRtCapacity
-            // 
-            colRtCapacity.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colRtCapacity.DataPropertyName = "CapacityDisplay";
-            colRtCapacity.FillWeight = 100F;
-            colRtCapacity.HeaderText = "Sức chứa (NL / TE)";
-            colRtCapacity.Name = "colRtCapacity";
-            // 
-            // colRtRoomCount
-            // 
-            colRtRoomCount.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colRtRoomCount.DataPropertyName = "RoomCount";
-            colRtRoomCount.FillWeight = 70F;
-            colRtRoomCount.HeaderText = "Số phòng";
-            colRtRoomCount.Name = "colRtRoomCount";
-            // 
-            // colFlListId
-            // 
-            colFlListId.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            colFlListId.DataPropertyName = "FloorId";
-            colFlListId.HeaderText = "ID";
-            colFlListId.MinimumWidth = 50;
-            colFlListId.Name = "colFlListId";
-            colFlListId.ReadOnly = true;
-            // 
-            // colFlListName
-            // 
-            colFlListName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colFlListName.DataPropertyName = "FloorName";
-            colFlListName.FillWeight = 120F;
-            colFlListName.HeaderText = "Tên tầng";
-            colFlListName.MinimumWidth = 100;
-            colFlListName.Name = "colFlListName";
-            colFlListName.ReadOnly = true;
-            // 
-            // colFlListBranch
-            // 
-            colFlListBranch.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colFlListBranch.DataPropertyName = "BranchDisplayName";
-            colFlListBranch.FillWeight = 160F;
-            colFlListBranch.HeaderText = "Chi nhánh";
-            colFlListBranch.Name = "colFlListBranch";
-            colFlListBranch.ReadOnly = true;
-            // 
-            // colFlListRoomCount
-            // 
-            colFlListRoomCount.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            colFlListRoomCount.DataPropertyName = "RoomCount";
-            colFlListRoomCount.HeaderText = "Số phòng";
-            colFlListRoomCount.MinimumWidth = 80;
-            colFlListRoomCount.Name = "colFlListRoomCount";
-            colFlListRoomCount.ReadOnly = true;
-            // 
-            // dgvRoomTypes
-            // 
-            dgvRoomTypes.AllowUserToAddRows = false;
-            dgvRoomTypes.AllowUserToDeleteRows = false;
-            dgvRoomTypes.AutoGenerateColumns = false;
-            dgvRoomTypes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvRoomTypes.BackgroundColor = Color.White;
-            dgvRoomTypes.BorderStyle = BorderStyle.None;
-            dgvRoomTypes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRoomTypes.Columns.AddRange(colRtCode, colRtTypeName, colRtUnitPrice, colRtCapacity, colRtRoomCount);
-            dgvRoomTypes.Dock = DockStyle.Fill;
-            dgvRoomTypes.Location = new Point(0, 108);
-            dgvRoomTypes.Margin = new Padding(3, 4, 3, 4);
-            dgvRoomTypes.Name = "dgvRoomTypes";
-            dgvRoomTypes.ReadOnly = true;
-            dgvRoomTypes.RowHeadersVisible = false;
-            dgvRoomTypes.RowTemplate.Height = 40;
-            dgvRoomTypes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRoomTypes.Size = new Size(1072, 379);
-            dgvRoomTypes.TabIndex = 1;
-            // 
             // tabFloors
             // 
             tabFloors.Controls.Add(pnlFloorsRoot);
-            tabFloors.Location = new Point(4, 35);
+            tabFloors.Location = new Point(4, 42);
             tabFloors.Margin = new Padding(3, 4, 3, 4);
             tabFloors.Name = "tabFloors";
             tabFloors.Padding = new Padding(10, 12, 10, 10);
-            tabFloors.Size = new Size(1092, 513);
+            tabFloors.Size = new Size(1092, 506);
             tabFloors.TabIndex = 2;
-            tabFloors.Text = "Quản lý tầng";
+            tabFloors.Text = "Quản lý trạng thái tầng";
             tabFloors.UseVisualStyleBackColor = true;
             // 
             // pnlFloorsRoot
             // 
             pnlFloorsRoot.BackColor = Color.FromArgb(241, 245, 249);
-            pnlFloorsRoot.Controls.Add(dgvFloors);
+            pnlFloorsRoot.Controls.Add(pnlFloorsScroll);
             pnlFloorsRoot.Controls.Add(pnlFloorsToolbar);
             pnlFloorsRoot.Dock = DockStyle.Fill;
             pnlFloorsRoot.Location = new Point(10, 12);
             pnlFloorsRoot.Name = "pnlFloorsRoot";
             pnlFloorsRoot.Padding = new Padding(0, 0, 0, 6);
-            pnlFloorsRoot.Size = new Size(1072, 491);
+            pnlFloorsRoot.Size = new Size(1072, 484);
             pnlFloorsRoot.TabIndex = 0;
+            // 
+            // pnlFloorsScroll
+            // 
+            pnlFloorsScroll.AutoScroll = true;
+            pnlFloorsScroll.BackColor = Color.FromArgb(241, 245, 249);
+            pnlFloorsScroll.Controls.Add(flowFloorMgmtLayout);
+            pnlFloorsScroll.Dock = DockStyle.Fill;
+            pnlFloorsScroll.Location = new Point(0, 108);
+            pnlFloorsScroll.Name = "pnlFloorsScroll";
+            pnlFloorsScroll.Padding = new Padding(8, 4, 8, 8);
+            pnlFloorsScroll.Size = new Size(1072, 370);
+            pnlFloorsScroll.TabIndex = 1;
+            // 
+            // flowFloorMgmtLayout
+            // 
+            flowFloorMgmtLayout.AutoSize = true;
+            flowFloorMgmtLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowFloorMgmtLayout.Dock = DockStyle.Top;
+            flowFloorMgmtLayout.Location = new Point(8, 4);
+            flowFloorMgmtLayout.Name = "flowFloorMgmtLayout";
+            flowFloorMgmtLayout.Padding = new Padding(4);
+            flowFloorMgmtLayout.Size = new Size(1056, 8);
+            flowFloorMgmtLayout.TabIndex = 0;
             // 
             // pnlFloorsToolbar
             // 
@@ -637,9 +570,9 @@
             lblFloorsTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblFloorsTitle.Location = new Point(16, 14);
             lblFloorsTitle.Name = "lblFloorsTitle";
-            lblFloorsTitle.Size = new Size(380, 23);
+            lblFloorsTitle.Size = new Size(460, 23);
             lblFloorsTitle.TabIndex = 0;
-            lblFloorsTitle.Text = "Danh sách tầng — chi nhánh, số phòng đang dùng";
+            lblFloorsTitle.Text = "Lưới tầng — đóng/mở bảo trì (khóa đặt phòng cả tầng)";
             // 
             // txtFloorSearch
             // 
@@ -700,27 +633,6 @@
             btnFloorDelete.UseVisualStyleBackColor = true;
             btnFloorDelete.Click += BtnFloorDelete_Click;
             // 
-            // dgvFloors
-            // 
-            dgvFloors.AllowUserToAddRows = false;
-            dgvFloors.AllowUserToDeleteRows = false;
-            dgvFloors.AutoGenerateColumns = false;
-            dgvFloors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvFloors.BackgroundColor = Color.White;
-            dgvFloors.BorderStyle = BorderStyle.None;
-            dgvFloors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvFloors.Columns.AddRange(colFlListId, colFlListName, colFlListBranch, colFlListRoomCount);
-            dgvFloors.Dock = DockStyle.Fill;
-            dgvFloors.Location = new Point(0, 108);
-            dgvFloors.Margin = new Padding(3, 4, 3, 4);
-            dgvFloors.Name = "dgvFloors";
-            dgvFloors.ReadOnly = true;
-            dgvFloors.RowHeadersVisible = false;
-            dgvFloors.RowTemplate.Height = 40;
-            dgvFloors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvFloors.Size = new Size(1072, 377);
-            dgvFloors.TabIndex = 1;
-            // 
             // usRoom
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -744,7 +656,8 @@
             pnlTypesToolbar.PerformLayout();
             tabFloors.ResumeLayout(false);
             pnlFloorsRoot.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvFloors).EndInit();
+            pnlFloorsScroll.ResumeLayout(false);
+            pnlFloorsScroll.PerformLayout();
             pnlFloorsToolbar.ResumeLayout(false);
             pnlFloorsToolbar.PerformLayout();
             ResumeLayout(false);
@@ -799,10 +712,7 @@
         private Button btnFloorAdd;
         private Button btnFloorEdit;
         private Button btnFloorDelete;
-        private DataGridView dgvFloors;
-        private DataGridViewTextBoxColumn colFlListId;
-        private DataGridViewTextBoxColumn colFlListName;
-        private DataGridViewTextBoxColumn colFlListBranch;
-        private DataGridViewTextBoxColumn colFlListRoomCount;
+        private Panel pnlFloorsScroll;
+        private FlowLayoutPanel flowFloorMgmtLayout;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using HotelManagement.Helpers;
@@ -184,10 +185,12 @@ public partial class usBookRoom : UserControl
         }
     }
 
-    /// <summary>Dựng lưới WinForms và RoomBookingTile — số hàng/cột và cell hợp lệ do service tính.</summary>
+    /// <summary>Dựng lưới WinForms từ DB — mỗi hàng một tầng, cột đầu là nhãn tầng.</summary>
     private void RebuildInteractiveTiles(DashboardMiniRoomStatus filtered)
     {
         var layout = _bookingMap.BuildTileGridLayout(filtered);
+        var labels = filtered.FloorRowLabels;
+        var totalCols = layout.ColumnCount + (layout.HasFloorLabelColumn ? 1 : 0);
 
         scrollRoomTiles.SuspendLayout();
         tblRoomTiles.SuspendLayout();
@@ -198,12 +201,35 @@ public partial class usBookRoom : UserControl
             tblRoomTiles.ColumnStyles.Clear();
 
             tblRoomTiles.RowCount = layout.RowCount;
-            tblRoomTiles.ColumnCount = layout.ColumnCount;
-            for (var r = 0; r < layout.RowCount; r++)
-                tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / layout.RowCount));
-            for (var c = 0; c < layout.ColumnCount; c++)
-                tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / layout.ColumnCount));
+            tblRoomTiles.ColumnCount = totalCols;
 
+            for (var r = 0; r < layout.RowCount; r++)
+                tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
+
+            if (layout.HasFloorLabelColumn)
+                tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, layout.FloorLabelColumnWidth));
+            for (var c = 0; c < layout.ColumnCount; c++)
+                tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 86F));
+
+            for (var r = 0; r < layout.RowCount; r++)
+            {
+                if (!layout.HasFloorLabelColumn) break;
+
+                var floorLabel = r < labels.Count ? labels[r] : $"Tầng {r + 1}";
+                var lbl = new Label
+                {
+                    Text = floorLabel,
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(51, 65, 85),
+                    Margin = new Padding(4, 2, 4, 2),
+                    Padding = new Padding(6, 0, 0, 0)
+                };
+                tblRoomTiles.Controls.Add(lbl, 0, r);
+            }
+
+            var colOffset = layout.HasFloorLabelColumn ? 1 : 0;
             foreach (var cell in layout.CellsInGrid)
             {
                 var tile = new RoomBookingTile(_roomService, _bookingService, () => dtpViewDate.Value.Date,
@@ -214,7 +240,7 @@ public partial class usBookRoom : UserControl
                         RefreshBookingMapLocal();
                     });
                 tile.Bind(cell);
-                tblRoomTiles.Controls.Add(tile, cell.GridCol, cell.GridRow);
+                tblRoomTiles.Controls.Add(tile, cell.GridCol + colOffset, cell.GridRow);
             }
 
             tblRoomTiles.MinimumSize = new Size(layout.MinimumWidth, layout.MinimumHeight);

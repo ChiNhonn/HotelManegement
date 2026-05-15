@@ -1,3 +1,4 @@
+using HotelManagement.Helpers;
 using HotelManagement.Models;
 using HotelManagement.Repositories;
 using HotelManagement.ViewModels;
@@ -38,6 +39,8 @@ public class FloorService : IFloorService
     {
         Validate(floor, null);
         floor.Name = floor.Name.Trim();
+        if (string.IsNullOrWhiteSpace(floor.Status))
+            floor.Status = FloorStatusMap.ToDatabase(FloorOperationalMode.Open);
         _repo.Add(floor);
     }
 
@@ -54,4 +57,7 @@ public class FloorService : IFloorService
     public void Delete(int floorId) => _repo.Delete(floorId);
 
     public int CountActiveRoomsOnFloor(int floorId) => _repo.CountActiveRoomsOnFloor(floorId);
+
+    public void SetFloorOperationalStatus(int floorId, FloorOperationalMode mode) =>
+        _repo.SetOperationalStatus(floorId, mode);
 }

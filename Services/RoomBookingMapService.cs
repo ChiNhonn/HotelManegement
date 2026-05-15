@@ -9,6 +9,8 @@ namespace HotelManagement.Services;
 
 public sealed class RoomBookingMapService : IRoomBookingMapService
 {
+    private const int UnassignedFloorKey = int.MinValue;
+
     private readonly IRoomBookingMapRepository _repo;
 
     public RoomBookingMapService(IRoomBookingMapRepository repo)
@@ -20,92 +22,102 @@ public sealed class RoomBookingMapService : IRoomBookingMapService
     {
         var day = asOfDate.Date;
         var guestByRoom = _repo.GetGuestStayMapForDate(day);
-        var raw = _repo.GetActiveRoomsWithTypes();
+        var floors = _repo.GetActiveFloorsOrdered();
+        var allRooms = _repo.GetActiveRoomsWithTypes();
 
-        var withNum = raw
-            .Select(r => new RoomGridSlot
-            {
-                Id = r.Id,
-                Name = r.Name,
-                Status = r.Status ?? "",
-                IdFloor = r.IdFloor,
-                IdRoomType = r.IdRoomType,
-                TypeName = r.TypeName,
-                NightlyPrice = r.NightlyPrice,
-                Num = int.TryParse(r.Name?.Trim(), System.Globalization.NumberStyles.Integer,
-                    System.Globalization.CultureInfo.InvariantCulture, out var n)
-                    ? n
-                    : 0
-            })
-            .Where(x => x.Num > 0)
-            .ToList();
+        var floorIndex = floors.Select((f, i) => (f.Id, i)).ToDictionary(t => t.Id, t => t.i);
+        var rowLabels = floors.Select(f => f.Name).ToList();
+        var floorStatusById = floors.ToDictionary(f => f.Id, f => f.Status);
 
-        var floorBases = withNum
-            .Select(x => x.Num / 100)
-            .Distinct()
-            .OrderBy(f => f)
-            .Take(3)
-            .ToList();
+        var hasUnassigned = allRooms.Any(r => r.IdFloor == null);
+        if (hasUnassigned)
+            rowLabels.Add("Chưa gán tầng");
 
-        var floorRank = floorBases.Select((f, idx) => (f, idx)).ToDictionary(t => t.f, t => t.idx);
+        var unassignedRow = floors.Count;
+
+        var roomsByFloor = allRooms
+            .GroupBy(r => r.IdFloor ?? UnassignedFloorKey)
+            .ToDictionary(
+                g => g.Key,
+                g => g.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList());
+
         var cells = new List<DashboardMiniRoomCell>();
 
-        foreach (var fb in floorBases)
+        foreach (var floor in floors)
         {
-            if (!floorRank.TryGetValue(fb, out var row))
+            if (!floorIndex.TryGetValue(floor.Id, out var row))
                 continue;
 
-            var onFloor = withNum
-                .Where(x => x.Num / 100 == fb)
-                .OrderBy(x => x.Num)
-                .ToList();
+            if (!roomsByFloor.TryGetValue(floor.Id, out var onFloor))
+                onFloor = new List<RoomBookingMapRoomRow>();
 
-            for (var col = 0; col < onFloor.Count && col < 10; col++)
+            floorStatusById.TryGetValue(floor.Id, out var floorStatus);
+
+            for (var col = 0; col < onFloor.Count; col++)
             {
-                var x = onFloor[col];
-                string? guest = null;
-                int? activeOrderId = null;
-                if (guestByRoom.TryGetValue(x.Id, out var stay))
-                {
-                    guest = stay.GuestName;
-                    activeOrderId = stay.OrderId;
-                }
-
-                var phys = RoomStatusMap.ClassifyPhysicalKind(x.Status);
-
-                var kind = phys switch
-                {
-                    RoomPhysicalStatusKind.Maintenance => RoomPhysicalStatusKind.Maintenance,
-                    _ when guest != null || phys == RoomPhysicalStatusKind.Occupied => RoomPhysicalStatusKind
-                        .Occupied,
-                    _ => phys
-                };
-
-                cells.Add(new DashboardMiniRoomCell
-                {
-                    RoomId = x.Id,
-                    Name = string.IsNullOrWhiteSpace(x.Name) ? $"#{x.Id}" : x.Name.Trim(),
-                    RawStatus = x.Status ?? "",
-                    Kind = kind,
-                    GuestName = guest,
-                    ActiveOrderId = activeOrderId,
-                    IdRoomType = x.IdRoomType,
-                    RoomTypeName = string.IsNullOrWhiteSpace(x.TypeName) ? null : x.TypeName.Trim(),
-                    NightlyPrice = x.NightlyPrice,
-                    GridRow = row,
-                    GridCol = col
-                });
+                cells.Add(BuildCell(onFloor[col], row, col, guestByRoom, floorStatus));
             }
+        }
+
+        if (hasUnassigned && roomsByFloor.TryGetValue(UnassignedFloorKey, out var unassigned))
+        {
+            for (var col = 0; col < unassigned.Count; col++)
+                cells.Add(BuildCell(unassigned[col], unassignedRow, col, guestByRoom, "open"));
         }
 
         return new DashboardMiniRoomStatus
         {
             Rooms = cells,
+            FloorRowLabels = rowLabels,
             VacantCount = cells.Count(c => c.Kind == RoomPhysicalStatusKind.Vacant),
             OccupiedCount = cells.Count(c => c.Kind == RoomPhysicalStatusKind.Occupied),
             CleaningCount = cells.Count(c => c.Kind == RoomPhysicalStatusKind.Cleaning),
             MaintenanceCount = cells.Count(c => c.Kind == RoomPhysicalStatusKind.Maintenance),
             UnknownCount = cells.Count(c => c.Kind == RoomPhysicalStatusKind.Unknown)
+        };
+    }
+
+    private static DashboardMiniRoomCell BuildCell(
+        RoomBookingMapRoomRow room,
+        int gridRow,
+        int gridCol,
+        Dictionary<int, (string GuestName, int OrderId)> guestByRoom,
+        string? floorStatus)
+    {
+        string? guest = null;
+        int? activeOrderId = null;
+        if (guestByRoom.TryGetValue(room.Id, out var stay))
+        {
+            guest = stay.GuestName;
+            activeOrderId = stay.OrderId;
+        }
+
+        var phys = RoomStatusMap.ClassifyPhysicalKind(room.Status);
+
+        var kind = phys switch
+        {
+            _ when FloorStatusMap.IsLockedForBooking(floorStatus) => RoomPhysicalStatusKind.Maintenance,
+            RoomPhysicalStatusKind.Maintenance => RoomPhysicalStatusKind.Maintenance,
+            _ when guest != null || phys == RoomPhysicalStatusKind.Occupied => RoomPhysicalStatusKind.Occupied,
+            _ => phys
+        };
+
+        if (!RoomBookingRules.IsRoomBookable(room.Status) && kind == RoomPhysicalStatusKind.Vacant)
+            kind = RoomPhysicalStatusKind.Maintenance;
+
+        return new DashboardMiniRoomCell
+        {
+            RoomId = room.Id,
+            Name = string.IsNullOrWhiteSpace(room.Name) ? $"#{room.Id}" : room.Name.Trim(),
+            RawStatus = room.Status ?? "",
+            Kind = kind,
+            GuestName = guest,
+            ActiveOrderId = activeOrderId,
+            IdRoomType = room.IdRoomType,
+            RoomTypeName = string.IsNullOrWhiteSpace(room.TypeName) ? null : room.TypeName.Trim(),
+            NightlyPrice = room.NightlyPrice,
+            GridRow = gridRow,
+            GridCol = gridCol
         };
     }
 
@@ -143,6 +155,7 @@ public sealed class RoomBookingMapService : IRoomBookingMapService
         return new DashboardMiniRoomStatus
         {
             Rooms = list,
+            FloorRowLabels = full.FloorRowLabels,
             VacantCount = list.Count(c => c.Kind == RoomPhysicalStatusKind.Vacant),
             OccupiedCount = list.Count(c => c.Kind == RoomPhysicalStatusKind.Occupied),
             CleaningCount = list.Count(c => c.Kind == RoomPhysicalStatusKind.Cleaning),
@@ -170,40 +183,33 @@ public sealed class RoomBookingMapService : IRoomBookingMapService
     {
         ArgumentNullException.ThrowIfNull(filtered);
 
-        const int rowCount = 3;
-        const int minCols = 11;
+        const int labelColW = 88;
         const int cellW = 86;
         const int cellH = 118;
         const int minTotalW = 880;
-        const int minTotalH = 276;
+        const int minTotalH = 120;
 
-        var colCount = minCols;
+        var rowCount = Math.Max(1, filtered.FloorRowLabels.Count);
+        if (filtered.FloorRowLabels.Count == 0 && filtered.Rooms.Count > 0)
+            rowCount = filtered.Rooms.Max(r => r.GridRow) + 1;
+
+        var roomColCount = 1;
         if (filtered.Rooms.Count > 0)
-            colCount = Math.Max(minCols, filtered.Rooms.Max(r => r.GridCol) + 1);
+            roomColCount = Math.Max(1, filtered.Rooms.Max(r => r.GridCol) + 1);
 
         var cellsInGrid = filtered.Rooms
-            .Where(c => c.GridRow >= 0 && c.GridRow < rowCount && c.GridCol >= 0 && c.GridCol < colCount)
+            .Where(c => c.GridRow >= 0 && c.GridRow < rowCount && c.GridCol >= 0 && c.GridCol < roomColCount)
             .ToList();
 
         return new RoomBookingMapGridLayout
         {
             RowCount = rowCount,
-            ColumnCount = colCount,
-            MinimumWidth = Math.Max(minTotalW, colCount * cellW),
+            ColumnCount = roomColCount,
+            HasFloorLabelColumn = true,
+            FloorLabelColumnWidth = labelColW,
+            MinimumWidth = Math.Max(minTotalW, labelColW + roomColCount * cellW),
             MinimumHeight = Math.Max(minTotalH, rowCount * cellH),
             CellsInGrid = cellsInGrid
         };
-    }
-
-    private sealed class RoomGridSlot
-    {
-        public int Id { get; init; }
-        public string Name { get; init; } = "";
-        public string Status { get; init; } = "";
-        public int? IdFloor { get; init; }
-        public int? IdRoomType { get; init; }
-        public string? TypeName { get; init; }
-        public decimal NightlyPrice { get; init; }
-        public int Num { get; init; }
     }
 }

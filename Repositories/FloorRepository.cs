@@ -42,13 +42,20 @@ public class FloorRepository : IFloorRepository
 
     private List<FloorView> MapRows(List<Floor> floors, Dictionary<int, int> counts)
     {
-        return floors.Select(f => new FloorView
+        return floors.Select(f =>
         {
-            FloorId = f.Id,
-            FloorName = f.Name ?? "",
-            BranchDisplayName = BranchDisplayHelper.Format(f.Branch),
-            RoomCount = counts.TryGetValue(f.Id, out var c) ? c : 0,
-            IdBranch = f.IdBranch,
+            var status = f.Status ?? "open";
+            return new FloorView
+            {
+                FloorId = f.Id,
+                FloorName = f.Name ?? "",
+                BranchDisplayName = BranchDisplayHelper.Format(f.Branch),
+                RoomCount = counts.TryGetValue(f.Id, out var c) ? c : 0,
+                IdBranch = f.IdBranch,
+                StatusDb = status,
+                StatusDisplay = FloorStatusMap.ToDisplay(status),
+                IsLockedForBooking = FloorStatusMap.IsLockedForBooking(status)
+            };
         }).ToList();
     }
 
@@ -95,6 +102,39 @@ public class FloorRepository : IFloorRepository
 
         e.Name = floor.Name;
         e.IdBranch = floor.IdBranch;
+        if (!string.IsNullOrWhiteSpace(floor.Status))
+            e.Status = floor.Status;
+        _context.SaveChanges();
+    }
+
+    public void SetOperationalStatus(int floorId, FloorOperationalMode mode)
+    {
+        var floor = _context.Floors.FirstOrDefault(f => f.Id == floorId)
+                    ?? throw new InvalidOperationException("Không tìm thấy tầng.");
+
+        floor.Status = FloorStatusMap.ToDatabase(mode);
+
+        var rooms = _context.Rooms
+            .Where(r => r.IdFloor == floorId && r.SoftDelete == null)
+            .ToList();
+
+        foreach (var room in rooms)
+        {
+            var kind = RoomStatusMap.ClassifyPhysicalKind(room.Status);
+            if (kind == RoomPhysicalStatusKind.Occupied)
+                continue;
+
+            room.Status = mode switch
+            {
+                FloorOperationalMode.Maintenance => "maintenance",
+                FloorOperationalMode.Closed => "inactive",
+                _ => room.Status is "maintenance" or "inactive" or "out_of_order"
+                    ? "available"
+                    : room.Status ?? "available"
+            };
+            room.UpdateAt = DateTime.Now;
+        }
+
         _context.SaveChanges();
     }
 

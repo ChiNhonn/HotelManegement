@@ -18,6 +18,19 @@ public sealed class RoomBookingMapRepository : IRoomBookingMapRepository
         _db = db;
     }
 
+    public IReadOnlyList<RoomBookingMapFloorRow> GetActiveFloorsOrdered()
+    {
+        return _db.Floors.AsNoTracking()
+            .OrderBy(f => f.Name)
+            .Select(f => new RoomBookingMapFloorRow
+            {
+                Id = f.Id,
+                Name = f.Name ?? $"Tầng #{f.Id}",
+                Status = f.Status ?? "open"
+            })
+            .ToList();
+    }
+
     public IReadOnlyList<RoomBookingMapRoomRow> GetActiveRoomsWithTypes()
     {
         return _db.Rooms.AsNoTracking()

@@ -36,6 +36,7 @@ public sealed class FloorConfiguration : IEntityTypeConfiguration<Floor>
         b.ToTable("Floors");
 
         b.Property(x => x.Name).HasMaxLength(100).IsRequired();
+        b.Property(x => x.Status).HasMaxLength(20).IsRequired().HasDefaultValue("open");
 
         b.HasMany(f => f.Rooms)
             .WithOne(r => r.Floor)

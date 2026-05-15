@@ -1,3 +1,4 @@
+using HotelManagement.Helpers;
 using HotelManagement.Models;
 using HotelManagement.ViewModels;
 
@@ -22,4 +23,6 @@ public interface IFloorRepository
     int CountActiveRoomsOnFloor(int floorId);
 
     bool ExistsNameForBranch(string nameTrimmed, int? idBranch, int? excludeFloorId);
+
+    void SetOperationalStatus(int floorId, FloorOperationalMode mode);
 }

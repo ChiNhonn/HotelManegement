@@ -1,6 +1,15 @@
+using System;
 using System.Collections.Generic;
 
 namespace HotelManagement.ViewModels;
+
+/// <summary>Tầng đọc từ DB cho lưới đặt phòng.</summary>
+public sealed class RoomBookingMapFloorRow
+{
+    public int Id { get; init; }
+    public string Name { get; init; } = "";
+    public string Status { get; init; } = "open";
+}
 
 /// <summary>Dòng phòng + loại phòng đọc từ DB cho màn Quản lý đặt phòng.</summary>
 public sealed class RoomBookingMapRoomRow
@@ -41,7 +50,9 @@ public sealed class RoomBookingMapGridLayout
 {
     public int RowCount { get; init; }
     public int ColumnCount { get; init; }
+    public bool HasFloorLabelColumn { get; init; }
+    public int FloorLabelColumnWidth { get; init; }
     public int MinimumWidth { get; init; }
     public int MinimumHeight { get; init; }
-    public IReadOnlyList<DashboardMiniRoomCell> CellsInGrid { get; init; } = System.Array.Empty<DashboardMiniRoomCell>();
+    public IReadOnlyList<DashboardMiniRoomCell> CellsInGrid { get; init; } = Array.Empty<DashboardMiniRoomCell>();
 }

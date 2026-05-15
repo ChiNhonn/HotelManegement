@@ -1,4 +1,5 @@
 ﻿using HotelManagement.CustomControls;
+using HotelManagement.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
@@ -110,6 +111,7 @@ namespace HotelManagement.Forms
             btnBookings.Image = CreateNavGlyph('\uE787');
             btnServices.Image = CreateNavGlyph('\uE8A7');
             btnFinance.Image = CreateNavGlyph('\uE8CB');
+            btnInvoices.Image = CreateNavGlyph('\uE9F3');
             btnCustomers.Image = CreateNavGlyph('\uE716');
             btnRolesStaff.Image = CreateNavGlyph('\uEA18');
             btnSignOut.Image = CreateNavGlyph('\uF3B1');
@@ -208,7 +210,7 @@ namespace HotelManagement.Forms
             int y = SidebarHeaderBottom + 6;
             var navOrder = new[]
             {
-                btnDashboard, btnRooms, btnBookings, btnServices, btnFinance, btnCustomers, btnRolesStaff
+                btnDashboard, btnRooms, btnBookings, btnServices, btnFinance, btnInvoices, btnCustomers, btnRolesStaff
             };
 
             foreach (var b in navOrder)
@@ -282,6 +284,12 @@ namespace HotelManagement.Forms
             chuyentrang(new usStatistics());
         }
 
+        private void btnInvoices_Click(object sender, EventArgs e)
+        {
+            SetActiveNav(btnInvoices);
+            chuyentrang(new UsModuleStub("Quản lý hóa đơn"));
+        }
+
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             SetActiveNav(btnDashboard);
@@ -296,7 +304,8 @@ namespace HotelManagement.Forms
 
         private void btnSignOut_Click(object sender, EventArgs e)
         {
-            LoginForm login = Program.ServiceProvider.GetRequiredService<LoginForm>();
+            AuthSession.Clear();
+            var login = Program.ServiceProvider.GetRequiredService<LoginForm>();
             Hide();
             login.Show();
             Close();

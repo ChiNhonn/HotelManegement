@@ -42,6 +42,18 @@ public sealed class BookingService : IBookingService
         if (room == null)
             throw new InvalidOperationException("Không tìm thấy phòng.");
 
+        if (room.IdFloor is int floorId)
+        {
+            var floor = _db.Floors.AsNoTracking().FirstOrDefault(f => f.Id == floorId);
+            if (floor != null && FloorStatusMap.IsLockedForBooking(floor.Status))
+                throw new InvalidOperationException(
+                    $"Tầng «{floor.Name}» đang {FloorStatusMap.ToDisplay(floor.Status).ToLowerInvariant()}, không thể đặt phòng.");
+        }
+
+        var bookBlock = RoomBookingRules.BookableBlockReason(room.Status, null);
+        if (bookBlock != null)
+            throw new InvalidOperationException(bookBlock);
+
         if (HasRoomBookingOverlap(r.RoomId, ci, co, null))
             throw new InvalidOperationException("Phòng đã có đơn trùng khoảng thời gian này.");
 

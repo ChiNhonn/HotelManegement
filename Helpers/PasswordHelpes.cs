@@ -1,5 +1,4 @@
 ﻿using System;
-using BCrypt.Net;
 
 namespace HotelManagement.Helpers
 {
@@ -12,12 +11,37 @@ namespace HotelManagement.Helpers
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        public static bool VerifyPassword(string inputPassword, string hashedPasswordFromDB)
+        /// <summary>
+        /// Xác thực mật khẩu: BCrypt hash hoặc plain-text cũ (nhập tay trong SSMS).
+        /// <paramref name="upgradeToBcrypt"/> = true khi cần ghi lại hash sau đăng nhập thành công.
+        /// </summary>
+        public static bool VerifyPassword(
+            string inputPassword,
+            string storedPassword,
+            out bool upgradeToBcrypt)
         {
-            if (string.IsNullOrWhiteSpace(inputPassword) || string.IsNullOrWhiteSpace(hashedPasswordFromDB))
+            upgradeToBcrypt = false;
+
+            if (string.IsNullOrWhiteSpace(inputPassword) || string.IsNullOrWhiteSpace(storedPassword))
                 return false;
 
-            return BCrypt.Net.BCrypt.Verify(inputPassword, hashedPasswordFromDB);
+            if (IsBcryptHash(storedPassword))
+                return BCrypt.Net.BCrypt.Verify(inputPassword, storedPassword);
+
+            if (string.Equals(inputPassword, storedPassword, StringComparison.Ordinal))
+            {
+                upgradeToBcrypt = true;
+                return true;
+            }
+
+            return false;
         }
+
+        public static bool VerifyPassword(string inputPassword, string storedPassword) =>
+            VerifyPassword(inputPassword, storedPassword, out _);
+
+        public static bool IsBcryptHash(string storedPassword) =>
+            storedPassword.Length >= 59 &&
+            storedPassword.StartsWith("$2", StringComparison.Ordinal);
     }
 }

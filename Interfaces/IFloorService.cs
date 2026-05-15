@@ -1,3 +1,4 @@
+using HotelManagement.Helpers;
 using HotelManagement.Models;
 using HotelManagement.ViewModels;
 
@@ -20,4 +21,6 @@ public interface IFloorService
     int CountActiveRoomsOnFloor(int floorId);
 
     Floor? GetById(int id);
+
+    void SetFloorOperationalStatus(int floorId, FloorOperationalMode mode);
 }

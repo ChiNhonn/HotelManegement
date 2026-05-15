@@ -3,7 +3,6 @@ using HotelManagement.Helpers;
 using HotelManagement.Models;
 using HotelManagement.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using HotelManagement.Services;
 namespace HotelManagement.Repositories
 {
     public class UserRepository : IUserRepository
@@ -17,15 +16,26 @@ namespace HotelManagement.Repositories
 
         public Userr? Login(string username, string password)
         {
+            var normalized = username.Trim();
             var user = _context.Users
                 .Include(x => x.UserProfile)
-                .FirstOrDefault(x => x.UserName == username);
+                .FirstOrDefault(x =>
+                    x.SoftDelete == null &&
+                    x.UserName != null &&
+                    x.UserName.ToLower() == normalized.ToLower());
 
             if (user == null)
                 return null;
 
-            if (!PasswordHelper.VerifyPassword(password, user.Password))
+            if (!PasswordHelper.VerifyPassword(password, user.Password, out var upgradeToBcrypt))
                 return null;
+
+            if (upgradeToBcrypt)
+            {
+                user.Password = PasswordHelper.HashPassword(password);
+                user.UpdateAt = DateTime.Now;
+                _context.SaveChanges();
+            }
 
             return user;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HotelManagement.Helpers;
 
@@ -34,6 +35,9 @@ public sealed class DashboardMiniRoomCell
 public sealed class DashboardMiniRoomStatus
 {
     public IReadOnlyList<DashboardMiniRoomCell> Rooms { get; init; } = new List<DashboardMiniRoomCell>();
+
+    /// <summary>Nhãn tầng theo chỉ số hàng lưới (0 = hàng đầu).</summary>
+    public IReadOnlyList<string> FloorRowLabels { get; init; } = Array.Empty<string>();
 
     public int VacantCount { get; init; }
     public int OccupiedCount { get; init; }

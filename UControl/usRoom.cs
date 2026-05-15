@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using HotelManagement.Forms;
@@ -16,6 +18,8 @@ public partial class usRoom : UserControl
     private readonly IFloorService _floorService;
     private bool _syncingOperationalUi;
     private bool _suspendFilterReload;
+    private FloorView? _selectedFloor;
+    private readonly List<FloorManagementCard> _floorCards = new();
 
     public usRoom(IRoomService roomService, IRoomTypeService roomTypeService, IFloorService floorService)
     {
@@ -23,6 +27,51 @@ public partial class usRoom : UserControl
         _roomTypeService = roomTypeService ?? throw new ArgumentNullException(nameof(roomTypeService));
         _floorService = floorService ?? throw new ArgumentNullException(nameof(floorService));
         InitializeComponent();
+        HookOutsideClickClearsGrid(dgvRooms, pnlRoomsRoot);
+        HookOutsideClickClearsGrid(dgvRoomTypes, pnlRoomTypesRoot);
+        WinFormsScrollPan.EnableForPanel(pnlFloorsScroll, flowFloorMgmtLayout, flowFloorMgmtLayout);
+        pnlFloorsScroll.Resize += (_, _) => SyncFloorMgmtLayoutWidth();
+        pnlFloorsToolbar.MouseDown += (_, e) =>
+        {
+            if (e.Button == MouseButtons.Left)
+                SelectFloor(null);
+        };
+    }
+
+    private static void HookOutsideClickClearsGrid(DataGridView grid, Control root)
+    {
+        void HookControl(Control c)
+        {
+            if (c == grid)
+            {
+                c.MouseDown += (_, e) =>
+                {
+                    if (e.Button != MouseButtons.Left) return;
+                    var ht = grid.HitTest(e.X, e.Y);
+                    if (ht.RowIndex < 0)
+                        ClearGridSelection(grid);
+                };
+                return;
+            }
+
+            c.MouseDown += (_, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                    ClearGridSelection(grid);
+            };
+
+            foreach (Control child in c.Controls)
+                HookControl(child);
+        }
+
+        HookControl(root);
+    }
+
+    private static void ClearGridSelection(DataGridView grid)
+    {
+        grid.ClearSelection();
+        if (grid.CurrentCell != null)
+            grid.CurrentCell = null;
     }
 
     private void usRoom_Load(object? sender, EventArgs e)
@@ -34,6 +83,14 @@ public partial class usRoom : UserControl
         ReloadGrid();
         ReloadRoomTypesGrid();
         ReloadFloorsGrid();
+        SyncFloorMgmtLayoutWidth();
+    }
+
+    private void SyncFloorMgmtLayoutWidth()
+    {
+        if (!pnlFloorsScroll.IsHandleCreated) return;
+        var w = pnlFloorsScroll.ClientSize.Width - pnlFloorsScroll.Padding.Horizontal - 8;
+        flowFloorMgmtLayout.Width = Math.Max(340, w);
     }
 
     private void TxtSearch_TextChanged(object? sender, EventArgs e) => ReloadGrid();
@@ -60,8 +117,7 @@ public partial class usRoom : UserControl
 
     private void CmbOperationalApply_SelectedIndexChanged(object? sender, EventArgs e)
     {
-        if (_syncingOperationalUi || !IsHandleCreated)
-            return;
+        if (_syncingOperationalUi || !IsHandleCreated) return;
 
         var sel = GetSelectedRoom();
         if (sel == null || cmbOperationalApply.SelectedItem is not OperationalPick pick)
@@ -176,8 +232,8 @@ public partial class usRoom : UserControl
         SyncOperationalComboFromGrid();
     }
 
-    private RoomView? GetSelectedRoom()
-        => dgvRooms.CurrentRow?.Tag as RoomView;
+    private RoomView? GetSelectedRoom() =>
+        dgvRooms.CurrentRow?.Tag as RoomView;
 
     private void BtnAddRoom_Click(object? sender, EventArgs e)
     {
@@ -190,6 +246,7 @@ public partial class usRoom : UserControl
             LoadFilterCombos();
             _suspendFilterReload = false;
             ReloadGrid();
+            ReloadFloorsGrid();
         }
         catch (Exception ex)
         {
@@ -213,6 +270,7 @@ public partial class usRoom : UserControl
             if (dlg.ShowDialog(FindForm()) != DialogResult.OK)
                 return;
             ReloadGrid();
+            ReloadFloorsGrid();
         }
         catch (Exception ex)
         {
@@ -240,6 +298,7 @@ public partial class usRoom : UserControl
         {
             _roomService.Delete(sel.RoomId);
             ReloadGrid();
+            ReloadFloorsGrid();
         }
         catch (Exception ex)
         {
@@ -258,6 +317,7 @@ public partial class usRoom : UserControl
             LoadFilterCombos();
             _suspendFilterReload = false;
             ReloadGrid();
+            ReloadFloorsGrid();
         }
         catch (Exception ex)
         {
@@ -346,16 +406,44 @@ public partial class usRoom : UserControl
             ? _floorService.GetAllGridRows()
             : _floorService.SearchGrid(keyword);
 
-        dgvFloors.DataSource = null;
-        dgvFloors.DataSource = list;
+        flowFloorMgmtLayout.SuspendLayout();
+        flowFloorMgmtLayout.Controls.Clear();
+        _floorCards.Clear();
+
+        foreach (var floor in list.OrderBy(f => f.FloorName, StringComparer.OrdinalIgnoreCase))
+        {
+            var card = new FloorManagementCard();
+            card.Bind(floor, _selectedFloor?.FloorId == floor.FloorId);
+            card.FloorSelected += (_, f) => SelectFloor(f);
+            card.ToggleRequested += (_, floorId) => ToggleFloorOperational(floorId);
+            flowFloorMgmtLayout.Controls.Add(card);
+            _floorCards.Add(card);
+        }
+
+        if (flowFloorMgmtLayout.Controls.Count == 0)
+        {
+            flowFloorMgmtLayout.Controls.Add(new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10F),
+                ForeColor = Color.Gray,
+                Margin = new Padding(12),
+                Text = "Không có tầng phù hợp."
+            });
+        }
+
+        flowFloorMgmtLayout.ResumeLayout(true);
+        SyncFloorMgmtLayoutWidth();
     }
 
-    private FloorView? GetSelectedFloorView()
+    private void SelectFloor(FloorView? floor)
     {
-        if (dgvFloors.CurrentRow?.DataBoundItem is FloorView v)
-            return v;
-        return null;
+        _selectedFloor = floor;
+        foreach (var card in _floorCards)
+            card.Bind(card.Floor, floor?.FloorId == card.Floor.FloorId);
     }
+
+    private FloorView? GetSelectedFloorView() => _selectedFloor;
 
     private void TxtFloorSearch_TextChanged(object? sender, EventArgs e) => ReloadFloorsGrid();
 
@@ -389,7 +477,7 @@ public partial class usRoom : UserControl
         var sel = GetSelectedFloorView();
         if (sel == null)
         {
-            MessageBox.Show("Chọn một tầng trong danh sách.", "Tầng", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Chọn một tầng trên lưới.", "Tầng", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
         }
 
@@ -439,6 +527,7 @@ public partial class usRoom : UserControl
         try
         {
             _floorService.Delete(sel.FloorId);
+            SelectFloor(null);
             _suspendFilterReload = true;
             LoadFilterCombos();
             _suspendFilterReload = false;
@@ -479,6 +568,35 @@ public partial class usRoom : UserControl
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message, "Loại phòng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private void ToggleFloorOperational(int floorId)
+    {
+        var floor = _floorService.GetById(floorId);
+        if (floor == null) return;
+
+        var current = FloorStatusMap.DeriveMode(floor.Status);
+        var next = current == FloorOperationalMode.Open
+            ? FloorOperationalMode.Maintenance
+            : FloorOperationalMode.Open;
+
+        var msg = next == FloorOperationalMode.Maintenance
+            ? $"Khóa tầng «{floor.Name}» (bảo trì/sửa chữa)?\r\nToàn bộ phòng trống trên tầng sẽ không nhận đặt lịch."
+            : $"Mở lại tầng «{floor.Name}»?";
+
+        if (MessageBox.Show(msg, "Trạng thái tầng", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            return;
+
+        try
+        {
+            _floorService.SetFloorOperationalStatus(floorId, next);
+            ReloadFloorsGrid();
+            ReloadGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Trạng thái tầng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

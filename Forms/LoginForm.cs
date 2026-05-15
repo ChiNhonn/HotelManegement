@@ -1,5 +1,4 @@
 ﻿using HotelManagement.Interfaces;
-using HotelManagement.Models;
 using HotelManagement.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -40,14 +39,17 @@ public partial class LoginForm : Form
             return;
         }
 
-        Userr? user = _userService.Login(username, password);
+        var user = _userService.Login(username, password);
         if (user != null)
         {
-            MessageBox.Show("Đăng nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            MainForm mainForm = Program.ServiceProvider.GetRequiredService<MainForm>();
+            AuthSession.SetUser(user);
+            var mainForm = Program.ServiceProvider.GetRequiredService<MainForm>();
             Hide();
             mainForm.ShowDialog();
-            Close();
+            AuthSession.Clear();
+            txtUsername.Clear();
+            txtPassword.Clear();
+            Show();
         }
         else
         {

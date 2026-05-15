@@ -23,6 +23,7 @@
             btnSignOut = new Button();
             btnRolesStaff = new Button();
             btnCustomers = new Button();
+            btnInvoices = new Button();
             btnFinance = new Button();
             btnServices = new Button();
             btnBookings = new Button();
@@ -65,6 +66,7 @@
             pnlChoice.Controls.Add(btnSignOut);
             pnlChoice.Controls.Add(btnRolesStaff);
             pnlChoice.Controls.Add(btnCustomers);
+            pnlChoice.Controls.Add(btnInvoices);
             pnlChoice.Controls.Add(btnFinance);
             pnlChoice.Controls.Add(btnServices);
             pnlChoice.Controls.Add(btnBookings);
@@ -103,6 +105,19 @@
             btnRolesStaff.Text = "Quản lý phân quyền && nhân sự";
             btnRolesStaff.UseVisualStyleBackColor = false;
             btnRolesStaff.Click += btnRolesStaff_Click;
+            // 
+            // btnInvoices
+            // 
+            btnInvoices.FlatStyle = FlatStyle.Flat;
+            btnInvoices.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnInvoices.Location = new Point(9, 269);
+            btnInvoices.Margin = new Padding(3, 2, 3, 2);
+            btnInvoices.Name = "btnInvoices";
+            btnInvoices.Size = new Size(252, 44);
+            btnInvoices.TabIndex = 9;
+            btnInvoices.Text = "Quản lý hóa đơn";
+            btnInvoices.UseVisualStyleBackColor = false;
+            btnInvoices.Click += btnInvoices_Click;
             // 
             // btnCustomers
             // 
@@ -274,6 +289,7 @@
         private Button btnSignOut;
         private Button btnRolesStaff;
         private Button btnFinance;
+        private Button btnInvoices;
         private Button btnServices;
         private Button btnBookings;
         public SidebarGradientPanel pnlChoice;
