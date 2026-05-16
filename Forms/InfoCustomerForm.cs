@@ -10,24 +10,14 @@ using System.Windows.Forms;
 
 namespace HotelManagement.Forms
 {
-    public partial class CustomerForm : Form
+    public partial class InfoCustomerForm : Form
     {
-        public CustomerForm()
+        public InfoCustomerForm()
         {
             InitializeComponent();
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void CustomerForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
         {
 
         }
