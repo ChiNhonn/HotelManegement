@@ -21,8 +21,11 @@ public partial class Customer
     public string Huyen { get; set; }
     [MaxLength(100)]
     public string Tinh { get; set; } 
-    [MaxLength(50)]
+    [MaxLength(100)]
     public string Country { get; set; }
+    [MaxLength(100)]
+    public string Status { get; set; }
+    public int Vip { get; set; } //2: siêu vip, 1: vip, 0: thường
     public DateTime CreateAt { get; set; } = DateTime.Now;
     public DateTime? SoftDelete { get; set; } = null;
     public DateTime? UpdateAt { get; set; } = null;
