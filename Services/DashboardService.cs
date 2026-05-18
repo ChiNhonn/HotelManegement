@@ -72,15 +72,21 @@ public class DashboardService : IDashboardService
     {
         var payments = _repo.LoadRecentSuccessfulPayments(take);
         return payments
-            .Select(p => new DashboardRecentTransactionItem
+            .Select(p =>
             {
-                UserName = p.Bill!.User?.UserName?.Trim()
+                var hasBill = p.IdBill != null && p.Bill != null;
+                return new DashboardRecentTransactionItem
+                {
+                    UserName = hasBill
+                        ? (p.Bill!.User?.UserName?.Trim()
                            ?? p.Bill.User?.FullName?.Trim()
-                           ?? "—",
-                Amount = p.Bill.TotalAmount,
-                StatusLabel = "Thành công",
-                Method = NormalizePaymentMethod(p.Method),
-                OccurredAt = p.CreateAt
+                           ?? "—")
+                        : "Thu trực tiếp",
+                    Amount = hasBill ? p.Bill!.TotalAmount : (p.Amount ?? 0m),
+                    StatusLabel = "Thành công",
+                    Method = NormalizePaymentMethod(p.Method),
+                    OccurredAt = p.CreateAt
+                };
             })
             .ToList();
     }
@@ -103,6 +109,9 @@ public class DashboardService : IDashboardService
 
     public void RecordManualBillPayment(int billId, string method) =>
         _repo.RecordManualBillPayment(billId, method);
+
+    public void RecordStandalonePayment(decimal amount, string method) =>
+        _repo.RecordStandalonePayment(amount, method);
 
     public IReadOnlyList<DashboardRecentTransactionItem> GetRecentStaffPayouts(int take = 15) =>
         _repo.LoadRecentStaffPayouts(take)

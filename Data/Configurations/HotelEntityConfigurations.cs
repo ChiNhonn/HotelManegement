@@ -453,6 +453,7 @@ public sealed class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 
         b.Property(x => x.Method).HasMaxLength(100).IsRequired();
         b.Property(x => x.Status).HasMaxLength(50).IsRequired();
+        b.Property(x => x.Amount).HasColumnType("decimal(18,2)");
 
         b.HasOne(p => p.Bill)
             .WithMany(bi => bi.Payments)

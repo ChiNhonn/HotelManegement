@@ -80,7 +80,7 @@ namespace HotelManagement.CustomControls
             dgvBill.Columns.Add(new DataGridViewTextBoxColumn { Name = "colPhong", HeaderText = "Phòng", DataPropertyName = "RoomName", ReadOnly = true });
             dgvBill.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTenKH", HeaderText = "Khách Hàng", DataPropertyName = "CustomerName", ReadOnly = true });
             dgvBill.Columns.Add(new DataGridViewTextBoxColumn { Name = "colNgayLap", HeaderText = "Ngày Lập", DataPropertyName = "CreatedDate", ReadOnly = true });
-            dgvBill.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTongTien", HeaderText = "Tổng Tiền", DataPropertyName = "TotalAmount", ReadOnly = true });
+            dgvBill.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTongTien", HeaderText = "Còn phải trả", DataPropertyName = "TotalAmount", ReadOnly = true });
             dgvBill.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTrangThai", HeaderText = "Trạng Thái", DataPropertyName = "Status", ReadOnly = true });
 
             dgvBill.Columns["colTongTien"].DefaultCellStyle.Format = "N0";
@@ -88,7 +88,24 @@ namespace HotelManagement.CustomControls
             dgvBill.Columns["colNgayLap"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
 
             dgvBill.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvBill.CellFormatting += DgvBill_CellFormatting;
             dgvBill.BringToFront();
+        }
+
+        private void DgvBill_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || dgvBill.Columns[e.ColumnIndex].Name != "colTrangThai") return;
+            if (e.Value is string s && s == "Đã thanh toán")
+            {
+                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(21, 128, 61);
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(21, 128, 61);
+                e.CellStyle.Font = new System.Drawing.Font(dgvBill.Font, FontStyle.Bold);
+            }
+            else if (e.Value is string s2 && s2 == "Chưa thanh toán")
+            {
+                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(194, 65, 12);
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(194, 65, 12);
+            }
         }
 
         private void InitEvents()
@@ -293,7 +310,7 @@ namespace HotelManagement.CustomControls
                         {
                             var ws = workbook.Worksheets.Add("Hóa Đơn");
 
-                            string[] headers = { "Mã HĐ", "Phòng", "Khách Hàng", "Ngày Lập", "Tổng Tiền", "Trạng Thái" };
+                            string[] headers = { "Mã HĐ", "Phòng", "Khách Hàng", "Ngày Lập", "Còn phải trả", "Trạng Thái" };
                             for (int i = 0; i < headers.Length; i++)
                             {
                                 ws.Cell(1, i + 1).Value = headers[i];
@@ -384,7 +401,7 @@ namespace HotelManagement.CustomControls
 
                                     table.Header(header =>
                                     {
-                                        string[] headers = { "Mã HĐ", "Phòng", "Khách Hàng", "Ngày Lập", "Tổng Tiền", "Trạng Thái" };
+                                        string[] headers = { "Mã HĐ", "Phòng", "Khách Hàng", "Ngày Lập", "Còn phải trả", "Trạng Thái" };
                                         foreach (var t in headers)
                                         {
                                             header.Cell().Background(Colors.Blue.Darken2)

@@ -508,6 +508,9 @@ namespace HotelManagement.Migrations
                     b.Property<int?>("IdBill")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Method")
                         .IsRequired()
                         .HasMaxLength(100)

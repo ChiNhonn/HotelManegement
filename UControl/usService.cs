@@ -45,9 +45,6 @@ public partial class usService : UserControl
         StyleGrid(dgvServices);
         StyleGrid(dgvPackages);
         StyleGrid(dgvPriceRules);
-        StyleGrid(dgvPay);
-        StyleGrid(dgvReport);
-        dgvPay.RowTemplate.Height = 42;
 
         _opsFulfillment = new OperationFulfillmentPanel(_svc)
         {
@@ -88,18 +85,13 @@ public partial class usService : UserControl
         StyleSecondaryButton(btnMarkInProgress);
         StyleSecondaryButton(btnCancelOrder, danger: true);
         StyleSecondaryButton(btnReloadOps);
-        StyleSecondaryButton(btnReloadPayment);
         StylePrimaryButton(btnMarkCompleted);
         StylePrimaryButton(btnPlaceOrder);
-        StylePrimaryButton(btnCollectCash);
-        StylePrimaryButton(btnCollectTransfer);
-        StylePrimaryButton(btnRunReport);
 
         dgvCategories.SelectionChanged += (_, _) => ReloadServicesGrid();
         tabMain.SelectedIndexChanged += (_, _) =>
         {
-            if (tabMain.SelectedTab == tabPayment) ReloadPayment();
-            else if (tabMain.SelectedTab == tabOps) _opsFulfillment?.Reload();
+            if (tabMain.SelectedTab == tabOps) _opsFulfillment?.Reload();
         };
 
         WireChargeEntryPanel();
@@ -109,12 +101,6 @@ public partial class usService : UserControl
             cmbOrderStatus.Items.Add(new StatusPick(status, ServiceOrderStatus.ToDisplay(status)));
         cmbOrderStatus.DisplayMember = nameof(StatusPick.Label);
         cmbOrderStatus.SelectedIndex = 0;
-
-        dtpFrom.Value = DateTime.Today.AddDays(-30);
-        dtpTo.Value = DateTime.Today;
-        cmbReportType.Items.Add("Doanh thu theo loại");
-        cmbReportType.Items.Add("Tần suất theo giờ");
-        cmbReportType.SelectedIndex = 0;
 
         ReloadCatalog();
         ReloadOps();
@@ -623,27 +609,6 @@ public partial class usService : UserControl
         _opsFulfillment?.Reload();
     }
 
-    private void ReloadPayment()
-    {
-        var rows = _svc.GetOrdersAwaitingPayment();
-        dgvPay.DataSource = rows.Select(o => new
-        {
-            o.Id,
-            o.RoomName,
-            o.ItemName,
-            SoTien = o.LineTotal.ToString("N0"),
-            o.GuestName,
-            Luc = o.CreateAt.ToString("dd/MM HH:mm")
-        }).ToList();
-        HideIdColumn(dgvPay);
-        LocalizeHeaders(dgvPay,
-            ("RoomName", "Phòng"),
-            ("ItemName", "Dịch vụ / Gói"),
-            ("SoTien", "Số tiền"),
-            ("GuestName", "Khách"),
-            ("Luc", "Thời điểm"));
-    }
-
     private int? SelectedOrderId() =>
         _opsFulfillment?.TryGetSelectedServiceOrderId();
 
@@ -654,7 +619,6 @@ public partial class usService : UserControl
         {
             _svc.UpdateServiceOrderStatus(id, status, null);
             ReloadOrderTracking();
-            if (tabMain.SelectedTab == tabPayment) ReloadPayment();
         }
         catch (Exception ex) { ShowError(ex); }
     }
@@ -683,9 +647,6 @@ public partial class usService : UserControl
     private void btnMarkCompleted_Click(object sender, EventArgs e) => SetOrderStatus(ServiceOrderStatus.Completed);
     private void btnCancelOrder_Click(object sender, EventArgs e) => CancelOrder();
     private void btnReloadOps_Click(object sender, EventArgs e) => ReloadOps();
-    private void btnCollectCash_Click(object sender, EventArgs e) => CollectPayment("Tiền mặt");
-    private void btnCollectTransfer_Click(object sender, EventArgs e) => CollectPayment("Chuyển khoản");
-    private void btnReloadPayment_Click(object sender, EventArgs e) => ReloadPayment();
 
     private void btnPlaceOrder_Click(object sender, EventArgs e)
     {
@@ -727,19 +688,6 @@ public partial class usService : UserControl
         catch (Exception ex) { ShowError(ex); }
     }
 
-    private void CollectPayment(string method)
-    {
-        if (dgvPay.CurrentRow?.Cells["Id"].Value is not int id) return;
-        try
-        {
-            _svc.PostImmediatePayment(id, method, null);
-            ReloadPayment();
-            ReloadOrderTracking();
-            MessageBox.Show("Đã ghi nhận thanh toán.", "Thanh toán", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-        catch (Exception ex) { ShowError(ex); }
-    }
-
     private void CancelOrder()
     {
         if (SelectedOrderId() is not int id) return;
@@ -752,41 +700,6 @@ public partial class usService : UserControl
             ReloadOrderTracking();
         }
         catch (Exception ex) { ShowError(ex); }
-    }
-
-    private void btnRunReport_Click(object sender, EventArgs e)
-    {
-        if (cmbReportType.SelectedIndex == 0)
-        {
-            var rows = _svc.GetRevenueReport(dtpFrom.Value, dtpTo.Value, SelectedCategoryId());
-            dgvReport.DataSource = rows.Select(r => new
-            {
-                r.CategoryName,
-                r.OrderCount,
-                DoanhThu = r.Revenue.ToString("N0"),
-                PhiHuy = r.CancelFees.ToString("N0")
-            }).ToList();
-            LocalizeHeaders(dgvReport,
-                ("CategoryName", "Phân loại"),
-                ("OrderCount", "Số lượt"),
-                ("DoanhThu", "Doanh thu"),
-                ("PhiHuy", "Phí hủy"));
-            return;
-        }
-
-        var usage = _svc.GetUsageReport(dtpFrom.Value, dtpTo.Value);
-        dgvReport.DataSource = usage.Select(r => new
-        {
-            KhungGio = $"{r.Hour:00}:00",
-            r.ServiceName,
-            HoanThanh = r.CompletedCount,
-            DaHuy = r.CancelledCount
-        }).ToList();
-        LocalizeHeaders(dgvReport,
-            ("KhungGio", "Khung giờ"),
-            ("ServiceName", "Dịch vụ"),
-            ("HoanThanh", "Hoàn thành"),
-            ("DaHuy", "Đã hủy"));
     }
 
     private void EditCategory(ServiceCategoryEditModel? model)

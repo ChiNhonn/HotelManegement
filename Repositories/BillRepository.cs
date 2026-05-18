@@ -3,6 +3,9 @@ using HotelManagement.Interfaces;
 using HotelManagement.Models;
 using HotelManagement.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class BillRepository : IBillRepository
 {
@@ -26,10 +29,30 @@ public class BillRepository : IBillRepository
     {
         var query = ActiveBills.AsNoTracking();
 
-        // Nếu chọn khác "Tất cả" thì lấy chữ tiếng Việt đó đem đi lọc luôn
         if (!string.IsNullOrEmpty(status) && status != "Tất cả")
         {
-            query = query.Where(b => b.Status == status);
+            switch (status)
+            {
+                case "Đã thanh toán":
+                    query = query.Where(b =>
+                        b.Status == "Paid" || b.Status == "paid" || b.Status == "Completed" || b.Status == "completed"
+                        || b.Payments.Any(p => p.SoftDelete == null &&
+                            (p.Status == "Paid" || p.Status == "paid" || p.Status == "Success" || p.Status == "success"
+                             || p.Status == "Successful" || p.Status == "successful"
+                             || p.Status == "Completed" || p.Status == "completed" || p.Status == "Done" || p.Status == "done")));
+                    break;
+                case "Chưa thanh toán":
+                    query = query.Where(b =>
+                        (b.Status != "Paid" && b.Status != "paid" && b.Status != "Completed" && b.Status != "completed")
+                        && !b.Payments.Any(p => p.SoftDelete == null &&
+                            (p.Status == "Paid" || p.Status == "paid" || p.Status == "Success" || p.Status == "success"
+                             || p.Status == "Successful" || p.Status == "successful"
+                             || p.Status == "Completed" || p.Status == "completed" || p.Status == "Done" || p.Status == "done")));
+                    break;
+                default:
+                    query = query.Where(b => b.Status == status);
+                    break;
+            }
         }
 
         return ProjectToBillView(query);
@@ -47,26 +70,93 @@ public class BillRepository : IBillRepository
         return ProjectToBillView(query);
     }
 
-    // Hàm phụ trợ (Helper) để gom code Select tránh viết lặp đi lặp lại
+    // Hàm phụ trợ: map Bill → BillView (tiền còn phải thu, trạng thái hiển thị tiếng Việt).
     private List<BillView> ProjectToBillView(IQueryable<Bill> query)
     {
-        return query
-            .Include(b => b.Order).ThenInclude(o => o.Customer)
-            .Include(b => b.Order).ThenInclude(o => o.OrderDetails).ThenInclude(od => od.Room)
+        var bills = query
+            .AsNoTracking()
+            .Include(b => b.Order!).ThenInclude(o => o.Customer)
+            .Include(b => b.Order!).ThenInclude(o => o.OrderDetails!).ThenInclude(od => od.Room)
+            .Include(b => b.BillDetails!)
+            .Include(b => b.Payments!)
             .OrderByDescending(b => b.CreateAt)
-            .Select(b => new BillView
-            {
-                Id = b.Id,
-                BillID = "HD" + b.Id,
-                CustomerName = (b.Order != null && b.Order.Customer != null) ? b.Order.Customer.FullName : "Khách lẻ",
-                CreatedDate = b.CreateAt,
-                TotalAmount = b.TotalAmount,
-                Status = b.Status,
-                RoomName = (b.Order != null && b.Order.OrderDetails != null && b.Order.OrderDetails.Any())
-                                ? b.Order.OrderDetails.Where(od => od.Room != null).Select(od => od.Room.Name).FirstOrDefault() ?? "N/A"
-                                : "N/A"
-            })
             .ToList();
+
+        var detailIds = bills
+            .SelectMany(b => b.BillDetails ?? Enumerable.Empty<BillDetail>())
+            .Select(d => d.Id)
+            .Distinct()
+            .ToList();
+
+        var immediatePaid = GetBillDetailIdsWithImmediatePayment(detailIds);
+
+        return bills.Select(b => MapBillToView(b, immediatePaid)).ToList();
+    }
+
+    private static BillView MapBillToView(Bill b, HashSet<int> immediatePaidDetailIds)
+    {
+        var fullyPaid = BillIsFullyPaid(b);
+
+        var lineOthers = (b.BillDetails ?? Enumerable.Empty<BillDetail>())
+            .Where(d => !immediatePaidDetailIds.Contains(d.Id))
+            .Sum(d => d.SubTotal);
+
+        var displayTotal = fullyPaid ? 0m : Math.Max(0m, lineOthers - b.Discount + b.Tax);
+
+        var displayStatus = fullyPaid ? "Đã thanh toán"
+            : string.Equals(b.Status, "Pending", StringComparison.OrdinalIgnoreCase) ? "Chưa thanh toán"
+            : (b.Status ?? "");
+
+        var roomName = (b.Order?.OrderDetails != null && b.Order.OrderDetails.Any(od => od.Room != null))
+            ? b.Order.OrderDetails.Where(od => od.Room != null).Select(od => od.Room!.Name).FirstOrDefault() ?? "N/A"
+            : "N/A";
+
+        return new BillView
+        {
+            Id = b.Id,
+            BillID = "HD" + b.Id,
+            CustomerName = (b.Order != null && b.Order.Customer != null) ? b.Order.Customer.FullName : "Khách lẻ",
+            CreatedDate = b.CreateAt,
+            TotalAmount = displayTotal,
+            Status = displayStatus,
+            RoomName = roomName
+        };
+    }
+
+    private static bool PaymentLooksSuccessful(string? status)
+    {
+        if (string.IsNullOrWhiteSpace(status)) return false;
+        var s = status.Trim().ToLowerInvariant();
+        return s is "success" or "successful" or "succeeded" or "paid" or "completed" or "done";
+    }
+
+    private static bool BillStatusLooksPaid(string? status)
+    {
+        if (string.IsNullOrWhiteSpace(status)) return false;
+        var s = status.Trim().ToLowerInvariant();
+        return s is "paid" or "completed" or "settled" or "closed"
+               || s.Contains("đã thanh toán", StringComparison.OrdinalIgnoreCase)
+               || s.Contains("đã đóng", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool BillIsFullyPaid(Bill b) =>
+        BillStatusLooksPaid(b.Status)
+        || (b.Payments != null && b.Payments.Any(p => p.SoftDelete == null && PaymentLooksSuccessful(p.Status)));
+
+    public HashSet<int> GetBillDetailIdsWithImmediatePayment(IReadOnlyCollection<int> billDetailIds)
+    {
+        if (billDetailIds == null || billDetailIds.Count == 0)
+            return new HashSet<int>();
+
+        var ids = billDetailIds.Distinct().ToList();
+
+        return _context.ServiceOrders.AsNoTracking()
+            .Where(so => so.SoftDelete == null
+                         && so.ImmediatePaidAt != null
+                         && so.IdBillDetail != null
+                         && ids.Contains(so.IdBillDetail.Value))
+            .Select(so => so.IdBillDetail!.Value)
+            .ToHashSet();
     }
     public List<BillView> SearchBills(string keyword)
     {
@@ -148,9 +238,10 @@ public class BillRepository : IBillRepository
     public Bill GetBillWithDetails(int billId)
     {
         return ActiveBills
-            .Include(b => b.Order)
+            .Include(b => b.Order!)
                 .ThenInclude(o => o.Customer)
-            .Include(b => b.BillDetails)
+            .Include(b => b.BillDetails!)
+            .Include(b => b.Payments!)
             .FirstOrDefault(b => b.Id == billId);
     }
 }

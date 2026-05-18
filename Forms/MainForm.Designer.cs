@@ -24,7 +24,6 @@
             btnRolesStaff = new Button();
             btnCustomers = new Button();
             btnBill = new Button();
-            btnFinance = new Button();
             btnServices = new Button();
             btnBookings = new Button();
             btnRooms = new Button();
@@ -65,7 +64,6 @@
             pnlChoice.Controls.Add(btnRolesStaff);
             pnlChoice.Controls.Add(btnCustomers);
             pnlChoice.Controls.Add(btnBill);
-            pnlChoice.Controls.Add(btnFinance);
             pnlChoice.Controls.Add(btnServices);
             pnlChoice.Controls.Add(btnBookings);
             pnlChoice.Controls.Add(btnRooms);
@@ -124,18 +122,6 @@
             btnBill.Text = "Quản lý hóa đơn";
             btnBill.UseVisualStyleBackColor = false;
             btnBill.Click += btnBill_Click;
-            // 
-            // btnFinance
-            // 
-            btnFinance.FlatStyle = FlatStyle.Flat;
-            btnFinance.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnFinance.Location = new Point(10, 353);
-            btnFinance.Name = "btnFinance";
-            btnFinance.Size = new Size(288, 59);
-            btnFinance.TabIndex = 4;
-            btnFinance.Text = "Quản lý tài chính && thanh toán";
-            btnFinance.UseVisualStyleBackColor = false;
-            btnFinance.Click += btnFinance_Click;
             // 
             // btnServices
             // 
@@ -273,7 +259,6 @@
         private Button btnDashboard;
         private Button btnSignOut;
         private Button btnRolesStaff;
-        private Button btnFinance;
         private Button btnBill;
         private Button btnServices;
         private Button btnBookings;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,9 +19,13 @@ public partial class Payment
     public DateTime? UpdateAt { get; set; } = null;
     public DateTime? SoftDelete { get; set; } = null;
 
+    /// <summary>Khoản thu không gắn hóa đơn (IdBill null). Với thanh toán theo HĐ có thể để null.</summary>
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? Amount { get; set; }
+
     public int? IdBill { get; set; }
     [ForeignKey("IdBill")]
-    public virtual Bill Bill { get; set; }
+    public virtual Bill? Bill { get; set; }
 
 
 }

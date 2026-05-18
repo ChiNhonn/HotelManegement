@@ -16,5 +16,8 @@ namespace HotelManagement.Interfaces
         List<BillView> SearchBills(string keyword);
         void MergeBills(List<int> billIds);
         Bill GetBillWithDetails(int billId);
+
+        /// <summary>Id các dòng BillDetail đã thu tiền « thanh toán ngay » (ImmediatePaidAt).</summary>
+        HashSet<int> GetBillDetailIdsWithImmediatePayment(IReadOnlyCollection<int> billDetailIds);
     }
 }

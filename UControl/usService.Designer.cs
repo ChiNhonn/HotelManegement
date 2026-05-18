@@ -83,31 +83,6 @@
             btnReloadOps = new Button();
             dgvOrders = new DataGridView();
 
-            // Tab Thanh toán
-            tabPayment = new TabPage();
-            cardPayment = new RoundedCardPanel();
-            pnlPaymentHeader = new Panel();
-            lblPaymentTitle = new Label();
-            pnlPaymentToolbar = new Panel();
-            btnCollectCash = new Button();
-            btnCollectTransfer = new Button();
-            btnReloadPayment = new Button();
-            dgvPay = new DataGridView();
-
-            // Tab Báo cáo
-            tabReport = new TabPage();
-            cardReport = new RoundedCardPanel();
-            pnlReportHeader = new Panel();
-            lblReportTitle = new Label();
-            pnlReportToolbar = new Panel();
-            lblFrom = new Label();
-            dtpFrom = new DateTimePicker();
-            lblTo = new Label();
-            dtpTo = new DateTimePicker();
-            cmbReportType = new ComboBox();
-            btnRunReport = new Button();
-            dgvReport = new DataGridView();
-
             pnlHeader.SuspendLayout();
             pnlBody.SuspendLayout();
             tabMain.SuspendLayout();
@@ -139,16 +114,6 @@
             pnlTrackingHeader.SuspendLayout();
             pnlTrackingToolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
-            tabPayment.SuspendLayout();
-            cardPayment.SuspendLayout();
-            pnlPaymentHeader.SuspendLayout();
-            pnlPaymentToolbar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvPay).BeginInit();
-            tabReport.SuspendLayout();
-            cardReport.SuspendLayout();
-            pnlReportHeader.SuspendLayout();
-            pnlReportToolbar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvReport).BeginInit();
             SuspendLayout();
             //
             // pnlHeader
@@ -182,8 +147,6 @@
             //
             tabMain.Controls.Add(tabCatalog);
             tabMain.Controls.Add(tabOps);
-            tabMain.Controls.Add(tabPayment);
-            tabMain.Controls.Add(tabReport);
             tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             tabMain.Font = new System.Drawing.Font("Segoe UI", 10F);
             tabMain.ItemSize = new System.Drawing.Size(132, 32);
@@ -774,197 +737,6 @@
             dgvOrders.Name = "dgvOrders";
             dgvOrders.RowHeadersVisible = false;
             //
-            // tabPayment
-            //
-            tabPayment.BackColor = System.Drawing.Color.FromArgb(241, 245, 249);
-            tabPayment.Controls.Add(cardPayment);
-            tabPayment.Name = "tabPayment";
-            tabPayment.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            tabPayment.Text = "Thanh toán";
-            //
-            // cardPayment
-            //
-            cardPayment.BorderColor = System.Drawing.Color.FromArgb(226, 232, 240);
-            cardPayment.CardBackColor = System.Drawing.Color.White;
-            cardPayment.Controls.Add(dgvPay);
-            cardPayment.Controls.Add(pnlPaymentToolbar);
-            cardPayment.Controls.Add(pnlPaymentHeader);
-            cardPayment.Dock = System.Windows.Forms.DockStyle.Fill;
-            cardPayment.Name = "cardPayment";
-            cardPayment.Padding = new System.Windows.Forms.Padding(16, 12, 16, 14);
-            cardPayment.DrawShadow = false;
-            cardPayment.Radius = 6;
-            //
-            // pnlPaymentHeader
-            //
-            pnlPaymentHeader.BackColor = System.Drawing.Color.White;
-            pnlPaymentHeader.Controls.Add(lblPaymentTitle);
-            pnlPaymentHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            pnlPaymentHeader.Height = 32;
-            pnlPaymentHeader.Name = "pnlPaymentHeader";
-            //
-            // lblPaymentTitle
-            //
-            lblPaymentTitle.AutoSize = true;
-            lblPaymentTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            lblPaymentTitle.ForeColor = System.Drawing.Color.FromArgb(51, 65, 85);
-            lblPaymentTitle.Location = new System.Drawing.Point(0, 4);
-            lblPaymentTitle.Name = "lblPaymentTitle";
-            lblPaymentTitle.Text = "Dịch vụ chờ thanh toán ngay (đã hoàn thành, chưa thu tiền)";
-            //
-            // pnlPaymentToolbar
-            //
-            pnlPaymentToolbar.BackColor = System.Drawing.Color.White;
-            pnlPaymentToolbar.Controls.Add(btnCollectCash);
-            pnlPaymentToolbar.Controls.Add(btnCollectTransfer);
-            pnlPaymentToolbar.Controls.Add(btnReloadPayment);
-            pnlPaymentToolbar.Dock = System.Windows.Forms.DockStyle.Top;
-            pnlPaymentToolbar.Height = 46;
-            pnlPaymentToolbar.Padding = new System.Windows.Forms.Padding(0, 4, 0, 8);
-            pnlPaymentToolbar.Name = "pnlPaymentToolbar";
-            //
-            // btnCollectCash
-            //
-            btnCollectCash.Location = new System.Drawing.Point(0, 6);
-            btnCollectCash.Name = "btnCollectCash";
-            btnCollectCash.Size = new System.Drawing.Size(140, 32);
-            btnCollectCash.Text = "💵 Thu tiền mặt";
-            btnCollectCash.Click += btnCollectCash_Click;
-            //
-            // btnCollectTransfer
-            //
-            btnCollectTransfer.Location = new System.Drawing.Point(148, 6);
-            btnCollectTransfer.Name = "btnCollectTransfer";
-            btnCollectTransfer.Size = new System.Drawing.Size(140, 32);
-            btnCollectTransfer.Text = "🏦 Chuyển khoản";
-            btnCollectTransfer.Click += btnCollectTransfer_Click;
-            //
-            // btnReloadPayment
-            //
-            btnReloadPayment.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            btnReloadPayment.Name = "btnReloadPayment";
-            btnReloadPayment.Size = new System.Drawing.Size(90, 30);
-            btnReloadPayment.Text = "↻ Làm mới";
-            btnReloadPayment.Click += btnReloadPayment_Click;
-            //
-            // dgvPay
-            //
-            dgvPay.BackgroundColor = System.Drawing.Color.White;
-            dgvPay.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dgvPay.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvPay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPay.Dock = System.Windows.Forms.DockStyle.Fill;
-            dgvPay.GridColor = System.Drawing.Color.FromArgb(241, 245, 249);
-            dgvPay.Name = "dgvPay";
-            dgvPay.RowHeadersVisible = false;
-            //
-            // tabReport
-            //
-            tabReport.BackColor = System.Drawing.Color.FromArgb(241, 245, 249);
-            tabReport.Controls.Add(cardReport);
-            tabReport.Name = "tabReport";
-            tabReport.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            tabReport.Text = "Báo cáo";
-            //
-            // cardReport
-            //
-            cardReport.BorderColor = System.Drawing.Color.FromArgb(226, 232, 240);
-            cardReport.CardBackColor = System.Drawing.Color.White;
-            cardReport.Controls.Add(dgvReport);
-            cardReport.Controls.Add(pnlReportToolbar);
-            cardReport.Controls.Add(pnlReportHeader);
-            cardReport.Dock = System.Windows.Forms.DockStyle.Fill;
-            cardReport.Name = "cardReport";
-            cardReport.Padding = new System.Windows.Forms.Padding(16, 12, 16, 14);
-            cardReport.DrawShadow = false;
-            cardReport.Radius = 6;
-            //
-            // pnlReportHeader
-            //
-            pnlReportHeader.BackColor = System.Drawing.Color.White;
-            pnlReportHeader.Controls.Add(lblReportTitle);
-            pnlReportHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            pnlReportHeader.Height = 32;
-            pnlReportHeader.Name = "pnlReportHeader";
-            //
-            // lblReportTitle
-            //
-            lblReportTitle.AutoSize = true;
-            lblReportTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            lblReportTitle.ForeColor = System.Drawing.Color.FromArgb(51, 65, 85);
-            lblReportTitle.Location = new System.Drawing.Point(0, 4);
-            lblReportTitle.Name = "lblReportTitle";
-            lblReportTitle.Text = "Báo cáo doanh thu & tần suất";
-            //
-            // pnlReportToolbar
-            //
-            pnlReportToolbar.BackColor = System.Drawing.Color.White;
-            pnlReportToolbar.Controls.Add(lblFrom);
-            pnlReportToolbar.Controls.Add(dtpFrom);
-            pnlReportToolbar.Controls.Add(lblTo);
-            pnlReportToolbar.Controls.Add(dtpTo);
-            pnlReportToolbar.Controls.Add(cmbReportType);
-            pnlReportToolbar.Controls.Add(btnRunReport);
-            pnlReportToolbar.Dock = System.Windows.Forms.DockStyle.Top;
-            pnlReportToolbar.Height = 46;
-            pnlReportToolbar.Padding = new System.Windows.Forms.Padding(0, 4, 0, 8);
-            pnlReportToolbar.Name = "pnlReportToolbar";
-            //
-            // lblFrom
-            //
-            lblFrom.AutoSize = true;
-            lblFrom.Location = new System.Drawing.Point(0, 11);
-            lblFrom.Name = "lblFrom";
-            lblFrom.Text = "Từ";
-            //
-            // dtpFrom
-            //
-            dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            dtpFrom.Location = new System.Drawing.Point(34, 7);
-            dtpFrom.Name = "dtpFrom";
-            dtpFrom.Size = new System.Drawing.Size(140, 27);
-            //
-            // lblTo
-            //
-            lblTo.AutoSize = true;
-            lblTo.Location = new System.Drawing.Point(184, 11);
-            lblTo.Name = "lblTo";
-            lblTo.Text = "Đến";
-            //
-            // dtpTo
-            //
-            dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            dtpTo.Location = new System.Drawing.Point(222, 7);
-            dtpTo.Name = "dtpTo";
-            dtpTo.Size = new System.Drawing.Size(140, 27);
-            //
-            // cmbReportType
-            //
-            cmbReportType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            cmbReportType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            cmbReportType.Location = new System.Drawing.Point(372, 7);
-            cmbReportType.Name = "cmbReportType";
-            cmbReportType.Size = new System.Drawing.Size(210, 27);
-            //
-            // btnRunReport
-            //
-            btnRunReport.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            btnRunReport.Name = "btnRunReport";
-            btnRunReport.Size = new System.Drawing.Size(140, 32);
-            btnRunReport.Text = "▶ Xem báo cáo";
-            btnRunReport.Click += btnRunReport_Click;
-            //
-            // dgvReport
-            //
-            dgvReport.BackgroundColor = System.Drawing.Color.White;
-            dgvReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dgvReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvReport.Dock = System.Windows.Forms.DockStyle.Fill;
-            dgvReport.GridColor = System.Drawing.Color.FromArgb(241, 245, 249);
-            dgvReport.Name = "dgvReport";
-            dgvReport.RowHeadersVisible = false;
-            //
             // usService
             //
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -1015,19 +787,6 @@
             pnlTrackingToolbar.ResumeLayout(false);
             pnlTrackingToolbar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).EndInit();
-            tabPayment.ResumeLayout(false);
-            cardPayment.ResumeLayout(false);
-            pnlPaymentHeader.ResumeLayout(false);
-            pnlPaymentHeader.PerformLayout();
-            pnlPaymentToolbar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvPay).EndInit();
-            tabReport.ResumeLayout(false);
-            cardReport.ResumeLayout(false);
-            pnlReportHeader.ResumeLayout(false);
-            pnlReportHeader.PerformLayout();
-            pnlReportToolbar.ResumeLayout(false);
-            pnlReportToolbar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvReport).EndInit();
             ResumeLayout(false);
         }
 
@@ -1098,28 +857,5 @@
         private System.Windows.Forms.Button btnCancelOrder;
         private System.Windows.Forms.Button btnReloadOps;
         private System.Windows.Forms.DataGridView dgvOrders;
-
-        private System.Windows.Forms.TabPage tabPayment;
-        private RoundedCardPanel cardPayment;
-        private System.Windows.Forms.Panel pnlPaymentHeader;
-        private System.Windows.Forms.Label lblPaymentTitle;
-        private System.Windows.Forms.Panel pnlPaymentToolbar;
-        private System.Windows.Forms.Button btnCollectCash;
-        private System.Windows.Forms.Button btnCollectTransfer;
-        private System.Windows.Forms.Button btnReloadPayment;
-        private System.Windows.Forms.DataGridView dgvPay;
-
-        private System.Windows.Forms.TabPage tabReport;
-        private RoundedCardPanel cardReport;
-        private System.Windows.Forms.Panel pnlReportHeader;
-        private System.Windows.Forms.Label lblReportTitle;
-        private System.Windows.Forms.Panel pnlReportToolbar;
-        private System.Windows.Forms.Label lblFrom;
-        private System.Windows.Forms.DateTimePicker dtpFrom;
-        private System.Windows.Forms.Label lblTo;
-        private System.Windows.Forms.DateTimePicker dtpTo;
-        private System.Windows.Forms.ComboBox cmbReportType;
-        private System.Windows.Forms.Button btnRunReport;
-        private System.Windows.Forms.DataGridView dgvReport;
     }
 }

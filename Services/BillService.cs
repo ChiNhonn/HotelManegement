@@ -1,5 +1,7 @@
 ﻿using HotelManagement.Interfaces;
+using HotelManagement.Models;
 using HotelManagement.ViewModels;
+using System.Linq;
 
 public class BillService : IBillService
 {
@@ -35,34 +37,40 @@ public class BillService : IBillService
             throw new ArgumentException("Phải chọn ít nhất 2 hóa đơn để ghép.");
         }
 
-        // Trích xuất ra danh sách ID (int) từ danh sách BillView
         List<int> billIds = selectedBills.Select(b => b.Id).ToList();
 
-        // Gọi tầng Repository xử lý DB
         _billRepository.MergeBills(billIds);
     }
+
     public BillDetailView GetBillDetail(int billId)
     {
-        // 1. Gọi Repository để lấy dữ liệu gốc (Entity)
         var bill = _billRepository.GetBillWithDetails(billId);
 
-        if (bill == null) return null; // Trả về null nếu không tìm thấy hóa đơn
+        if (bill == null) return null;
 
-        // 2. Chuyển đổi danh sách BillDetails sang BillItemView
-        var itemViewModels = new List<BillItemView>();
+        var detailIds = bill.BillDetails?.Select(d => d.Id).ToList() ?? new List<int>();
+        var immediatePaidIds = _billRepository.GetBillDetailIdsWithImmediatePayment(detailIds);
 
-        if (bill.BillDetails != null)
-        {
-            itemViewModels = bill.BillDetails.Select(bd => new BillItemView
+        var fullyPaid = BillIsFullyPaidForDetail(bill);
+
+        var itemViewModels = (bill.BillDetails ?? Enumerable.Empty<BillDetail>())
+            .OrderBy(d => d.Id)
+            .Select(bd =>
             {
-                Product = bd.Product,
-                Quantity = bd.Quantity,
-                UnitPrice = bd.UnitPrice,
-                SubTotal = bd.SubTotal
-            }).ToList();
-        }
+                var imm = immediatePaidIds.Contains(bd.Id);
+                return new BillItemView
+                {
+                    Product = imm ? $"{bd.Product} (Đã thanh toán ngay)" : bd.Product,
+                    Quantity = bd.Quantity,
+                    UnitPrice = bd.UnitPrice,
+                    SubTotal = imm ? 0 : bd.SubTotal
+                };
+            })
+            .ToList();
 
-        // 3. Map toàn bộ thông tin sang BillDetailViewModel
+        var lineSum = itemViewModels.Sum(i => i.SubTotal);
+        var totalDue = fullyPaid ? 0m : Math.Max(0m, lineSum - bill.Discount + bill.Tax);
+
         return new BillDetailView
         {
             BillId = bill.Id,
@@ -72,8 +80,28 @@ public class BillService : IBillService
             Discount = bill.Discount,
             Tax = bill.Tax,
             DepositAmount = bill.Order?.DepositAmount ?? 0,
-            TotalAmount = bill.TotalAmount,
+            TotalAmount = totalDue,
             Items = itemViewModels
         };
     }
+
+    private static bool PaymentLooksSuccessful(string? status)
+    {
+        if (string.IsNullOrWhiteSpace(status)) return false;
+        var s = status.Trim().ToLowerInvariant();
+        return s is "success" or "successful" or "succeeded" or "paid" or "completed" or "done";
+    }
+
+    private static bool BillStatusLooksPaid(string? status)
+    {
+        if (string.IsNullOrWhiteSpace(status)) return false;
+        var s = status.Trim().ToLowerInvariant();
+        return s is "paid" or "completed" or "settled" or "closed"
+               || s.Contains("đã thanh toán", StringComparison.OrdinalIgnoreCase)
+               || s.Contains("đã đóng", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool BillIsFullyPaidForDetail(Bill bill) =>
+        BillStatusLooksPaid(bill.Status)
+        || (bill.Payments != null && bill.Payments.Any(p => p.SoftDelete == null && PaymentLooksSuccessful(p.Status)));
 }
