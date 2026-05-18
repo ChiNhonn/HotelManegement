@@ -17,6 +17,8 @@ public sealed class ManualPaymentDialog : Form
     private readonly IDashboardService _dashboard;
     private readonly Label _lblBill = new();
     private readonly ComboBox _cmbBill = new();
+    private readonly Label _lblNote = new();
+    private readonly TextBox _txtNote = new();
     private readonly Label _lblAmount = new();
     private readonly TextBox _txtAmount = new();
     private readonly Label _lblMethod = new();
@@ -32,7 +34,6 @@ public sealed class ManualPaymentDialog : Form
         Text = "Thêm giao dịch — ghi nhận thanh toán";
         FormBorderStyle = FormBorderStyle.FixedDialog;
         StartPosition = FormStartPosition.CenterParent;
-        ClientSize = new Size(520, 228);
         Font = new Font("Segoe UI", 9.5f);
         MaximizeBox = false;
         MinimizeBox = false;
@@ -46,45 +47,53 @@ public sealed class ManualPaymentDialog : Form
         _cmbBill.Width = 488;
         _cmbBill.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
+        _lblNote.Text = "Nội dung thanh toán";
+        _lblNote.AutoSize = true;
+        _lblNote.Location = new Point(16, 72);
+
+        _txtNote.Location = new Point(16, 94);
+        _txtNote.Width = 488;
+        _txtNote.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        _txtNote.Height = 26;
+
         _lblAmount.Text = "Số tiền (VNĐ)";
-        _lblAmount.Location = new Point(16, 72);
         _lblAmount.AutoSize = true;
         _lblAmount.Visible = false;
 
-        _txtAmount.Location = new Point(16, 94);
         _txtAmount.Width = 240;
         _txtAmount.Visible = false;
 
         _lblMethod.Text = "Phương thức thanh toán";
-        _lblMethod.Location = new Point(16, 84);
         _lblMethod.AutoSize = true;
 
         _radCash.Text = "Tiền mặt";
         _radCash.AutoSize = true;
         _radCash.Checked = true;
-        _radCash.Location = new Point(16, 108);
 
         _radTransfer.Text = "Chuyển khoản";
         _radTransfer.AutoSize = true;
-        _radTransfer.Location = new Point(132, 108);
 
         _btnOk.Text = "Ghi nhận";
-        _btnOk.Location = new Point(296, 176);
         _btnOk.Width = 110;
         _btnOk.Height = 32;
         _btnOk.DialogResult = DialogResult.None;
 
         _btnCancel.Text = "Đóng";
         _btnCancel.DialogResult = DialogResult.Cancel;
-        _btnCancel.Location = new Point(416, 176);
         _btnCancel.Width = 88;
         _btnCancel.Height = 32;
 
         _btnOk.Click += BtnOk_Click;
-        _cmbBill.SelectedIndexChanged += (_, _) => SyncLayout();
+        _cmbBill.SelectedIndexChanged += (_, _) =>
+        {
+            ApplyDefaultNoteFromBill();
+            SyncLayout();
+        };
 
         Controls.Add(_lblBill);
         Controls.Add(_cmbBill);
+        Controls.Add(_lblNote);
+        Controls.Add(_txtNote);
         Controls.Add(_lblAmount);
         Controls.Add(_txtAmount);
         Controls.Add(_lblMethod);
@@ -96,6 +105,7 @@ public sealed class ManualPaymentDialog : Form
         AcceptButton = _btnOk;
         CancelButton = _btnCancel;
 
+        SyncLayout();
         Shown += (_, _) => ReloadBills();
     }
 
@@ -103,6 +113,17 @@ public sealed class ManualPaymentDialog : Form
         _cmbBill.SelectedItem as DashboardBillPickRow;
 
     private bool IsStandalone() => SelectedPick()?.BillId == StandalonePickBillId;
+
+    private void ApplyDefaultNoteFromBill()
+    {
+        if (SelectedPick() is not { } pick)
+            return;
+
+        if (pick.BillId == StandalonePickBillId)
+            _txtNote.Clear();
+        else
+            _txtNote.Text = pick.DefaultPaymentNote ?? "";
+    }
 
     private void ReloadBills()
     {
@@ -113,7 +134,8 @@ public sealed class ManualPaymentDialog : Form
             {
                 BillId = StandalonePickBillId,
                 Display = "(Thu trực tiếp — không gắn hóa đơn)",
-                TotalAmount = 0
+                TotalAmount = 0,
+                DefaultPaymentNote = ""
             }
         };
         list.AddRange(bills);
@@ -125,6 +147,7 @@ public sealed class ManualPaymentDialog : Form
         if (_cmbBill.Items.Count > 0)
             _cmbBill.SelectedIndex = 0;
 
+        ApplyDefaultNoteFromBill();
         SyncLayout();
     }
 
@@ -133,17 +156,25 @@ public sealed class ManualPaymentDialog : Form
         bool st = IsStandalone();
         _lblAmount.Visible = _txtAmount.Visible = st;
 
-        int methodTop = st ? 130 : 84;
-        int radTop = st ? 154 : 108;
-        int btnTop = st ? 218 : 176;
+        const int pad = 12;
+        var y = _txtNote.Bottom + pad;
 
-        _lblMethod.Location = new Point(16, methodTop);
-        _radCash.Location = new Point(16, radTop);
-        _radTransfer.Location = new Point(132, radTop);
+        if (st)
+        {
+            _lblAmount.Location = new Point(16, y);
+            _txtAmount.Location = new Point(16, y + 22);
+            y = _txtAmount.Bottom + pad;
+        }
+
+        _lblMethod.Location = new Point(16, y);
+        _radCash.Location = new Point(16, y + 24);
+        _radTransfer.Location = new Point(132, y + 24);
+
+        var btnTop = y + 24 + 36;
         _btnOk.Location = new Point(296, btnTop);
         _btnCancel.Location = new Point(416, btnTop);
 
-        ClientSize = new Size(520, st ? 268 : 228);
+        ClientSize = new Size(520, btnTop + _btnOk.Height + 16);
     }
 
     private void BtnOk_Click(object? sender, EventArgs e)
@@ -152,6 +183,7 @@ public sealed class ManualPaymentDialog : Form
             return;
 
         var method = _radTransfer.Checked ? "Chuyển khoản" : "Tiền mặt";
+        var noteRaw = string.IsNullOrWhiteSpace(_txtNote.Text) ? null : _txtNote.Text.Trim();
 
         try
         {
@@ -167,11 +199,11 @@ public sealed class ManualPaymentDialog : Form
                     return;
                 }
 
-                _dashboard.RecordStandalonePayment(amt, method);
+                _dashboard.RecordStandalonePayment(amt, method, noteRaw);
             }
             else
             {
-                _dashboard.RecordManualBillPayment(pick.BillId, method);
+                _dashboard.RecordManualBillPayment(pick.BillId, method, noteRaw);
             }
 
             DialogResult = DialogResult.OK;

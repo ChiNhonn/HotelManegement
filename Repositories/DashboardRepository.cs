@@ -59,7 +59,14 @@ public sealed class DashboardRepository : IDashboardRepository
 
         var billPayments = _db.Payments.AsNoTracking()
             .Include(p => p.Bill!)
-            .ThenInclude(b => b.User)
+                .ThenInclude(b => b.User)
+            .Include(p => p.Bill!)
+                .ThenInclude(b => b.Order!)
+                .ThenInclude(o => o!.Customer)
+            .Include(p => p.Bill!)
+                .ThenInclude(b => b.Order!)
+                .ThenInclude(o => o!.OrderDetails!)
+                .ThenInclude(od => od.Room)
             .Where(p => p.SoftDelete == null && p.IdBill != null)
             .OrderByDescending(p => p.CreateAt)
             .Take(scanBatch)
@@ -178,7 +185,7 @@ public sealed class DashboardRepository : IDashboardRepository
         return bills;
     }
 
-    public void RecordManualBillPayment(int billId, string method)
+    public void RecordManualBillPayment(int billId, string method, string? note = null)
     {
         method = string.IsNullOrWhiteSpace(method) ? "Tiền mặt" : method.Trim();
         if (method.Length > 100)
@@ -204,7 +211,8 @@ public sealed class DashboardRepository : IDashboardRepository
             IdBill = bill.Id,
             Method = method,
             Status = "Paid",
-            CreateAt = DateTime.Now
+            CreateAt = DateTime.Now,
+            Note = NormalizePaymentNote(note)
         });
 
         bill.Status = "Paid";
@@ -214,7 +222,7 @@ public sealed class DashboardRepository : IDashboardRepository
         _db.SaveChanges();
     }
 
-    public void RecordStandalonePayment(decimal amount, string method)
+    public void RecordStandalonePayment(decimal amount, string method, string? note = null)
     {
         if (amount <= 0)
             throw new ArgumentOutOfRangeException(nameof(amount), "Số tiền phải lớn hơn 0.");
@@ -231,7 +239,8 @@ public sealed class DashboardRepository : IDashboardRepository
             Amount = amount,
             Method = method,
             Status = "Paid",
-            CreateAt = DateTime.Now
+            CreateAt = DateTime.Now,
+            Note = NormalizePaymentNote(note)
         });
 
         _db.SaveChanges();
@@ -271,11 +280,13 @@ public sealed class DashboardRepository : IDashboardRepository
         var rooms = SummarizeRooms(order);
         var guest = order.Customer?.FullName?.Trim() ?? "Khách";
         var disp = $"HĐ #{b.Id} · {rooms} · {guest} · {b.TotalAmount:N0} đ";
+        var defaultNote = $"{rooms} - {guest}";
         return new DashboardBillPickRow
         {
             BillId = b.Id,
             Display = disp,
-            TotalAmount = b.TotalAmount
+            TotalAmount = b.TotalAmount,
+            DefaultPaymentNote = defaultNote
         };
     }
 
@@ -292,6 +303,14 @@ public sealed class DashboardRepository : IDashboardRepository
         return names.Count <= 3
             ? string.Join(", ", names)
             : string.Join(", ", names.Take(3)) + "…";
+    }
+
+    private static string? NormalizePaymentNote(string? note)
+    {
+        if (string.IsNullOrWhiteSpace(note))
+            return null;
+        var t = note.Trim();
+        return t.Length <= 500 ? t : t[..500];
     }
 
     private static bool IsBillPaidStatus(string? status)

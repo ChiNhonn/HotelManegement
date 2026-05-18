@@ -38,8 +38,8 @@ public interface IDashboardRepository
     IReadOnlyList<DashboardBillPickRow> LoadBillsForManualPaymentPick(int take = 80);
 
     /// <summary>Ghi một khoản thanh toán thành công và đóng hóa đơn.</summary>
-    void RecordManualBillPayment(int billId, string method);
+    void RecordManualBillPayment(int billId, string method, string? note = null);
 
     /// <summary>Ghi nhận khoản thu không gắn hóa đơn (tiền mặt / CK).</summary>
-    void RecordStandalonePayment(decimal amount, string method);
+    void RecordStandalonePayment(decimal amount, string method, string? note = null);
 }

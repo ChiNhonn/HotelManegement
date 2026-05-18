@@ -45,11 +45,6 @@ internal static class Program
 
         var services = new ServiceCollection();
         services.AddDbContext<HotelDbContext>(options =>
-<<<<<<< HEAD
-            options.UseSqlServer(
-                @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
-        services.AddScoped<IMyDbContext>(sp => sp.GetRequiredService<HotelDbContext>());
-=======
             options.UseSqlServer(connectionString, sql =>
             {
                 sql.EnableRetryOnFailure(
@@ -58,8 +53,7 @@ internal static class Program
                     errorNumbersToAdd: null);
                 sql.CommandTimeout(180);
             }));
-
->>>>>>> Thongke
+        services.AddScoped<IMyDbContext>(sp => sp.GetRequiredService<HotelDbContext>());
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -79,15 +73,8 @@ internal static class Program
         services.AddScoped<IFloorService, FloorService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IBookingService, BookingService>();
-<<<<<<< HEAD
-        services.AddScoped<IBranchService, BranchService>();
-=======
-        services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBranchService, BranchService>();
 
-        services.AddTransient<usBookRoom>();
-
->>>>>>> Thongke
         services.AddScoped<IServiceModuleService, ServiceModuleService>();
         services.AddScoped<ICustomerServices, CustomerServices>();
 
@@ -129,14 +116,11 @@ internal static class Program
             using (var migrateScope = rootProvider.CreateScope())
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
-<<<<<<< HEAD
-=======
                 db.Database.SetCommandTimeout(180);
->>>>>>> Thongke
+
                 DatabaseMigrationHelper.Migrate(db);
                 ServiceModuleDatabaseEnsurer.EnsureSchema(db);
                 FloorSchemaPatcher.EnsureFloorStatusColumn(db);
-<<<<<<< HEAD
                 DemoHotelRoomsSeed.EnsureSeed(db);
 
                 var resetCustomers = string.Equals(
@@ -150,12 +134,6 @@ internal static class Program
 
                 DemoDashboardDataSeed.EnsureSeed(db, skipDemoOrdersAndBills: resetCustomers);
                 AuthSeed.EnsureDefaultAdmin(db);
-=======
-                ServiceModuleDatabaseEnsurer.EnsureSchema(db);
-                AuthSeed.EnsureDefaultAdmin(db);
-                DemoHotelRoomsSeed.EnsureSeed(db);
-                DemoDashboardDataSeed.EnsureSeed(db);
->>>>>>> Thongke
             }
         }
         catch (Exception ex)

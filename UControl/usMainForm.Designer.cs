@@ -37,6 +37,7 @@
             cardQuickActions = new RoundedCardPanel();
             pnlQuickActionsBody = new Panel();
             flowQuickActions = new FlowLayoutPanel();
+            lblQuickManualPaymentHeading = new Label();
             btnAddRecentPayment = new QuickActionButton();
             btnAddPayout = new QuickActionButton();
             tblQuickHead = new TableLayoutPanel();
@@ -393,6 +394,7 @@
             flowQuickActions.AutoSize = true;
             flowQuickActions.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowQuickActions.BackColor = Color.White;
+            flowQuickActions.Controls.Add(lblQuickManualPaymentHeading);
             flowQuickActions.Controls.Add(btnAddRecentPayment);
             flowQuickActions.Controls.Add(btnAddPayout);
             flowQuickActions.Dock = DockStyle.Top;
@@ -405,6 +407,19 @@
             flowQuickActions.TabIndex = 0;
             flowQuickActions.WrapContents = false;
             // 
+            // lblQuickManualPaymentHeading
+            // 
+            lblQuickManualPaymentHeading.AutoSize = false;
+            lblQuickManualPaymentHeading.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            lblQuickManualPaymentHeading.ForeColor = Color.FromArgb(71, 85, 105);
+            lblQuickManualPaymentHeading.Location = new Point(3, 3);
+            lblQuickManualPaymentHeading.Margin = new Padding(3, 0, 3, 8);
+            lblQuickManualPaymentHeading.Name = "lblQuickManualPaymentHeading";
+            lblQuickManualPaymentHeading.Size = new Size(343, 24);
+            lblQuickManualPaymentHeading.TabIndex = 2;
+            lblQuickManualPaymentHeading.Text = "Tiêu đề giao dịch";
+            lblQuickManualPaymentHeading.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // btnAddRecentPayment
             // 
             btnAddRecentPayment.FlatStyle = FlatStyle.Flat;
@@ -413,7 +428,7 @@
             btnAddRecentPayment.Name = "btnAddRecentPayment";
             btnAddRecentPayment.Size = new Size(86, 31);
             btnAddRecentPayment.TabIndex = 0;
-            btnAddRecentPayment.Text = "+ Thêm giao dịch";
+            btnAddRecentPayment.Text = "Thêm giao dịch";
             btnAddRecentPayment.UseVisualStyleBackColor = false;
             // 
             // btnAddPayout
@@ -864,6 +879,7 @@
         private RoundedCardPanel cardQuickActions;
         private Panel pnlQuickActionsBody;
         private FlowLayoutPanel flowQuickActions;
+        private Label lblQuickManualPaymentHeading;
         private QuickActionButton btnAddRecentPayment;
         private QuickActionButton btnAddPayout;
         private TableLayoutPanel tblQuickHead;

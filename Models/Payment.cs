@@ -23,6 +23,10 @@ public partial class Payment
     [Column(TypeName = "decimal(18, 2)")]
     public decimal? Amount { get; set; }
 
+    /// <summary>Nội dung / mô tả hiển thị trên dashboard (vd. phòng — khách).</summary>
+    [MaxLength(500)]
+    public string? Note { get; set; }
+
     public int? IdBill { get; set; }
     [ForeignKey("IdBill")]
     public virtual Bill? Bill { get; set; }

@@ -143,7 +143,7 @@ namespace HotelManagement.CustomControls
             foreach (var t in _dashboard.GetRecentStaffPayouts(15))
             {
                 dgvStaffPayouts.Rows.Add(
-                    t.UserName,
+                    t.Title,
                     $"- {t.Amount:N0} VNĐ",
                     t.StatusLabel,
                     t.OccurredAt.ToString("dd/MM/yyyy HH:mm", Vi));
@@ -167,6 +167,7 @@ namespace HotelManagement.CustomControls
                 var inner = Math.Max(120,
                     pnlQuickActionsBody.ClientSize.Width - pnlQuickActionsBody.Padding.Horizontal);
                 flowQuickActions.Width = inner;
+                lblQuickManualPaymentHeading.Width = inner;
                 btnAddRecentPayment.Width = inner;
                 btnAddPayout.Width = inner;
                 ApplyRoundedRegionToButton(btnAddRecentPayment, 8);
@@ -237,7 +238,7 @@ namespace HotelManagement.CustomControls
                 Loader = () => _dashboard.GetRecentStaffPayouts(1000)
                     .Select(t => new object?[]
                     {
-                        t.UserName,
+                        t.Title,
                         $"- {t.Amount:N0} VNĐ",
                         t.StatusLabel,
                         t.OccurredAt.ToString("dd/MM/yyyy HH:mm", Vi)
@@ -267,7 +268,7 @@ namespace HotelManagement.CustomControls
                 Loader = () => _dashboard.GetRecentTransactions(1000)
                     .Select(t => new object?[]
                     {
-                        t.UserName,
+                        t.Title,
                         $"+ {t.Amount:N0} VNĐ",
                         string.IsNullOrWhiteSpace(t.Method) ? t.StatusLabel : t.Method,
                         t.OccurredAt.ToString("dd/MM/yyyy HH:mm", Vi)
@@ -582,7 +583,7 @@ namespace HotelManagement.CustomControls
             foreach (var t in _dashboard.GetRecentTransactions(10))
             {
                 dgvRecentTx.Rows.Add(
-                    t.UserName,
+                    t.Title,
                     $"+ {t.Amount:N0} VNĐ",
                     string.IsNullOrWhiteSpace(t.Method) ? t.StatusLabel : t.Method,
                     t.OccurredAt.ToString("dd/MM/yyyy HH:mm", Vi));

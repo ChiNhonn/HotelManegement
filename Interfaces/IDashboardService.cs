@@ -27,10 +27,10 @@ public interface IDashboardService
     IReadOnlyList<DashboardBillPickRow> GetBillsForManualPaymentPick(int take = 80);
 
     /// <summary>Ghi nhận thanh toán (tiền mặt / chuyển khoản) cho một hóa đơn.</summary>
-    void RecordManualBillPayment(int billId, string method);
+    void RecordManualBillPayment(int billId, string method, string? note = null);
 
     /// <summary>Ghi nhận khoản thu trực tiếp không gắn hóa đơn.</summary>
-    void RecordStandalonePayment(decimal amount, string method);
+    void RecordStandalonePayment(decimal amount, string method, string? note = null);
 
     /// <summary>Chi trả đã ghi nhận từ dashboard (bảng <c>StaffPayouts</c>).</summary>
     IReadOnlyList<DashboardRecentTransactionItem> GetRecentStaffPayouts(int take = 15);

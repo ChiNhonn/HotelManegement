@@ -75,13 +75,11 @@ public class DashboardService : IDashboardService
             .Select(p =>
             {
                 var hasBill = p.IdBill != null && p.Bill != null;
+                var title = ResolvePaymentGridTitle(p, hasBill);
                 return new DashboardRecentTransactionItem
                 {
-                    UserName = hasBill
-                        ? (p.Bill!.User?.UserName?.Trim()
-                           ?? p.Bill.User?.FullName?.Trim()
-                           ?? "—")
-                        : "Thu trực tiếp",
+                    Title = title,
+                    UserName = title,
                     Amount = hasBill ? p.Bill!.TotalAmount : (p.Amount ?? 0m),
                     StatusLabel = "Thành công",
                     Method = NormalizePaymentMethod(p.Method),
@@ -89,6 +87,39 @@ public class DashboardService : IDashboardService
                 };
             })
             .ToList();
+    }
+
+    private static string ResolvePaymentGridTitle(Payment p, bool hasBill)
+    {
+        if (!string.IsNullOrWhiteSpace(p.Note))
+            return p.Note.Trim();
+        if (!hasBill)
+            return "Thu trực tiếp";
+        return FormatBillPaymentCaption(p.Bill!) ?? "—";
+    }
+
+    private static string? FormatBillPaymentCaption(Bill bill)
+    {
+        if (bill.Order == null)
+            return null;
+        var rooms = SummarizeRoomsForCaption(bill.Order);
+        var guest = bill.Order.Customer?.FullName?.Trim() ?? "Khách";
+        return $"{rooms} - {guest}";
+    }
+
+    private static string SummarizeRoomsForCaption(Order o)
+    {
+        var names = o.OrderDetails?
+            .Where(od => od.Room != null && !string.IsNullOrWhiteSpace(od.Room.Name))
+            .Select(od => od.Room!.Name.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        if (names == null || names.Count == 0)
+            return "Phòng —";
+        return names.Count <= 3
+            ? string.Join(", ", names)
+            : string.Join(", ", names.Take(3)) + "…";
     }
 
     private static string NormalizePaymentMethod(string? raw)
@@ -107,16 +138,17 @@ public class DashboardService : IDashboardService
     public IReadOnlyList<DashboardBillPickRow> GetBillsForManualPaymentPick(int take = 80) =>
         _repo.LoadBillsForManualPaymentPick(take);
 
-    public void RecordManualBillPayment(int billId, string method) =>
-        _repo.RecordManualBillPayment(billId, method);
+    public void RecordManualBillPayment(int billId, string method, string? note = null) =>
+        _repo.RecordManualBillPayment(billId, method, note);
 
-    public void RecordStandalonePayment(decimal amount, string method) =>
-        _repo.RecordStandalonePayment(amount, method);
+    public void RecordStandalonePayment(decimal amount, string method, string? note = null) =>
+        _repo.RecordStandalonePayment(amount, method, note);
 
     public IReadOnlyList<DashboardRecentTransactionItem> GetRecentStaffPayouts(int take = 15) =>
         _repo.LoadRecentStaffPayouts(take)
             .Select(p => new DashboardRecentTransactionItem
             {
+                Title = p.UserName,
                 UserName = p.UserName,
                 Amount = p.Amount,
                 StatusLabel = p.StatusLabel,

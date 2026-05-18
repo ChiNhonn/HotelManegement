@@ -112,7 +112,6 @@ namespace HotelManagement.Forms
             btnServices.Image = CreateNavGlyph('\uE8A7');
             btnBill.Image = CreateNavGlyph('\uE9F3');
             btnCustomers.Image = CreateNavGlyph('\uE716');
-            btnRolesStaff.Image = CreateNavGlyph('\uEA18');
             btnSignOut.Image = CreateNavGlyph('\uF3B1');
 
             foreach (Control c in pnlChoice.Controls)
@@ -209,7 +208,7 @@ namespace HotelManagement.Forms
             int y = SidebarHeaderBottom + 6;
             var navOrder = new[]
             {
-                btnDashboard, btnRooms, btnBookings, btnServices, btnBill, btnCustomers, btnRolesStaff
+                btnDashboard, btnRooms, btnBookings, btnServices, btnBill, btnCustomers
             };
 
             foreach (var b in navOrder)
@@ -299,12 +298,6 @@ namespace HotelManagement.Forms
         {
             SetActiveNav(btnDashboard);
             chuyentrang(Program.ServiceProvider.GetRequiredService<usMainForm>());
-        }
-
-        private void btnRolesStaff_Click(object sender, EventArgs e)
-        {
-            SetActiveNav(btnRolesStaff);
-            //chuyentrang(new usInvoice("Quản lý Phân quyền & Nhân sự"));
         }
 
         private void btnSignOut_Click(object sender, EventArgs e)

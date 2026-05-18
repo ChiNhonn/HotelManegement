@@ -21,7 +21,6 @@
             panelContainer = new Panel();
             pnlChoice = new SidebarGradientPanel();
             btnSignOut = new Button();
-            btnRolesStaff = new Button();
             btnCustomers = new Button();
             btnBill = new Button();
             btnServices = new Button();
@@ -61,7 +60,6 @@
             // 
             pnlChoice.BackColor = Color.FromArgb(0, 114, 255);
             pnlChoice.Controls.Add(btnSignOut);
-            pnlChoice.Controls.Add(btnRolesStaff);
             pnlChoice.Controls.Add(btnCustomers);
             pnlChoice.Controls.Add(btnBill);
             pnlChoice.Controls.Add(btnServices);
@@ -86,18 +84,6 @@
             btnSignOut.Text = "Đăng xuất";
             btnSignOut.UseVisualStyleBackColor = false;
             btnSignOut.Click += btnSignOut_Click;
-            // 
-            // btnRolesStaff
-            // 
-            btnRolesStaff.FlatStyle = FlatStyle.Flat;
-            btnRolesStaff.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnRolesStaff.Location = new Point(10, 545);
-            btnRolesStaff.Name = "btnRolesStaff";
-            btnRolesStaff.Size = new Size(288, 59);
-            btnRolesStaff.TabIndex = 6;
-            btnRolesStaff.Text = "Quản lý phân quyền && nhân sự";
-            btnRolesStaff.UseVisualStyleBackColor = false;
-            btnRolesStaff.Click += btnRolesStaff_Click;
             // 
             // btnCustomers
             // 
@@ -258,7 +244,6 @@
         private Button btnRooms;
         private Button btnDashboard;
         private Button btnSignOut;
-        private Button btnRolesStaff;
         private Button btnBill;
         private Button btnServices;
         private Button btnBookings;

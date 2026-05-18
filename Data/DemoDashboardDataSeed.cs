@@ -10,8 +10,9 @@ namespace HotelManagement.Data;
 /// <summary>
 /// Seed dữ liệu giả phục vụ kiểm thử trang Dashboard:
 /// khách hàng, đơn đặt phòng (đang chờ / đã thanh toán online / quá giờ trả phòng),
-/// hóa đơn + thanh toán, chi trả nhân sự, dịch vụ phụ chưa thanh toán, và một vài phòng cần dọn.
-/// Idempotent: nhận diện bản ghi đã tạo bằng <see cref="DemoMarker"/> trong <c>Note</c> / <c>Note</c> staff payouts.
+/// hóa đơn + thanh toán, chi trả nhân sự, dịch vụ phụ chưa thanh toán, và (một lần) hai phòng cần dọn.
+/// Idempotent: nhận diện bản ghi đã tạo bằng <see cref="DemoMarker"/> trong <c>Note</c> đơn / chi trả;
+/// phòng « cần dọn » demo chỉ gán trước khi có đơn demo.
 /// </summary>
 public static class DemoDashboardDataSeed
 {
@@ -136,6 +137,11 @@ public static class DemoDashboardDataSeed
 
     private static void EnsureDemoRoomsNeedingCleaning(HotelDbContext db)
     {
+        // Chỉ chạy trong lần seed dashboard đầu tiên (trước khi có đơn demo).
+        // Tránh mỗi lần mở app lại gán « needs_cleaning » cho 2 phòng đầu — làm phòng đã « Dọn xong » lại vàng.
+        if (db.Orders.AsNoTracking().Any(o => o.Note != null && o.Note.Contains(DemoMarker)))
+            return;
+
         // Chỉ đổi trạng thái phòng chưa-được-dùng-cho-demo: chọn 2 phòng "available" đầu tiên
         var rooms = db.Rooms
             .Where(r => r.SoftDelete == null

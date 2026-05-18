@@ -36,6 +36,9 @@ public sealed class DashboardReminderItem
 /// <summary>Giao dịch thanh toán gần đây (dashboard).</summary>
 public sealed class DashboardRecentTransactionItem
 {
+    /// <summary>Dòng đầu trong lưới — nội dung thanh toán hoặc tiêu đề chi trả.</summary>
+    public string Title { get; init; } = "";
+
     public string UserName { get; init; } = "";
     public decimal Amount { get; init; }
     public string StatusLabel { get; init; } = "Thành công";
@@ -51,4 +54,7 @@ public sealed class DashboardBillPickRow
     public int BillId { get; init; }
     public string Display { get; init; } = "";
     public decimal TotalAmount { get; init; }
+
+    /// <summary>Gợi ý điền « Nội dung thanh toán » (phòng — khách).</summary>
+    public string DefaultPaymentNote { get; init; } = "";
 }
