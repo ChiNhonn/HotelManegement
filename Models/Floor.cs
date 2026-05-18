@@ -13,12 +13,16 @@ namespace HotelManagement.Models
         [Key]
         public int Id { get; set; }
         [Required, MaxLength(100)]
-        public string Name { get; set; }    
+        public string Name { get; set; }
+
+        /// <summary>open | maintenance | closed — khóa đặt phòng cả tầng.</summary>
+        [Required, MaxLength(20)]
+        public string Status { get; set; } = "open";
 
         public virtual ICollection<Room> Rooms { get; set; }
 
         public int? IdBranch { get; set; }
         [ForeignKey("IdBranch")]
-        public virtual Branch Branch { get; set; }
+        public virtual Branch? Branch { get; set; }
     }
 }

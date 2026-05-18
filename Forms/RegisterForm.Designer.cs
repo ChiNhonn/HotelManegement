@@ -88,7 +88,7 @@ namespace HotelManagement.Forms
             btnRegister.Name = "btnRegister";
             btnRegister.Size = new Size(141, 43);
             btnRegister.TabIndex = 4;
-            btnRegister.Text = "Đăng ký";
+            btnRegister.Text = "Register";
             btnRegister.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnRegister.UseVisualStyleBackColor = false;
             btnRegister.Click += btnRegister_Click;
@@ -104,7 +104,7 @@ namespace HotelManagement.Forms
             linkLogin.Size = new Size(242, 20);
             linkLogin.TabIndex = 5;
             linkLogin.TabStop = true;
-            linkLogin.Text = "Đã có tài khoản? Đăng nhập ngay";
+            linkLogin.Text = "Already have an account? Sign in";
             linkLogin.LinkClicked += linkLogin_LinkClicked;
             // 
             // lblName
@@ -116,7 +116,7 @@ namespace HotelManagement.Forms
             lblName.Name = "lblName";
             lblName.Size = new Size(116, 20);
             lblName.TabIndex = 6;
-            lblName.Text = "Tên đăng nhập:";
+            lblName.Text = "Username:";
             // 
             // lblSDT
             // 
@@ -127,7 +127,7 @@ namespace HotelManagement.Forms
             lblSDT.Name = "lblSDT";
             lblSDT.Size = new Size(100, 20);
             lblSDT.TabIndex = 7;
-            lblSDT.Text = "Số điện thoại";
+            lblSDT.Text = "Phone";
             // 
             // lblPassword
             // 
@@ -138,7 +138,7 @@ namespace HotelManagement.Forms
             lblPassword.Name = "lblPassword";
             lblPassword.Size = new Size(79, 20);
             lblPassword.TabIndex = 8;
-            lblPassword.Text = "Mật khẩu:\r\n";
+            lblPassword.Text = "Password:\r\n";
             // 
             // lblEmail
             // 
@@ -169,7 +169,7 @@ namespace HotelManagement.Forms
             Controls.Add(txtPassword);
             Controls.Add(txtUsername);
             Name = "RegisterForm";
-            Text = "RegisterForm";
+            Text = "Register";
             Load += RegisterForm_Load;
             ResumeLayout(false);
             PerformLayout();

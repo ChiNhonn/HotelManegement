@@ -2,15 +2,8 @@
 {
     partial class MainForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,212 +15,268 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            pnlTopMainForm = new Panel();
-            panel1 = new Panel();
-            lblTenKhachSan = new Label();
             pnlContainerMainForm = new Panel();
             panelContainer = new Panel();
-            pnlChoice = new Panel();
-            btnDangXuat = new Button();
-            btnThongKe = new Button();
-            btnDichVu = new Button();
-            btnDatPhong = new Button();
-            btnKhach = new Button();
-            btnPhong = new Button();
-            btnTrangChu = new Button();
-            pnlTopMainForm.SuspendLayout();
-            panel1.SuspendLayout();
+            pnlChoice = new SidebarGradientPanel();
+            btnSignOut = new Button();
+            btnRolesStaff = new Button();
+            btnCustomers = new Button();
+            btnBill = new Button();
+            btnFinance = new Button();
+            btnServices = new Button();
+            btnBookings = new Button();
+            btnRooms = new Button();
+            btnDashboard = new Button();
+            pnlSidebarHeader = new Panel();
+            pnlSidebarLine = new Panel();
+            lblSidebarSubtitle = new Label();
+            lblSidebarTitle = new Label();
+            lblSidebarIcon = new Label();
             pnlContainerMainForm.SuspendLayout();
             pnlChoice.SuspendLayout();
+            pnlSidebarHeader.SuspendLayout();
             SuspendLayout();
-            // 
-            // pnlTopMainForm
-            // 
-            pnlTopMainForm.Controls.Add(panel1);
-            pnlTopMainForm.Dock = DockStyle.Top;
-            pnlTopMainForm.Location = new Point(0, 0);
-            pnlTopMainForm.Name = "pnlTopMainForm";
-            pnlTopMainForm.Size = new Size(1422, 125);
-            pnlTopMainForm.TabIndex = 1;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(lblTenKhachSan);
-            panel1.Location = new Point(12, 12);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(270, 96);
-            panel1.TabIndex = 1;
-            // 
-            // lblTenKhachSan
-            // 
-            lblTenKhachSan.AutoSize = true;
-            lblTenKhachSan.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            lblTenKhachSan.Location = new Point(24, 22);
-            lblTenKhachSan.Name = "lblTenKhachSan";
-            lblTenKhachSan.Size = new Size(209, 46);
-            lblTenKhachSan.TabIndex = 0;
-            lblTenKhachSan.Text = "NHẤT THỜI";
             // 
             // pnlContainerMainForm
             // 
             pnlContainerMainForm.Controls.Add(panelContainer);
             pnlContainerMainForm.Controls.Add(pnlChoice);
             pnlContainerMainForm.Dock = DockStyle.Fill;
-            pnlContainerMainForm.Location = new Point(0, 125);
+            pnlContainerMainForm.Location = new Point(0, 0);
             pnlContainerMainForm.Name = "pnlContainerMainForm";
-            pnlContainerMainForm.Size = new Size(1422, 850);
+            pnlContainerMainForm.Size = new Size(1422, 851);
             pnlContainerMainForm.TabIndex = 2;
             // 
             // panelContainer
             // 
             panelContainer.BackColor = Color.WhiteSmoke;
             panelContainer.Dock = DockStyle.Fill;
-            panelContainer.Location = new Point(288, 0);
+            panelContainer.Location = new Point(309, 0);
             panelContainer.Name = "panelContainer";
-            panelContainer.Size = new Size(1134, 850);
+            panelContainer.Size = new Size(1113, 851);
             panelContainer.TabIndex = 1;
             // 
             // pnlChoice
             // 
-            pnlChoice.BackColor = Color.White;
-            pnlChoice.Controls.Add(btnDangXuat);
-            pnlChoice.Controls.Add(btnThongKe);
-            pnlChoice.Controls.Add(btnDichVu);
-            pnlChoice.Controls.Add(btnDatPhong);
-            pnlChoice.Controls.Add(btnKhach);
-            pnlChoice.Controls.Add(btnPhong);
-            pnlChoice.Controls.Add(btnTrangChu);
+            pnlChoice.BackColor = Color.FromArgb(0, 114, 255);
+            pnlChoice.Controls.Add(btnSignOut);
+            pnlChoice.Controls.Add(btnRolesStaff);
+            pnlChoice.Controls.Add(btnCustomers);
+            pnlChoice.Controls.Add(btnBill);
+            pnlChoice.Controls.Add(btnFinance);
+            pnlChoice.Controls.Add(btnServices);
+            pnlChoice.Controls.Add(btnBookings);
+            pnlChoice.Controls.Add(btnRooms);
+            pnlChoice.Controls.Add(btnDashboard);
+            pnlChoice.Controls.Add(pnlSidebarHeader);
             pnlChoice.Dock = DockStyle.Left;
             pnlChoice.Location = new Point(0, 0);
             pnlChoice.Name = "pnlChoice";
-            pnlChoice.Size = new Size(288, 850);
+            pnlChoice.Size = new Size(309, 851);
             pnlChoice.TabIndex = 2;
             // 
-            // btnDangXuat
+            // btnSignOut
             // 
-            btnDangXuat.FlatStyle = FlatStyle.Flat;
-            btnDangXuat.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnDangXuat.Location = new Point(6, 414);
-            btnDangXuat.Name = "btnDangXuat";
-            btnDangXuat.Size = new Size(276, 62);
-            btnDangXuat.TabIndex = 5;
-            btnDangXuat.Text = "Đăng Xuất ";
-            btnDangXuat.UseVisualStyleBackColor = true;
-            btnDangXuat.Click += btnDangXuat_Click;
+            btnSignOut.FlatStyle = FlatStyle.Flat;
+            btnSignOut.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnSignOut.Location = new Point(10, 780);
+            btnSignOut.Name = "btnSignOut";
+            btnSignOut.Size = new Size(288, 56);
+            btnSignOut.TabIndex = 7;
+            btnSignOut.Text = "Đăng xuất";
+            btnSignOut.UseVisualStyleBackColor = false;
+            btnSignOut.Click += btnSignOut_Click;
             // 
-            // btnThongKe
+            // btnRolesStaff
             // 
-            btnThongKe.FlatStyle = FlatStyle.Flat;
-            btnThongKe.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnThongKe.Location = new Point(6, 346);
-            btnThongKe.Name = "btnThongKe";
-            btnThongKe.Size = new Size(276, 62);
-            btnThongKe.TabIndex = 4;
-            btnThongKe.Text = "Thống Kê";
-            btnThongKe.UseVisualStyleBackColor = true;
-            btnThongKe.Click += btnThongKe_Click;
+            btnRolesStaff.FlatStyle = FlatStyle.Flat;
+            btnRolesStaff.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnRolesStaff.Location = new Point(10, 545);
+            btnRolesStaff.Name = "btnRolesStaff";
+            btnRolesStaff.Size = new Size(288, 59);
+            btnRolesStaff.TabIndex = 6;
+            btnRolesStaff.Text = "Quản lý phân quyền && nhân sự";
+            btnRolesStaff.UseVisualStyleBackColor = false;
+            btnRolesStaff.Click += btnRolesStaff_Click;
             // 
-            // btnDichVu
+            // btnCustomers
             // 
-            btnDichVu.FlatStyle = FlatStyle.Flat;
-            btnDichVu.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnDichVu.Location = new Point(6, 278);
-            btnDichVu.Name = "btnDichVu";
-            btnDichVu.Size = new Size(276, 62);
-            btnDichVu.TabIndex = 3;
-            btnDichVu.Text = "Dịch vụ";
-            btnDichVu.UseVisualStyleBackColor = true;
-            btnDichVu.Click += btnDichVu_Click;
+            btnCustomers.FlatStyle = FlatStyle.Flat;
+            btnCustomers.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnCustomers.Location = new Point(10, 483);
+            btnCustomers.Name = "btnCustomers";
+            btnCustomers.Size = new Size(288, 56);
+            btnCustomers.TabIndex = 5;
+            btnCustomers.Text = "Quản lý khách hàng";
+            btnCustomers.UseVisualStyleBackColor = false;
+            btnCustomers.Click += btnCustomers_Click;
             // 
-            // btnDatPhong
+            // btnBill
             // 
-            btnDatPhong.FlatStyle = FlatStyle.Flat;
-            btnDatPhong.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnDatPhong.Location = new Point(6, 210);
-            btnDatPhong.Name = "btnDatPhong";
-            btnDatPhong.Size = new Size(276, 62);
-            btnDatPhong.TabIndex = 2;
-            btnDatPhong.Text = "Đặt Phòng";
-            btnDatPhong.UseVisualStyleBackColor = true;
-            btnDatPhong.Click += btnDatPhong_Click;
+            btnBill.FlatStyle = FlatStyle.Flat;
+            btnBill.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnBill.Location = new Point(10, 418);
+            btnBill.Name = "btnBill";
+            btnBill.Size = new Size(288, 59);
+            btnBill.TabIndex = 9;
+            btnBill.Text = "Quản lý hóa đơn";
+            btnBill.UseVisualStyleBackColor = false;
+            btnBill.Click += btnBill_Click;
             // 
-            // btnKhach
+            // btnFinance
             // 
-            btnKhach.FlatStyle = FlatStyle.Flat;
-            btnKhach.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnKhach.Location = new Point(6, 142);
-            btnKhach.Name = "btnKhach";
-            btnKhach.Size = new Size(276, 62);
-            btnKhach.TabIndex = 1;
-            btnKhach.Text = "Khách";
-            btnKhach.UseVisualStyleBackColor = true;
-            btnKhach.Click += btnKhach_Click;
+            btnFinance.FlatStyle = FlatStyle.Flat;
+            btnFinance.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnFinance.Location = new Point(10, 353);
+            btnFinance.Name = "btnFinance";
+            btnFinance.Size = new Size(288, 59);
+            btnFinance.TabIndex = 4;
+            btnFinance.Text = "Quản lý tài chính && thanh toán";
+            btnFinance.UseVisualStyleBackColor = false;
+            btnFinance.Click += btnFinance_Click;
             // 
-            // btnPhong
+            // btnServices
             // 
-            btnPhong.FlatStyle = FlatStyle.Flat;
-            btnPhong.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnPhong.Location = new Point(6, 74);
-            btnPhong.Name = "btnPhong";
-            btnPhong.Size = new Size(276, 62);
-            btnPhong.TabIndex = 0;
-            btnPhong.Text = "Phòng ";
-            btnPhong.UseVisualStyleBackColor = true;
-            btnPhong.Click += btnPhong_Click;
+            btnServices.FlatStyle = FlatStyle.Flat;
+            btnServices.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnServices.Location = new Point(10, 288);
+            btnServices.Name = "btnServices";
+            btnServices.Size = new Size(288, 59);
+            btnServices.TabIndex = 3;
+            btnServices.Text = "Quản lý dịch vụ && tiện ích";
+            btnServices.UseVisualStyleBackColor = false;
+            btnServices.Click += btnServices_Click;
             // 
-            // btnTrangChu
+            // btnBookings
             // 
-            btnTrangChu.FlatStyle = FlatStyle.Flat;
-            btnTrangChu.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnTrangChu.Location = new Point(6, 6);
-            btnTrangChu.Name = "btnTrangChu";
-            btnTrangChu.Size = new Size(276, 62);
-            btnTrangChu.TabIndex = 6;
-            btnTrangChu.Text = "Trang Chủ";
-            btnTrangChu.UseVisualStyleBackColor = true;
-            btnTrangChu.Click += btnTrangChu_Click;
+            btnBookings.FlatStyle = FlatStyle.Flat;
+            btnBookings.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnBookings.Location = new Point(10, 226);
+            btnBookings.Name = "btnBookings";
+            btnBookings.Size = new Size(288, 56);
+            btnBookings.TabIndex = 2;
+            btnBookings.Text = "Quản lý đặt phòng";
+            btnBookings.UseVisualStyleBackColor = false;
+            btnBookings.Click += btnBookings_Click;
+            // 
+            // btnRooms
+            // 
+            btnRooms.FlatStyle = FlatStyle.Flat;
+            btnRooms.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnRooms.Location = new Point(10, 164);
+            btnRooms.Name = "btnRooms";
+            btnRooms.Size = new Size(288, 56);
+            btnRooms.TabIndex = 1;
+            btnRooms.Text = "Quản lý phòng";
+            btnRooms.UseVisualStyleBackColor = false;
+            btnRooms.Click += btnRooms_Click;
+            // 
+            // btnDashboard
+            // 
+            btnDashboard.FlatStyle = FlatStyle.Flat;
+            btnDashboard.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btnDashboard.Location = new Point(10, 102);
+            btnDashboard.Name = "btnDashboard";
+            btnDashboard.Size = new Size(288, 56);
+            btnDashboard.TabIndex = 0;
+            btnDashboard.Text = "Trang chủ";
+            btnDashboard.UseVisualStyleBackColor = false;
+            btnDashboard.Click += btnDashboard_Click;
+            // 
+            // pnlSidebarHeader
+            // 
+            pnlSidebarHeader.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pnlSidebarHeader.BackColor = Color.FromArgb(55, 125, 230);
+            pnlSidebarHeader.Controls.Add(pnlSidebarLine);
+            pnlSidebarHeader.Controls.Add(lblSidebarSubtitle);
+            pnlSidebarHeader.Controls.Add(lblSidebarTitle);
+            pnlSidebarHeader.Controls.Add(lblSidebarIcon);
+            pnlSidebarHeader.Location = new Point(0, 0);
+            pnlSidebarHeader.Name = "pnlSidebarHeader";
+            pnlSidebarHeader.Size = new Size(309, 96);
+            pnlSidebarHeader.TabIndex = 8;
+            // 
+            // pnlSidebarLine
+            // 
+            pnlSidebarLine.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlSidebarLine.BackColor = Color.FromArgb(60, 255, 255, 255);
+            pnlSidebarLine.Location = new Point(14, 91);
+            pnlSidebarLine.Name = "pnlSidebarLine";
+            pnlSidebarLine.Size = new Size(280, 1);
+            pnlSidebarLine.TabIndex = 3;
+            // 
+            // lblSidebarSubtitle
+            // 
+            lblSidebarSubtitle.AutoSize = true;
+            lblSidebarSubtitle.Font = new Font("Segoe UI", 9.2F);
+            lblSidebarSubtitle.ForeColor = Color.FromArgb(210, 255, 255, 255);
+            lblSidebarSubtitle.Location = new Point(53, 45);
+            lblSidebarSubtitle.Name = "lblSidebarSubtitle";
+            lblSidebarSubtitle.Size = new Size(137, 21);
+            lblSidebarSubtitle.TabIndex = 2;
+            lblSidebarSubtitle.Text = "Quản lý khách sạn";
+            // 
+            // lblSidebarTitle
+            // 
+            lblSidebarTitle.AutoSize = true;
+            lblSidebarTitle.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblSidebarTitle.ForeColor = Color.White;
+            lblSidebarTitle.Location = new Point(53, 16);
+            lblSidebarTitle.Name = "lblSidebarTitle";
+            lblSidebarTitle.Size = new Size(93, 30);
+            lblSidebarTitle.TabIndex = 1;
+            lblSidebarTitle.Text = "The Sea";
+            // 
+            // lblSidebarIcon
+            // 
+            lblSidebarIcon.AutoSize = true;
+            lblSidebarIcon.Font = new Font("Segoe MDL2 Assets", 22F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSidebarIcon.ForeColor = Color.White;
+            lblSidebarIcon.Location = new Point(16, 21);
+            lblSidebarIcon.Name = "lblSidebarIcon";
+            lblSidebarIcon.Size = new Size(33, 23);
+            lblSidebarIcon.TabIndex = 0;
+            lblSidebarIcon.Text = "";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1422, 975);
+            ClientSize = new Size(1422, 851);
             Controls.Add(pnlContainerMainForm);
-            Controls.Add(pnlTopMainForm);
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MainForm";
+            Text = "The Sea — Quản lý khách sạn";
             WindowState = FormWindowState.Maximized;
             Load += MainForm_Load;
-            pnlTopMainForm.ResumeLayout(false);
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             pnlContainerMainForm.ResumeLayout(false);
             pnlChoice.ResumeLayout(false);
+            pnlSidebarHeader.ResumeLayout(false);
+            pnlSidebarHeader.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel pnlTopMainForm;
         private Panel pnlContainerMainForm;
         private Panel panelContainer;
-        public Panel pnlChoice;
-        private Button btnKhach;
-        private Button btnPhong;
-        private Button btnTrangChu;
-        private Button btnDangXuat;
-        private Button btnThongKe;
-        private Button btnDichVu;
-        private Button btnDatPhong;
-        private Panel panel1;
-        private Label lblTenKhachSan;
+        private Panel pnlSidebarHeader;
+        private Label lblSidebarIcon;
+        private Label lblSidebarTitle;
+        private Label lblSidebarSubtitle;
+        private Panel pnlSidebarLine;
+        private Button btnCustomers;
+        private Button btnRooms;
+        private Button btnDashboard;
+        private Button btnSignOut;
+        private Button btnRolesStaff;
+        private Button btnFinance;
+        private Button btnBill;
+        private Button btnServices;
+        private Button btnBookings;
+        public SidebarGradientPanel pnlChoice;
     }
 }

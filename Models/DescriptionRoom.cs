@@ -24,7 +24,7 @@ namespace HotelManagement.Models
 
         public int? IdRoomType { get; set; }
         [ForeignKey("IdRoomType")]
-        public virtual RoomType RoomType { get; set; }
+        public virtual RoomType? RoomType { get; set; }
 
     }
 }

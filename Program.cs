@@ -30,21 +30,42 @@ internal static class Program
             options.UseSqlServer(
                 @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
 
+
+        services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
+        services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
+        services.AddScoped<IDashboardRepository, DashboardRepository>();
+
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
-
+        services.AddScoped<IFloorRepository, FloorRepository>();
+        services.AddScoped<IBillRepository, BillRepository>();
+        services.AddScoped<IBillService, BillService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IRoomTypeService, RoomTypeService>();
+        services.AddScoped<IFloorService, FloorService>();
+        services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<IBookingService, BookingService>();
+        services.AddScoped<IBranchRepository, BranchRepository>();
+        services.AddScoped<IBranchService, BranchService>();
 
+        services.AddTransient<usBookRoom>();
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
         services.AddTransient<RegisterForm>();
         services.AddTransient<usRoom>();
-        services.AddTransient<AddRoomDialogForm>();
-        services.AddTransient<AddRoomTypeDiaLogForm>();
+        services.AddTransient<usBill>();
+        services.AddTransient<usMainForm>();
+        services.AddTransient<ForgetPasswordForm>();
+        services.AddTransient<DoiMKForm>();
 
+        services.AddTransient<BulkCreateRoomsDialog>();
+        services.AddTransient<RoomEditDialogForm>();
+        services.AddTransient<RoomTypeEditDialogForm>();
+        services.AddTransient<FloorEditDialogForm>();
+        services.AddTransient<BillDetailDialogForm>();
+        services.AddTransient<BranchEditDiaLogForm>();
         var rootProvider = services.BuildServiceProvider();
         _rootScope = rootProvider.CreateScope();
         ServiceProvider = _rootScope.ServiceProvider;
@@ -61,7 +82,10 @@ internal static class Program
             using (var migrateScope = rootProvider.CreateScope())
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
-                db.Database.Migrate();
+                DatabaseMigrationHelper.Migrate(db);
+                FloorSchemaPatcher.EnsureFloorStatusColumn(db);
+                DemoHotelRoomsSeed.EnsureSeed(db);
+                AuthSeed.EnsureDefaultAdmin(db);
             }
         }
         catch (Exception ex)

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,7 +22,63 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="MiniExcel" Version="1.44.1" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
+    <PackageReference Include="QuestPDF" Version="2026.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UControl\RoomBookingTile.Designer.cs">
+      <DependentUpon>RoomBookingTile.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="UControl\RoomBookingTile.resx">
+      <DependentUpon>RoomBookingTile.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Update="Forms\BookRoomDialog.Designer.cs">
+      <DependentUpon>BookRoomDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Forms\BookRoomDialog.resx">
+      <DependentUpon>BookRoomDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Update="Forms\BookingEditDialog.Designer.cs">
+      <DependentUpon>BookingEditDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Forms\BookingEditDialog.resx">
+      <DependentUpon>BookingEditDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Update="Forms\BookingViewDialog.Designer.cs">
+      <DependentUpon>BookingViewDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Forms\BookingViewDialog.resx">
+      <DependentUpon>BookingViewDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Update="Forms\CheckoutEarlyDialog.Designer.cs">
+      <DependentUpon>CheckoutEarlyDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Forms\CheckoutEarlyDialog.resx">
+      <DependentUpon>CheckoutEarlyDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Update="Forms\BulkCreateRoomsDialog.Designer.cs">
+      <DependentUpon>BulkCreateRoomsDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Forms\BulkCreateRoomsDialog.resx">
+      <DependentUpon>BulkCreateRoomsDialog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

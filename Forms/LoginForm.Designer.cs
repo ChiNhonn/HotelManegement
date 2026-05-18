@@ -29,149 +29,151 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
-            lblTaiKhoan = new Label();
-            lblMatKhau = new Label();
-            btnDangNhap = new Button();
-            btnDangKy = new Button();
-            txtTaiKhoan = new TextBox();
-            txtMatKhau = new TextBox();
-            lblTitleDangNhap = new Label();
-            linkQuenMK = new LinkLabel();
+            lblUsername = new Label();
+            lblPassword = new Label();
+            btnSignIn = new Button();
+            btnOpenRegister = new Button();
+            txtUsername = new TextBox();
+            txtPassword = new TextBox();
+            lblTitleLogin = new Label();
+            linkForgotPassword = new LinkLabel();
             SuspendLayout();
             // 
-            // lblTaiKhoan
+            // lblUsername
             // 
-            lblTaiKhoan.AutoSize = true;
-            lblTaiKhoan.BackColor = Color.Transparent;
-            lblTaiKhoan.Font = new Font("Segoe UI Emoji", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTaiKhoan.ForeColor = SystemColors.InactiveCaptionText;
-            lblTaiKhoan.Location = new Point(51, 95);
-            lblTaiKhoan.Name = "lblTaiKhoan";
-            lblTaiKhoan.Size = new Size(166, 37);
-            lblTaiKhoan.TabIndex = 0;
-            lblTaiKhoan.Text = "Tài Khoản: ";
+            lblUsername.AutoSize = true;
+            lblUsername.BackColor = Color.Transparent;
+            lblUsername.Font = new Font("Segoe UI Emoji", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUsername.ForeColor = SystemColors.InactiveCaptionText;
+            lblUsername.Location = new Point(51, 95);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(166, 37);
+            lblUsername.TabIndex = 0;
+            lblUsername.Text = "Tài khoản:";
             // 
-            // lblMatKhau
+            // lblPassword
             // 
-            lblMatKhau.AutoSize = true;
-            lblMatKhau.BackColor = Color.Transparent;
-            lblMatKhau.Font = new Font("Segoe UI Emoji", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMatKhau.Location = new Point(54, 161);
-            lblMatKhau.Name = "lblMatKhau";
-            lblMatKhau.Size = new Size(163, 37);
-            lblMatKhau.TabIndex = 1;
-            lblMatKhau.Text = "Mật Khẩu: ";
+            lblPassword.AutoSize = true;
+            lblPassword.BackColor = Color.Transparent;
+            lblPassword.Font = new Font("Segoe UI Emoji", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPassword.Location = new Point(54, 161);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(163, 37);
+            lblPassword.TabIndex = 1;
+            lblPassword.Text = "Mật khẩu:";
             // 
-            // btnDangNhap
+            // btnSignIn
             // 
-            btnDangNhap.BackColor = Color.Transparent;
-            btnDangNhap.Cursor = Cursors.Hand;
-            btnDangNhap.FlatAppearance.BorderColor = Color.DimGray;
-            btnDangNhap.FlatAppearance.BorderSize = 2;
-            btnDangNhap.FlatAppearance.MouseDownBackColor = Color.Snow;
-            btnDangNhap.FlatAppearance.MouseOverBackColor = Color.Linen;
-            btnDangNhap.FlatStyle = FlatStyle.Flat;
-            btnDangNhap.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnDangNhap.ForeColor = SystemColors.WindowText;
-            btnDangNhap.Location = new Point(138, 226);
-            btnDangNhap.Name = "btnDangNhap";
-            btnDangNhap.Size = new Size(158, 53);
-            btnDangNhap.TabIndex = 2;
-            btnDangNhap.Text = "Đăng Nhập";
-            btnDangNhap.UseVisualStyleBackColor = false;
-            btnDangNhap.Click += btnDangNhap_Click;
+            btnSignIn.BackColor = Color.Transparent;
+            btnSignIn.Cursor = Cursors.Hand;
+            btnSignIn.FlatAppearance.BorderColor = Color.DimGray;
+            btnSignIn.FlatAppearance.BorderSize = 2;
+            btnSignIn.FlatAppearance.MouseDownBackColor = Color.Snow;
+            btnSignIn.FlatAppearance.MouseOverBackColor = Color.Linen;
+            btnSignIn.FlatStyle = FlatStyle.Flat;
+            btnSignIn.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            btnSignIn.ForeColor = SystemColors.WindowText;
+            btnSignIn.Location = new Point(138, 226);
+            btnSignIn.Name = "btnSignIn";
+            btnSignIn.Size = new Size(158, 53);
+            btnSignIn.TabIndex = 2;
+            btnSignIn.Text = "Đăng nhập";
+            btnSignIn.UseVisualStyleBackColor = false;
+            btnSignIn.Click += btnSignIn_Click;
             // 
-            // btnDangKy
+            // btnOpenRegister
             // 
-            btnDangKy.BackColor = Color.Transparent;
-            btnDangKy.Cursor = Cursors.Hand;
-            btnDangKy.FlatAppearance.BorderColor = Color.Gray;
-            btnDangKy.FlatAppearance.BorderSize = 2;
-            btnDangKy.FlatAppearance.MouseDownBackColor = Color.Snow;
-            btnDangKy.FlatAppearance.MouseOverBackColor = Color.SeaShell;
-            btnDangKy.FlatStyle = FlatStyle.Flat;
-            btnDangKy.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnDangKy.ForeColor = SystemColors.WindowText;
-            btnDangKy.Location = new Point(358, 226);
-            btnDangKy.Name = "btnDangKy";
-            btnDangKy.Size = new Size(158, 53);
-            btnDangKy.TabIndex = 3;
-            btnDangKy.Text = "Đăng Ký";
-            btnDangKy.UseVisualStyleBackColor = false;
+            btnOpenRegister.BackColor = Color.Transparent;
+            btnOpenRegister.Cursor = Cursors.Hand;
+            btnOpenRegister.FlatAppearance.BorderColor = Color.Gray;
+            btnOpenRegister.FlatAppearance.BorderSize = 2;
+            btnOpenRegister.FlatAppearance.MouseDownBackColor = Color.Snow;
+            btnOpenRegister.FlatAppearance.MouseOverBackColor = Color.SeaShell;
+            btnOpenRegister.FlatStyle = FlatStyle.Flat;
+            btnOpenRegister.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            btnOpenRegister.ForeColor = SystemColors.WindowText;
+            btnOpenRegister.Location = new Point(358, 226);
+            btnOpenRegister.Name = "btnOpenRegister";
+            btnOpenRegister.Size = new Size(158, 53);
+            btnOpenRegister.TabIndex = 3;
+            btnOpenRegister.Text = "Đăng ký";
+            btnOpenRegister.UseVisualStyleBackColor = false;
+            btnOpenRegister.Click += btnOpenRegister_Click;
             // 
-            // txtTaiKhoan
+            // txtUsername
             // 
-            txtTaiKhoan.BackColor = Color.FloralWhite;
-            txtTaiKhoan.BorderStyle = BorderStyle.None;
-            txtTaiKhoan.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            txtTaiKhoan.ForeColor = Color.Black;
-            txtTaiKhoan.Location = new Point(223, 95);
-            txtTaiKhoan.Multiline = true;
-            txtTaiKhoan.Name = "txtTaiKhoan";
-            txtTaiKhoan.PlaceholderText = "Nhập tài khoản của bạn.....";
-            txtTaiKhoan.Size = new Size(323, 37);
-            txtTaiKhoan.TabIndex = 4;
+            txtUsername.BackColor = Color.FloralWhite;
+            txtUsername.BorderStyle = BorderStyle.None;
+            txtUsername.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Italic, GraphicsUnit.Point, 163);
+            txtUsername.ForeColor = Color.Black;
+            txtUsername.Location = new Point(223, 95);
+            txtUsername.Multiline = true;
+            txtUsername.Name = "txtUsername";
+            txtUsername.PlaceholderText = "Nhập tài khoản";
+            txtUsername.Size = new Size(323, 37);
+            txtUsername.TabIndex = 4;
             // 
-            // txtMatKhau
+            // txtPassword
             // 
-            txtMatKhau.BackColor = Color.FloralWhite;
-            txtMatKhau.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            txtMatKhau.ForeColor = Color.Black;
-            txtMatKhau.Location = new Point(223, 161);
-            txtMatKhau.Multiline = true;
-            txtMatKhau.Name = "txtMatKhau";
-            txtMatKhau.PasswordChar = '*';
-            txtMatKhau.PlaceholderText = "Nhập mật khẩu của bạn.....";
-            txtMatKhau.Size = new Size(323, 43);
-            txtMatKhau.TabIndex = 5;
+            txtPassword.BackColor = Color.FloralWhite;
+            txtPassword.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Italic, GraphicsUnit.Point, 163);
+            txtPassword.ForeColor = Color.Black;
+            txtPassword.Location = new Point(223, 161);
+            txtPassword.Multiline = true;
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
+            txtPassword.PlaceholderText = "Nhập mật khẩu";
+            txtPassword.Size = new Size(323, 43);
+            txtPassword.TabIndex = 5;
             // 
-            // lblTitleDangNhap
+            // lblTitleLogin
             // 
-            lblTitleDangNhap.AutoSize = true;
-            lblTitleDangNhap.BackColor = Color.Transparent;
-            lblTitleDangNhap.Font = new Font("Cascadia Code", 28.2F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            lblTitleDangNhap.Location = new Point(223, 9);
-            lblTitleDangNhap.Name = "lblTitleDangNhap";
-            lblTitleDangNhap.Size = new Size(279, 62);
-            lblTitleDangNhap.TabIndex = 6;
-            lblTitleDangNhap.Text = "ĐĂNG NHẬP";
+            lblTitleLogin.AutoSize = true;
+            lblTitleLogin.BackColor = Color.Transparent;
+            lblTitleLogin.Font = new Font("Cascadia Code", 28.2F, FontStyle.Italic, GraphicsUnit.Point, 163);
+            lblTitleLogin.Location = new Point(223, 9);
+            lblTitleLogin.Name = "lblTitleLogin";
+            lblTitleLogin.Size = new Size(279, 62);
+            lblTitleLogin.TabIndex = 6;
+            lblTitleLogin.Text = "ĐĂNG NHẬP";
             // 
-            // linkQuenMK
+            // linkForgotPassword
             // 
-            linkQuenMK.AutoSize = true;
-            linkQuenMK.BackColor = Color.Transparent;
-            linkQuenMK.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            linkQuenMK.LinkColor = Color.Black;
-            linkQuenMK.Location = new Point(258, 305);
-            linkQuenMK.Name = "linkQuenMK";
-            linkQuenMK.Size = new Size(157, 28);
-            linkQuenMK.TabIndex = 7;
-            linkQuenMK.TabStop = true;
-            linkQuenMK.Text = "Quên mật khẩu?";
+            linkForgotPassword.AutoSize = true;
+            linkForgotPassword.BackColor = Color.Transparent;
+            linkForgotPassword.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 163);
+            linkForgotPassword.LinkColor = Color.Black;
+            linkForgotPassword.Location = new Point(258, 305);
+            linkForgotPassword.Name = "linkForgotPassword";
+            linkForgotPassword.Size = new Size(157, 28);
+            linkForgotPassword.TabIndex = 7;
+            linkForgotPassword.TabStop = true;
+            linkForgotPassword.Text = "Quên mật khẩu?";
+            linkForgotPassword.LinkClicked += linkForgotPassword_LinkClicked;
             // 
             // LoginForm
             // 
-            AcceptButton = btnDangNhap;
+            AcceptButton = btnSignIn;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(696, 360);
-            Controls.Add(linkQuenMK);
-            Controls.Add(lblTitleDangNhap);
-            Controls.Add(txtMatKhau);
-            Controls.Add(txtTaiKhoan);
-            Controls.Add(btnDangKy);
-            Controls.Add(btnDangNhap);
-            Controls.Add(lblMatKhau);
-            Controls.Add(lblTaiKhoan);
+            Controls.Add(linkForgotPassword);
+            Controls.Add(lblTitleLogin);
+            Controls.Add(txtPassword);
+            Controls.Add(txtUsername);
+            Controls.Add(btnOpenRegister);
+            Controls.Add(btnSignIn);
+            Controls.Add(lblPassword);
+            Controls.Add(lblUsername);
             Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 163);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Đăng Nhập";
+            Text = "Đăng nhập";
             Load += LoginForm_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -179,13 +181,13 @@
 
         #endregion
 
-        private Label lblTaiKhoan;
-        private Label lblMatKhau;
-        private Button btnDangNhap;
-        private Button btnDangKy;
-        private TextBox txtTaiKhoan;
-        private TextBox txtMatKhau;
-        private Label lblTitleDangNhap;
-        private LinkLabel linkQuenMK;
+        private Label lblUsername;
+        private Label lblPassword;
+        private Button btnSignIn;
+        private Button btnOpenRegister;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
+        private Label lblTitleLogin;
+        private LinkLabel linkForgotPassword;
     }
 }

@@ -39,28 +39,27 @@
             // 
             btnGuiOTP.BackColor = Color.Transparent;
             btnGuiOTP.FlatAppearance.BorderColor = Color.Black;
-            btnGuiOTP.FlatAppearance.BorderSize = 3;
             btnGuiOTP.FlatStyle = FlatStyle.Flat;
             btnGuiOTP.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnGuiOTP.Location = new Point(74, 134);
             btnGuiOTP.Name = "btnGuiOTP";
             btnGuiOTP.Size = new Size(173, 59);
             btnGuiOTP.TabIndex = 0;
-            btnGuiOTP.Text = "Gửi Mã OTP";
+            btnGuiOTP.Text = "Gửi mã OTP";
             btnGuiOTP.UseVisualStyleBackColor = false;
+            btnGuiOTP.Click += btnGuiOTP_Click;
             // 
             // btnQuayVeLogin
             // 
             btnQuayVeLogin.BackColor = Color.Transparent;
             btnQuayVeLogin.FlatAppearance.BorderColor = Color.Black;
-            btnQuayVeLogin.FlatAppearance.BorderSize = 3;
             btnQuayVeLogin.FlatStyle = FlatStyle.Flat;
             btnQuayVeLogin.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnQuayVeLogin.Location = new Point(346, 134);
             btnQuayVeLogin.Name = "btnQuayVeLogin";
             btnQuayVeLogin.Size = new Size(173, 59);
             btnQuayVeLogin.TabIndex = 1;
-            btnQuayVeLogin.Text = "Quay Lại";
+            btnQuayVeLogin.Text = "Quay lại";
             btnQuayVeLogin.UseVisualStyleBackColor = false;
             btnQuayVeLogin.Click += btnQuayVeLogin_Click;
             // 
@@ -71,22 +70,22 @@
             lblNhapEmail.Font = new Font("Segoe UI Emoji", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblNhapEmail.Location = new Point(30, 54);
             lblNhapEmail.Name = "lblNhapEmail";
-            lblNhapEmail.Size = new Size(177, 37);
+            lblNhapEmail.Size = new Size(95, 37);
             lblNhapEmail.TabIndex = 2;
-            lblNhapEmail.Text = "Nhập Email:";
+            lblNhapEmail.Text = "Email:";
             // 
             // txtNhapEmail
             // 
             txtNhapEmail.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Italic, GraphicsUnit.Point, 163);
             txtNhapEmail.Location = new Point(213, 54);
             txtNhapEmail.Name = "txtNhapEmail";
-            txtNhapEmail.PlaceholderText = "Nhập email của bạn.....";
+            txtNhapEmail.PlaceholderText = "Nhập email của bạn...";
             txtNhapEmail.Size = new Size(306, 37);
             txtNhapEmail.TabIndex = 3;
             // 
-            // QuenMKForm
+            // ForgetPasswordForm
             // 
-            AcceptButton = btnQuayVeLogin;
+            AcceptButton = btnGuiOTP;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
@@ -97,9 +96,9 @@
             Controls.Add(btnQuayVeLogin);
             Controls.Add(btnGuiOTP);
             MaximizeBox = false;
-            Name = "QuenMKForm";
+            Name = "ForgetPasswordForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "QuenMKForm";
+            Text = "Quên mật khẩu";
             Load += QuenMKForm_Load;
             Shown += QuenMKForm_Load;
             ResumeLayout(false);
