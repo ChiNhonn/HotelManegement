@@ -10,14 +10,15 @@ public sealed class QrBankDialog : Form
 {
     private readonly Bitmap _qrBmp;
 
-    public QrBankDialog(decimal amount, string subtitle)
+    /// <param name="transferMemoHint">Hướng dẫn nội dung CK (#DV…) để khớp tự động.</param>
+    public QrBankDialog(decimal amount, string subtitle, string? transferMemoHint = null)
     {
         Text = "QR chuyển khoản";
         StartPosition = FormStartPosition.CenterParent;
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         MinimizeBox = false;
-        ClientSize = new Size(420, 540);
+        ClientSize = new Size(420, 588);
         BackColor = Color.White;
 
         var lblAmt = new Label
@@ -44,6 +45,19 @@ public sealed class QrBankDialog : Form
             Padding = new Padding(12, 0, 12, 8)
         };
 
+        var memo = transferMemoHint ?? "Khách chuyển khoản nên ghi nội dung có #DV{mã đơn} và đúng số tiền để khớp tự động.";
+        var lblMemo = new Label
+        {
+            AutoSize = false,
+            Dock = DockStyle.Top,
+            Height = 44,
+            Font = new Font("Segoe UI", 8.25f),
+            ForeColor = Color.FromArgb(71, 85, 105),
+            TextAlign = ContentAlignment.MiddleCenter,
+            Text = memo,
+            Padding = new Padding(16, 0, 16, 8)
+        };
+
         _qrBmp = BuildPlaceholderQr(280);
         var pic = new PictureBox
         {
@@ -67,6 +81,7 @@ public sealed class QrBankDialog : Form
         };
 
         Controls.Add(pic);
+        Controls.Add(lblMemo);
         Controls.Add(lblSub);
         Controls.Add(lblAmt);
         Controls.Add(btn);

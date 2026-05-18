@@ -64,5 +64,9 @@ public class ServiceOrder
     public DateTime? UpdateAt { get; set; }
     public DateTime? CompletedAt { get; set; }
     public DateTime? CancelledAt { get; set; }
+
+    /// <summary>Đánh dấu đã thu tiền cho luồng « thanh toán ngay » (độc lập với Payment cũ trên bill phòng).</summary>
+    public DateTime? ImmediatePaidAt { get; set; }
+
     public DateTime? SoftDelete { get; set; }
 }

@@ -294,6 +294,19 @@ public sealed class ServiceOrderConfiguration : IEntityTypeConfiguration<Service
     }
 }
 
+public sealed class BankTransferInboundConfiguration : IEntityTypeConfiguration<BankTransferInbound>
+{
+    public void Configure(EntityTypeBuilder<BankTransferInbound> b)
+    {
+        b.ToTable("BankTransferInbounds");
+        b.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+        b.Property(x => x.RawContent).HasMaxLength(500).IsRequired();
+        b.HasIndex(x => x.ReceivedAt);
+        b.HasIndex(x => x.MatchedServiceOrderId);
+        b.HasIndex(x => x.SoftDelete);
+    }
+}
+
 public sealed class VoucherConfiguration : IEntityTypeConfiguration<Voucher>
 {
     public void Configure(EntityTypeBuilder<Voucher> b)

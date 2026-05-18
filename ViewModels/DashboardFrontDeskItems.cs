@@ -40,6 +40,9 @@ public sealed class DashboardRecentTransactionItem
     public decimal Amount { get; init; }
     public string StatusLabel { get; init; } = "Thành công";
     public DateTime OccurredAt { get; init; }
+
+    /// <summary>Phương thức thanh toán (Tiền mặt / Chuyển khoản / Online…) — rỗng nếu là chi trả nội bộ.</summary>
+    public string Method { get; init; } = "";
 }
 
 /// <summary>Hóa đơn có thể ghi nhận thanh toán tay (dashboard).</summary>

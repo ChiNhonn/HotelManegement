@@ -66,6 +66,7 @@ internal static class Program
 
         Application.ApplicationExit += (_, _) =>
         {
+            BankTransferInboundWebhookHost.Stop();
             _rootScope?.Dispose();
             _rootScope = null;
             (rootProvider as IDisposable)?.Dispose();
@@ -90,6 +91,15 @@ internal static class Program
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
             return;
+        }
+
+        try
+        {
+            BankTransferInboundWebhookHost.TryStart(rootProvider.GetRequiredService<IServiceScopeFactory>());
+        }
+        catch
+        {
+            // không chặn khởi động
         }
 
         Application.Run(ServiceProvider.GetRequiredService<LoginForm>());

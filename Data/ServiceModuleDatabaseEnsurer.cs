@@ -129,6 +129,26 @@ public static class ServiceModuleDatabaseEnsurer
                 CREATE INDEX IX_ServiceOrders_Status ON ServiceOrders(Status);
                 CREATE INDEX IX_ServiceOrders_SoftDelete ON ServiceOrders(SoftDelete);
             END
+
+            IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'ServiceOrders') AND name = N'ImmediatePaidAt')
+                ALTER TABLE ServiceOrders ADD ImmediatePaidAt datetime2 NULL;
+
+            IF OBJECT_ID(N'BankTransferInbounds', N'U') IS NULL
+            BEGIN
+                CREATE TABLE BankTransferInbounds (
+                    Id int NOT NULL IDENTITY,
+                    Amount decimal(18,2) NOT NULL,
+                    RawContent nvarchar(500) NOT NULL,
+                    ReceivedAt datetime2 NOT NULL,
+                    MatchedServiceOrderId int NULL,
+                    ProcessedAt datetime2 NULL,
+                    SoftDelete datetime2 NULL,
+                    CONSTRAINT PK_BankTransferInbounds PRIMARY KEY (Id));
+                CREATE INDEX IX_BankTransferInbounds_ReceivedAt ON BankTransferInbounds(ReceivedAt);
+                CREATE INDEX IX_BankTransferInbounds_MatchedServiceOrderId ON BankTransferInbounds(MatchedServiceOrderId);
+                CREATE INDEX IX_BankTransferInbounds_SoftDelete ON BankTransferInbounds(SoftDelete);
+            END
+
             """);
 
         EnsureMigrationHistoryRow(db);

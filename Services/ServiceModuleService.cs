@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using HotelManagement.Data;
 using HotelManagement.Helpers;
 using HotelManagement.Interfaces;
@@ -12,7 +13,12 @@ namespace HotelManagement.Services;
 
 public sealed class ServiceModuleService : IServiceModuleService
 {
+    private static readonly object BankInboundGate = new();
+
     private readonly HotelDbContext _db;
+
+    private static readonly Regex DvMemoRegex = new(@"#\s*DV\s*(\d+)|\bDV\s*(\d+)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
 
     public ServiceModuleService(HotelDbContext db)
     {
@@ -590,7 +596,7 @@ public sealed class ServiceModuleService : IServiceModuleService
             UnitPrice = unitPrice,
             LineTotal = unitPrice * quantity,
             Status = ServiceOrderStatus.Pending,
-            ChargeMode = chargeMode == ServiceChargeMode.Immediate ? ServiceChargeMode.Immediate : ServiceChargeMode.Folio,
+            ChargeMode = NormalizeChargeMode(chargeMode),
             Notes = notes?.Trim(),
             IdUser = userId,
             CreateAt = DateTime.Now
@@ -683,54 +689,55 @@ public sealed class ServiceModuleService : IServiceModuleService
 
     public List<ServiceOrderRow> GetOrdersAwaitingPayment()
     {
-        var paidBillIds = _db.Payments.AsNoTracking()
-            .Where(p => p.SoftDelete == null && p.Status == "Paid" && p.IdBill != null)
-            .Select(p => p.IdBill!.Value)
-            .ToHashSet();
-
-        // Không được gọi _db trong .AsEnumerable()/.Where LINQ-client: một DataReader của truy vấn cha
-        // đang mở sẽ gây lỗi "already an open DataReader..." (SQLite / MARS không bật).
-        var candidates = _db.ServiceOrders.AsNoTracking()
+        // « Chờ thanh toán » = đơn immediate đã hoàn thành & đã post bill nhưng CHƯA ghi ImmediatePaidAt.
+        // Không dùng Payment/Bill.Status bill-level — một booking chỉ có một bill; payment cọc/checkout trước
+        // làm sai luồng « chờ thu tiền ngay » nếu chỉ nhìn bill đã có Payment.
+        return _db.ServiceOrders.AsNoTracking()
             .Include(o => o.Order).ThenInclude(ord => ord!.Customer)
             .Include(o => o.Room)
             .Where(o => o.SoftDelete == null
                 && o.Status == ServiceOrderStatus.Completed
-                && o.ChargeMode == ServiceChargeMode.Immediate
-                && o.IsPostedToBill)
-            .ToList();
-
-        if (candidates.Count == 0)
-            return new List<ServiceOrderRow>();
-
-        var orderIds = candidates.Select(o => o.IdOrder).Distinct().ToList();
-        var billsByOrder = _db.Bills.AsNoTracking()
-            .Where(b => b.SoftDelete == null && b.IdOrder != null && orderIds.Contains(b.IdOrder.Value))
-            .Select(b => new { b.Id, IdOrder = b.IdOrder!.Value })
-            .ToList()
-            .GroupBy(x => x.IdOrder)
-            .ToDictionary(g => g.Key, g => g.Min(x => x.Id));
-
-        return candidates
-            .Where(o => billsByOrder.TryGetValue(o.IdOrder, out var billId)
-                && billId > 0
-                && !paidBillIds.Contains(billId))
+                && o.IsPostedToBill
+                && o.IdBillDetail != null
+                && o.ImmediatePaidAt == null)
+            .OrderByDescending(o => o.CreateAt)
+            .Take(500)
+            .AsEnumerable()
+            .Where(o => IsImmediateCharge(o.ChargeMode))
             .Select(MapOrderRow)
             .ToList();
     }
+
+    private static bool IsImmediateCharge(string? mode) =>
+        string.Equals(mode?.Trim(), ServiceChargeMode.Immediate, StringComparison.OrdinalIgnoreCase);
+
+    private static string NormalizeChargeMode(string chargeMode) =>
+        IsImmediateCharge(chargeMode) ? ServiceChargeMode.Immediate : ServiceChargeMode.Folio;
 
     public void PostImmediatePayment(int serviceOrderId, string method, int? userId)
     {
         var line = _db.ServiceOrders.FirstOrDefault(o => o.Id == serviceOrderId && o.SoftDelete == null)
             ?? throw new InvalidOperationException("Không tìm thấy yêu cầu.");
 
-        if (line.ChargeMode != ServiceChargeMode.Immediate)
+        if (!IsImmediateCharge(line.ChargeMode))
             throw new InvalidOperationException("Yêu cầu không thuộc luồng thanh toán ngay.");
 
         if (!line.IsPostedToBill)
             PostToRoomFolio(line, userId);
 
-        var bill = _db.Bills.Include(b => b.Payments).FirstOrDefault(b => b.IdOrder == line.IdOrder)
-            ?? throw new InvalidOperationException("Không tìm thấy hóa đơn.");
+        int? resolvedBillId = line.IdBillDetail is int bd
+            ? _db.BillDetails.AsNoTracking().Where(d => d.Id == bd).Select(d => (int?)d.IdBill).FirstOrDefault()
+            : null;
+
+        Bill? bill = resolvedBillId is { } rid && rid > 0
+            ? _db.Bills.Include(b => b.Payments).FirstOrDefault(b => b.Id == rid && b.SoftDelete == null)
+            : _db.Bills.Include(b => b.Payments).FirstOrDefault(b => b.IdOrder == line.IdOrder && b.SoftDelete == null);
+
+        if (bill == null)
+            throw new InvalidOperationException("Không tìm thấy hóa đơn.");
+
+        if (line.ImmediatePaidAt != null)
+            throw new InvalidOperationException("Đơn dịch vụ đã được ghi nhận thanh toán ngay.");
 
         _db.Payments.Add(new Payment
         {
@@ -741,8 +748,106 @@ public sealed class ServiceModuleService : IServiceModuleService
         });
 
         bill.Status = "Paid";
+        line.ImmediatePaidAt = DateTime.Now;
+        line.UpdateAt = DateTime.Now;
         _db.SaveChanges();
     }
+
+    public void RegisterInboundBankTransfer(decimal amount, string? rawContent)
+    {
+        lock (BankInboundGate)
+        {
+            if (amount <= 0)
+                throw new InvalidOperationException("Số tiền phải lớn hơn 0.");
+
+            var content = rawContent?.Trim() ?? "";
+            if (content.Length > 500)
+                content = content[..500];
+
+            _db.BankTransferInbounds.Add(new BankTransferInbound
+            {
+                Amount = amount,
+                RawContent = content,
+                ReceivedAt = DateTime.Now
+            });
+            _db.SaveChanges();
+        }
+    }
+
+    public int ProcessPendingBankTransferMatches()
+    {
+        lock (BankInboundGate)
+        {
+            var pending = _db.BankTransferInbounds
+                .Where(x => x.SoftDelete == null && x.ProcessedAt == null)
+                .OrderBy(x => x.Id)
+                .ToList();
+
+            var matched = 0;
+            foreach (var inbound in pending)
+            {
+                var orderId = TryResolveAwaitingImmediateOrderForInbound(inbound);
+                if (orderId == null)
+                    continue;
+
+                try
+                {
+                    PostImmediatePayment(orderId.Value, "Chuyển khoản", null);
+                    inbound.MatchedServiceOrderId = orderId.Value;
+                    inbound.ProcessedAt = DateTime.Now;
+                    matched++;
+                }
+                catch (InvalidOperationException)
+                {
+                    // đơn không còn chờ CK / đã thanh toán — bỏ qua, có thể đối soát tay sau
+                }
+            }
+
+            if (matched > 0)
+                _db.SaveChanges();
+
+            return matched;
+        }
+    }
+
+    private int? TryResolveAwaitingImmediateOrderForInbound(BankTransferInbound inbound)
+    {
+        var memoId = ParseDvMemoOrderId(inbound.RawContent);
+
+        var awaitingSameAmount = _db.ServiceOrders.AsNoTracking()
+            .Where(o => o.SoftDelete == null
+                && o.Status == ServiceOrderStatus.Completed
+                && o.IsPostedToBill
+                && o.IdBillDetail != null
+                && o.ImmediatePaidAt == null)
+            .Select(o => new { o.Id, o.LineTotal, o.ChargeMode })
+            .AsEnumerable()
+            .Where(o => IsImmediateCharge(o.ChargeMode) && AmountMatches(o.LineTotal, inbound.Amount))
+            .Select(o => o.Id)
+            .ToList();
+
+        if (memoId.HasValue)
+            return awaitingSameAmount.Contains(memoId.Value) ? memoId : null;
+
+        if (awaitingSameAmount.Count == 1)
+            return awaitingSameAmount[0];
+
+        return null;
+    }
+
+    private static int? ParseDvMemoOrderId(string raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+            return null;
+        var m = DvMemoRegex.Match(raw.Trim());
+        if (!m.Success)
+            return null;
+        var g = m.Groups[1].Success ? m.Groups[1].Value : m.Groups[2].Value;
+        return int.TryParse(g, out var id) ? id : null;
+    }
+
+    private static bool AmountMatches(decimal expected, decimal actual) =>
+        Math.Abs(expected - actual) <= 0.01m;
 
     #endregion
 

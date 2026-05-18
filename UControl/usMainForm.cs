@@ -259,17 +259,17 @@ namespace HotelManagement.CustomControls
                 PageTitle = "Giao dịch gần đây",
                 Columns = new[]
                 {
-                    new usPaginatedListPage.ColumnSpec { Name = "colTxUser",   HeaderText = "Tiêu đề",   MinWidth = 160, FillWeight = 30 },
-                    new usPaginatedListPage.ColumnSpec { Name = "colTxAmount", HeaderText = "Số tiền",   MinWidth = 130, FillWeight = 20 },
-                    new usPaginatedListPage.ColumnSpec { Name = "colTxStatus", HeaderText = "Trạng thái", MinWidth = 130, FillWeight = 18 },
-                    new usPaginatedListPage.ColumnSpec { Name = "colTxTime",   HeaderText = "Thời gian",  MinWidth = 150, FillWeight = 22 },
+                    new usPaginatedListPage.ColumnSpec { Name = "colTxUser",   HeaderText = "Tiêu đề",     MinWidth = 160, FillWeight = 30 },
+                    new usPaginatedListPage.ColumnSpec { Name = "colTxAmount", HeaderText = "Số tiền",     MinWidth = 130, FillWeight = 20 },
+                    new usPaginatedListPage.ColumnSpec { Name = "colTxStatus", HeaderText = "Phương thức", MinWidth = 130, FillWeight = 18 },
+                    new usPaginatedListPage.ColumnSpec { Name = "colTxTime",   HeaderText = "Thời gian",   MinWidth = 150, FillWeight = 22 },
                 },
                 Loader = () => _dashboard.GetRecentTransactions(1000)
                     .Select(t => new object?[]
                     {
                         t.UserName,
                         $"+ {t.Amount:N0} VNĐ",
-                        t.StatusLabel,
+                        string.IsNullOrWhiteSpace(t.Method) ? t.StatusLabel : t.Method,
                         t.OccurredAt.ToString("dd/MM/yyyy HH:mm", Vi)
                     }!).Cast<object[]>().ToList(),
                 FilterOptions = new[] { "Tất cả", "Hôm nay", "7 ngày qua", "30 ngày qua" },
@@ -506,19 +506,37 @@ namespace HotelManagement.CustomControls
                 Math.Min(pillW, cell.Width - 24),
                 pillH);
 
+            var (fill, border, ink) = ResolvePillPalette(text);
             using var path = RoundedRect(pillRect, pillRect.Height / 2);
-            using (var br = new SolidBrush(Color.FromArgb(220, 252, 231))) g.FillPath(br, path);
-            using (var pen = new Pen(Color.FromArgb(187, 247, 208))) g.DrawPath(pen, path);
+            using (var br = new SolidBrush(fill)) g.FillPath(br, path);
+            using (var pen = new Pen(border)) g.DrawPath(pen, path);
 
             TextRenderer.DrawText(
                 g,
                 text,
                 font,
                 pillRect,
-                Color.FromArgb(21, 128, 61),
+                ink,
                 TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
 
             e.Handled = true;
+        }
+
+        /// <summary>Bộ màu pill cho cột « Phương thức / Trạng thái » theo nội dung.</summary>
+        private static (Color fill, Color border, Color ink) ResolvePillPalette(string label)
+        {
+            var s = (label ?? string.Empty).Trim().ToLowerInvariant();
+            // Chuyển khoản → xanh dương
+            if (s.Contains("chuyển khoản") || s.Contains("transfer") || s.Contains("bank"))
+                return (Color.FromArgb(219, 234, 254), Color.FromArgb(191, 219, 254), Color.FromArgb(29, 78, 216));
+            // Online / QR / VNPay / Momo… → tím
+            if (s.Contains("online") || s.Contains("qr") || s.Contains("vnpay") || s.Contains("momo") || s.Contains("zalopay"))
+                return (Color.FromArgb(237, 233, 254), Color.FromArgb(221, 214, 254), Color.FromArgb(91, 33, 182));
+            // Thẻ → hổ phách
+            if (s.Contains("thẻ") || s.Contains("card"))
+                return (Color.FromArgb(254, 243, 199), Color.FromArgb(253, 230, 138), Color.FromArgb(146, 64, 14));
+            // Tiền mặt / Thành công / mặc định → xanh lá
+            return (Color.FromArgb(220, 252, 231), Color.FromArgb(187, 247, 208), Color.FromArgb(21, 128, 61));
         }
 
         private void DgvRecentTx_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
@@ -543,54 +561,7 @@ namespace HotelManagement.CustomControls
         private void DgvTx_CellPainting(object? sender, DataGridViewCellPaintingEventArgs e)
         {
             if (sender is not DataGridView dgv) return;
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (dgv.Columns[e.ColumnIndex].Name != "colTxStatus") return;
-
-            var text = e.FormattedValue?.ToString();
-            if (string.IsNullOrEmpty(text))
-            {
-                e.Handled = false;
-                return;
-            }
-
-            e.PaintBackground(e.ClipBounds, (e.State & DataGridViewElementStates.Selected) != 0);
-
-            var g = e.Graphics;
-            if (g == null) { e.Handled = true; return; }
-
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-
-            using var font = new Font(dgv.Font, FontStyle.Bold);
-            var sz = TextRenderer.MeasureText(g, text, font, Size.Empty, TextFormatFlags.NoPadding);
-            const int padX = 10, padY = 4;
-            var pillW = sz.Width + padX * 2;
-            var pillH = sz.Height + padY * 2;
-
-            var cell = e.CellBounds;
-            var pillRect = new Rectangle(
-                cell.Left + 12,
-                cell.Top + (cell.Height - pillH) / 2,
-                Math.Min(pillW, cell.Width - 24),
-                pillH);
-
-            var fill = Color.FromArgb(220, 252, 231);
-            var border = Color.FromArgb(187, 247, 208);
-            var ink = Color.FromArgb(21, 128, 61);
-
-            using var path = RoundedRect(pillRect, pillRect.Height / 2);
-            using (var br = new SolidBrush(fill)) g.FillPath(br, path);
-            using (var pen = new Pen(border)) g.DrawPath(pen, path);
-
-            TextRenderer.DrawText(
-                g,
-                text,
-                font,
-                pillRect,
-                ink,
-                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
-
-            e.Handled = true;
+            DgvTx_CellPaintingStatic(dgv, e);
         }
 
         private static GraphicsPath RoundedRect(Rectangle r, int radius)
@@ -613,7 +584,7 @@ namespace HotelManagement.CustomControls
                 dgvRecentTx.Rows.Add(
                     t.UserName,
                     $"+ {t.Amount:N0} VNĐ",
-                    t.StatusLabel,
+                    string.IsNullOrWhiteSpace(t.Method) ? t.StatusLabel : t.Method,
                     t.OccurredAt.ToString("dd/MM/yyyy HH:mm", Vi));
             }
         }
@@ -890,7 +861,7 @@ namespace HotelManagement.CustomControls
             dgvRecentTx.Columns.Clear();
             dgvRecentTx.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTxUser", HeaderText = "Tiêu đề" });
             dgvRecentTx.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTxAmount", HeaderText = "Số tiền" });
-            dgvRecentTx.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTxStatus", HeaderText = "Trạng thái" });
+            dgvRecentTx.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTxStatus", HeaderText = "Phương thức" });
             dgvRecentTx.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTxTime", HeaderText = "Thời gian" });
             dgvRecentTx.Columns[0].MinimumWidth = 120;
             dgvRecentTx.Columns[0].FillWeight = 22;

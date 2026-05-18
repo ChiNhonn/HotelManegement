@@ -35,6 +35,8 @@ public sealed class OperationFulfillmentPanel : UserControl
 
     private readonly Dictionary<int, List<ActionHitZone>> _hitZones = new();
 
+    private readonly System.Windows.Forms.Timer _bankMatchPollTimer;
+
     private enum OpsBucket { PendingAck, Processing, AwaitingPayment, Done, Cancelled }
 
     private sealed class OpsVm
@@ -76,8 +78,39 @@ public sealed class OperationFulfillmentPanel : UserControl
 
         BuildUi();
         WireEvents();
+        _bankMatchPollTimer = new System.Windows.Forms.Timer { Interval = 12_000 };
+        _bankMatchPollTimer.Tick += BankMatchPollTimer_Tick;
+        _bankMatchPollTimer.Start();
         SelectTab(0);
         Reload();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _bankMatchPollTimer.Stop();
+            _bankMatchPollTimer.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
+
+    private void BankMatchPollTimer_Tick(object? sender, EventArgs e)
+    {
+        if (_chkUiDemo.Checked)
+            return;
+
+        try
+        {
+            var n = _svc.ProcessPendingBankTransferMatches();
+            if (n > 0)
+                Reload();
+        }
+        catch
+        {
+            // không popup định kỳ khi DB bận / lỗi tạm
+        }
     }
 
     private void BuildUi()
@@ -446,7 +479,7 @@ public sealed class OperationFulfillmentPanel : UserControl
             _ => ServiceOrderStatus.ToDisplay(o.Status)
         };
 
-        var payDisp = o.ChargeMode == ServiceChargeMode.Immediate
+        var payDisp = RowIsImmediate(o)
             ? "⚡ Ngay — QR / Tiền mặt"
             : "📋 Gộp hóa đơn phòng";
 
@@ -465,7 +498,7 @@ public sealed class OperationFulfillmentPanel : UserControl
             Items = items,
             Total = o.LineTotal,
             PayDisplay = payDisp,
-            ImmediatePay = o.ChargeMode == ServiceChargeMode.Immediate,
+            ImmediatePay = RowIsImmediate(o),
             AwaitingImmediatePayment = awaitingImmediatePay,
             StatusRaw = o.Status,
             StatusLabel = statusLabel,
@@ -484,13 +517,16 @@ public sealed class OperationFulfillmentPanel : UserControl
             return OpsBucket.Processing;
         if (o.Status == ServiceOrderStatus.Completed)
         {
-            if (o.ChargeMode == ServiceChargeMode.Immediate && awaitingImmediatePay)
+            if (RowIsImmediate(o) && awaitingImmediatePay)
                 return OpsBucket.AwaitingPayment;
             return OpsBucket.Done;
         }
 
         return OpsBucket.Done;
     }
+
+    private static bool RowIsImmediate(ServiceOrderRow o) =>
+        string.Equals(o.ChargeMode?.Trim(), ServiceChargeMode.Immediate, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>Mock UI — giả lập danh sách để test giao diện (không gọi DB).</summary>
     private List<OpsVm> BuildMockRows()
@@ -718,7 +754,8 @@ public sealed class OperationFulfillmentPanel : UserControl
             Outline(rQr, "Xem QR Bank", Color.FromArgb(129, 140, 248), Color.FromArgb(67, 56, 202));
             Push(rQr, () =>
             {
-                using var dlg = new QrBankDialog(vm.Total, $"Đơn #DV{vm.Id} · Phòng {vm.Room}");
+                using var dlg = new QrBankDialog(vm.Total, $"Đơn #DV{vm.Id} · Phòng {vm.Room}",
+                    $"Nội dung CK: #DV{vm.Id} và đúng số tiền — hệ thống sẽ tự xác nhận thanh toán.");
                 dlg.ShowDialog(FindForm());
             });
             x = rQr.Right + gap;

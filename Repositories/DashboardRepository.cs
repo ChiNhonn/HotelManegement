@@ -130,8 +130,10 @@ public sealed class DashboardRepository : IDashboardRepository
     public IReadOnlyList<DashboardBillPickRow> LoadBillsForManualPaymentPick(int take = 80)
     {
         take = Math.Clamp(take, 1, 200);
-        // Không gọi IsBillPaidStatus trong IQueryable — EF Core không dịch được sang SQL.
-        var batch = Math.Clamp(take * 10, 80, 500);
+        // Trước đây chỉ lấy N bill mới nhất rồi lọc client — nếu N bill đó đều đã Paid
+        // thì dù trong DB vẫn còn hóa đơn Pending cũ, dialog « Thêm giao dịch » rỗng.
+        // Lọc « chưa có khoản thanh toán thành công » ngay trong truy vấn, bổ sung lọc chuỗi trạng thái tiếng Việt sau.
+        var fetch = Math.Clamp(take * 25, 120, 800);
         var bills = _db.Bills.AsNoTracking()
             .Include(b => b.Order!)
                 .ThenInclude(o => o.Customer)
@@ -139,8 +141,17 @@ public sealed class DashboardRepository : IDashboardRepository
                 .ThenInclude(o => o.OrderDetails!)
                 .ThenInclude(od => od.Room)
             .Where(b => b.SoftDelete == null && b.IdOrder != null)
+            .Where(b => !_db.Payments.Any(p => p.SoftDelete == null
+                && p.IdBill == b.Id
+                && p.Status != null
+                && (p.Status == "Paid" || p.Status == "paid"
+                    || p.Status == "Success" || p.Status == "success"
+                    || p.Status == "Successful" || p.Status == "successful"
+                    || p.Status == "Completed" || p.Status == "completed"
+                    || p.Status == "Succeeded" || p.Status == "succeeded"
+                    || p.Status == "Done" || p.Status == "done")))
             .OrderByDescending(b => b.CreateAt)
-            .Take(batch)
+            .Take(fetch)
             .AsEnumerable()
             .Where(b => !IsBillPaidStatus(b.Status))
             .Take(take)
@@ -180,8 +191,39 @@ public sealed class DashboardRepository : IDashboardRepository
         });
 
         bill.Status = "Paid";
-        SaveChanges();
+
+        MarkImmediateServiceOrdersPaidForBill(bill.Id);
+
+        _db.SaveChanges();
     }
+
+    /// <summary>Ghi nhận đã thu tiền ngay cho các dòng dịch vụ immediate trên bill (dashboard).</summary>
+    private void MarkImmediateServiceOrdersPaidForBill(int billId)
+    {
+        var detailIds = _db.BillDetails.AsNoTracking()
+            .Where(d => d.IdBill == billId)
+            .Select(d => d.Id)
+            .ToList();
+        if (detailIds.Count == 0) return;
+
+        var lines = _db.ServiceOrders
+            .Where(so => so.SoftDelete == null
+                         && so.IdBillDetail != null
+                         && detailIds.Contains(so.IdBillDetail.Value))
+            .ToList();
+
+        var now = DateTime.Now;
+        foreach (var so in lines)
+        {
+            if (so.Status != ServiceOrderStatus.Completed) continue;
+            if (!IsImmediateChargeMode(so.ChargeMode)) continue;
+            if (so.ImmediatePaidAt != null) continue;
+            so.ImmediatePaidAt = now;
+        }
+    }
+
+    private static bool IsImmediateChargeMode(string? mode) =>
+        string.Equals(mode?.Trim(), ServiceChargeMode.Immediate, StringComparison.OrdinalIgnoreCase);
 
     private static DashboardBillPickRow MapBillPickRow(Bill b)
     {

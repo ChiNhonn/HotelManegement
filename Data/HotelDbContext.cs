@@ -1,4 +1,4 @@
-﻿using HotelManagement.Interfaces;
+using HotelManagement.Interfaces;
 using HotelManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +46,7 @@ public class HotelDbContext : DbContext, IMyDbContext
     public DbSet<ServiceOrder> ServiceOrders { get; set; } = null!;
     public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
     public DbSet<StaffPayout> StaffPayouts { get; set; } = null!;
+    public DbSet<BankTransferInbound> BankTransferInbounds { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

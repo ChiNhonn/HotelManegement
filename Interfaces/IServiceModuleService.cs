@@ -42,6 +42,9 @@ public interface IServiceModuleService
     // Payment
     List<ServiceOrderRow> GetOrdersAwaitingPayment();
     void PostImmediatePayment(int serviceOrderId, string method, int? userId);
+    void RegisterInboundBankTransfer(decimal amount, string? rawContent);
+    /// <summary>Khớp các khoản CK đến chưa xử lý với đơn chờ thanh toán (#DV + số tiền). Trả về số đơn đã thanh toán thành công.</summary>
+    int ProcessPendingBankTransferMatches();
 
     // Reports
     List<ServiceRevenueReportRow> GetRevenueReport(DateTime from, DateTime to, int? categoryId);

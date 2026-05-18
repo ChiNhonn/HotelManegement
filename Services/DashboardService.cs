@@ -79,9 +79,23 @@ public class DashboardService : IDashboardService
                            ?? "—",
                 Amount = p.Bill.TotalAmount,
                 StatusLabel = "Thành công",
+                Method = NormalizePaymentMethod(p.Method),
                 OccurredAt = p.CreateAt
             })
             .ToList();
+    }
+
+    private static string NormalizePaymentMethod(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) return "Khác";
+        var v = raw.Trim();
+        var lower = v.ToLowerInvariant();
+        if (lower.Contains("tiền mặt") || lower.Contains("cash")) return "Tiền mặt";
+        if (lower.Contains("chuyển khoản") || lower.Contains("transfer") || lower.Contains("bank")) return "Chuyển khoản";
+        if (lower.Contains("vnpay") || lower.Contains("momo") || lower.Contains("zalopay")
+            || lower.Contains("qr") || lower.Contains("online")) return "Online / QR";
+        if (lower.Contains("card") || lower.Contains("thẻ")) return "Thẻ";
+        return v;
     }
 
     public IReadOnlyList<DashboardBillPickRow> GetBillsForManualPaymentPick(int take = 80) =>
