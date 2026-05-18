@@ -32,7 +32,6 @@
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            btnPayment = new Button();
             btnExport = new Button();
             btnAddCustomer = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
@@ -75,7 +74,7 @@
             label1.Location = new Point(6, 9);
             label1.Margin = new Padding(6);
             label1.Name = "label1";
-            label1.Size = new Size(770, 35);
+            label1.Size = new Size(922, 35);
             label1.TabIndex = 0;
             label1.Text = "DASHBOARD";
             label1.Click += label1_Click;
@@ -89,7 +88,6 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Controls.Add(btnPayment, 4, 0);
             tableLayoutPanel1.Controls.Add(btnExport, 1, 0);
             tableLayoutPanel1.Controls.Add(btnAddCustomer, 2, 0);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
@@ -102,26 +100,13 @@
             tableLayoutPanel1.Size = new Size(1256, 53);
             tableLayoutPanel1.TabIndex = 1;
             // 
-            // btnPayment
-            // 
-            btnPayment.AutoSize = true;
-            btnPayment.BackColor = Color.FromArgb(0, 192, 0);
-            btnPayment.Dock = DockStyle.Fill;
-            btnPayment.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPayment.Location = new Point(1107, 3);
-            btnPayment.Name = "btnPayment";
-            btnPayment.Size = new Size(146, 47);
-            btnPayment.TabIndex = 5;
-            btnPayment.Text = "Thanh toán";
-            btnPayment.UseVisualStyleBackColor = false;
-            // 
             // btnExport
             // 
             btnExport.AutoSize = true;
             btnExport.BackColor = SystemColors.ActiveCaption;
             btnExport.Dock = DockStyle.Fill;
             btnExport.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExport.Location = new Point(785, 3);
+            btnExport.Location = new Point(937, 3);
             btnExport.Name = "btnExport";
             btnExport.Size = new Size(96, 47);
             btnExport.TabIndex = 3;
@@ -135,7 +120,7 @@
             btnAddCustomer.BackColor = Color.FromArgb(192, 192, 255);
             btnAddCustomer.Dock = DockStyle.Fill;
             btnAddCustomer.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAddCustomer.Location = new Point(887, 3);
+            btnAddCustomer.Location = new Point(1039, 3);
             btnAddCustomer.Name = "btnAddCustomer";
             btnAddCustomer.Size = new Size(214, 47);
             btnAddCustomer.TabIndex = 4;
@@ -478,6 +463,5 @@
         private DataGridView dgvCustomer;
         private Button btnExport;
         private Button btnAddCustomer;
-        private Button btnPayment;
     }
 }
