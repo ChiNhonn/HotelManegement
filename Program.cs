@@ -29,25 +29,10 @@ internal static class Program
         Application.SetHighDpiMode(HighDpiMode.SystemAware);
         ApplicationConfiguration.Initialize();
 
-        string connectionString;
-        try
-        {
-            connectionString = DatabaseConnection.ResolveConnectionString();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                ex.Message,
-                "Lỗi database",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-            return;
-        }
-
         var services = new ServiceCollection();
-        // Tránh đăng ký AddDbContext (IMyDbContext, HotelDbContext) không truyền options — EF cần UseSqlServer + chuỗi kết nối.
+        // Chuỗi kết nối khai báo trong HotelDbContext.ConnectionString — chỉnh tập trung tại đó.
         services.AddDbContext<HotelDbContext>(options =>
-            options.UseSqlServer(connectionString, sql =>
+            options.UseSqlServer(HotelDbContext.ConnectionString, sql =>
             {
                 sql.EnableRetryOnFailure(
                     maxRetryCount: 3,
@@ -139,7 +124,7 @@ internal static class Program
             if (EnvFlag("HOTEL_DEMO_SEED"))
                 DemoDashboardDataSeed.EnsureSeed(db, skipDemoOrdersAndBills: resetCustomers);
 
-            AuthSeed.EnsureDefaultAdmin(db);
+            // (Đã bỏ seed tài khoản admin mặc định — đăng ký người dùng qua RegisterForm.)
         }
         catch (Exception ex)
         {
