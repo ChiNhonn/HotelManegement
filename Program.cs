@@ -28,11 +28,7 @@ internal static class Program
         var services = new ServiceCollection();
         services.AddDbContext<HotelDbContext>(options =>
             options.UseSqlServer(
-                @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
-<<<<<<< HEAD
-
-=======
->>>>>>> FixLoi
+                @"Server=.\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -43,6 +39,8 @@ internal static class Program
         services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
         services.AddScoped<IFloorRepository, FloorRepository>();
         services.AddScoped<IBillRepository, BillRepository>();
+        services.AddScoped<IBranchRepository, BranchRepository>();
+
         services.AddScoped<IBillService, BillService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoomService, RoomService>();
@@ -50,18 +48,12 @@ internal static class Program
         services.AddScoped<IFloorService, FloorService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IBookingService, BookingService>();
-<<<<<<< HEAD
-        services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBranchService, BranchService>();
-
-        services.AddTransient<usBookRoom>();
-=======
         services.AddScoped<IServiceModuleService, ServiceModuleService>();
 
         services.AddTransient<usBookRoom>();
         services.AddTransient<usService>();
 
->>>>>>> FixLoi
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
         services.AddTransient<RegisterForm>();
@@ -77,6 +69,7 @@ internal static class Program
         services.AddTransient<FloorEditDialogForm>();
         services.AddTransient<BillDetailDialogForm>();
         services.AddTransient<BranchEditDiaLogForm>();
+
         var rootProvider = services.BuildServiceProvider();
         _rootScope = rootProvider.CreateScope();
         ServiceProvider = _rootScope.ServiceProvider;
@@ -94,17 +87,12 @@ internal static class Program
             using (var migrateScope = rootProvider.CreateScope())
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
-<<<<<<< HEAD
                 DatabaseMigrationHelper.Migrate(db);
+                ServiceModuleDatabaseEnsurer.EnsureSchema(db);
                 FloorSchemaPatcher.EnsureFloorStatusColumn(db);
                 DemoHotelRoomsSeed.EnsureSeed(db);
-                AuthSeed.EnsureDefaultAdmin(db);
-=======
-                db.Database.Migrate();
-                ServiceModuleDatabaseEnsurer.EnsureSchema(db);
-                DemoHotelRoomsSeed.EnsureSeed(db);
                 DemoDashboardDataSeed.EnsureSeed(db);
->>>>>>> FixLoi
+                AuthSeed.EnsureDefaultAdmin(db);
             }
         }
         catch (Exception ex)
