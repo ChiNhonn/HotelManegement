@@ -35,4 +35,8 @@ public partial class OrderDetail
     public int? IdVoucher { get; set; }
     [ForeignKey("IdVoucher")]
     public virtual Voucher Voucher { get; set; }
+
+    public int? FurnitureId { get; set; }
+    [ForeignKey(nameof(FurnitureId))]
+    public virtual Furniture? Furniture { get; set; }
 }

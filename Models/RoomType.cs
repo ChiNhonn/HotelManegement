@@ -10,60 +10,31 @@ public partial class RoomType
     [Key]
     public int Id { get; set; }
 
-    [NotMapped]
-    public int MaLoaiPhong
-    {
-        get => Id;
-        set => Id = value;
-    }
-
     [Required, MaxLength(100)]
     public string Name { get; set; } = string.Empty;
 
-    [NotMapped]
-    public string TenLoaiPhong
-    {
-        get => Name;
-        set => Name = value;
-    }
+    /// <summary>Mã ngắn hiển thị / báo giá (STD, DLX, SUI…).</summary>
+    [MaxLength(20)]
+    public string? Code { get; set; }
 
-    [Required,Column(TypeName = "decimal(18, 2)")]
+    [Required, Column(TypeName = "decimal(18, 2)")]
     public decimal UnitPrice { get; set; }
 
-    [NotMapped]
-    public decimal GiaCoBan
-    {
-        get => UnitPrice;
-        set => UnitPrice = value;
-    }
-
+    /// <summary>Tổng số khách tối đa (NL + TE) — đồng bộ khi lưu.</summary>
     [Required]
     public int MaxNumber { get; set; }
 
-    [NotMapped]
-    public byte SucChuaToiDa
-    {
-        get => (byte)MaxNumber;
-        set => MaxNumber = value;
-    }
+    /// <summary>Số người lớn tối đa.</summary>
+    public int MaxAdults { get; set; } = 2;
+
+    /// <summary>Số trẻ em tối đa.</summary>
+    public int MaxChildren { get; set; }
+
+    [MaxLength(150)]
+    public string? BedTypeDescription { get; set; }
 
     [Required]
     public int Bed { get; set; }
-
-    [NotMapped]
-    public string? MoTa
-    {
-        get => DescriptionRoom?.Content;
-        set
-        {
-            if (DescriptionRoom == null)
-            {
-                DescriptionRoom = new DescriptionRoom();
-            }
-
-            DescriptionRoom.Content = value;
-        }
-    }
 
     public DateTime CreateAt { get; set; } = DateTime.Now;
     public DateTime? UpdateAt { get; set; } = null;

@@ -8,5 +8,7 @@ namespace HotelManagement.Interfaces
 
         bool CheckUsernameExists(string username);
         bool Register(Userr user, UserProfile profile);
+        void UpdatePassword(string email, string newPassword);
+        bool CheckEmailExists(string email);
     }
 }

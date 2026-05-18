@@ -30,7 +30,7 @@ namespace HotelManagement.Forms
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) ||
                 string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(email))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please fill in all fields.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace HotelManagement.Forms
 
             if (result.IsSuccess)
             {
-                MessageBox.Show(result.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(result.Message, "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 LoginForm loginForm = Program.ServiceProvider.GetRequiredService<LoginForm>();
                 loginForm.Show();
@@ -57,7 +57,7 @@ namespace HotelManagement.Forms
             }
             else
             {
-                MessageBox.Show(result.Message, "Lỗi đăng ký", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(result.Message, "Registration error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

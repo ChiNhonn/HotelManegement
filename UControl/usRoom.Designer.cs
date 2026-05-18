@@ -2,15 +2,8 @@
 {
     partial class usRoom
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,590 +15,941 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(usRoom));
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            tabContainerPhong = new TabControl();
-            tabPhong = new TabPage();
-            grpDanhSach = new GroupBox();
-            dgvDSPhong = new DataGridView();
-            grpTimkiem = new GroupBox();
-            btnXoaPhong = new Button();
-            btnLamMoi = new Button();
-            btnChinhSua = new Button();
-            btnThemPhong = new Button();
-            cboLocTrangThai = new ComboBox();
-            txtTimKiem = new TextBox();
-            cboLocLoaiPhong = new ComboBox();
-            tabLoaiPhong = new TabPage();
-            pnlContainerLoaiPhong = new Panel();
-            grpDanhSachLoaiPhong = new GroupBox();
-            dgvDSLoaiPhong = new DataGridView();
-            grpChucNang = new GroupBox();
-            cboLoaiPhong = new ComboBox();
-            btnXoa2 = new Button();
-            btnThem2 = new Button();
-            btnLamMoi2 = new Button();
-            btnSua2 = new Button();
-            grpThanhTimKiem = new GroupBox();
-            groupBox1 = new GroupBox();
-            btnLocTheoGia = new Button();
-            lblDen = new Label();
-            lblTu = new Label();
-            numGiaMax = new NumericUpDown();
-            numGiaMin = new NumericUpDown();
-            cboSapXep = new ComboBox();
-            txtThanhTimKiem2 = new TextBox();
-            tabContainerPhong.SuspendLayout();
-            tabPhong.SuspendLayout();
-            grpDanhSach.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvDSPhong).BeginInit();
-            grpTimkiem.SuspendLayout();
-            tabLoaiPhong.SuspendLayout();
-            pnlContainerLoaiPhong.SuspendLayout();
-            grpDanhSachLoaiPhong.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvDSLoaiPhong).BeginInit();
-            grpChucNang.SuspendLayout();
-            grpThanhTimKiem.SuspendLayout();
-            groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numGiaMax).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numGiaMin).BeginInit();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            tabMain = new TabControl();
+            tabRooms = new TabPage();
+            pnlRoomsRoot = new Panel();
+            dgvRooms = new DataGridView();
+            tlpRoomToolbar = new TableLayoutPanel();
+            lblSearch = new Label();
+            txtSearch = new TextBox();
+            lblFloor = new Label();
+            cmbFilterFloor = new ComboBox();
+            lblRoomType = new Label();
+            cmbFilterRoomType = new ComboBox();
+            lblOperational = new Label();
+            btnRefreshList = new Button();
+            btnBulkCreate = new Button();
+            cmbOperationalApply = new ComboBox();
+            flpButton = new FlowLayoutPanel();
+            btnAddRoom = new Button();
+            btnEditRoom = new Button();
+            btnDeleteRoom = new Button();
+            tabRoomTypes = new TabPage();
+            pnlRoomTypesRoot = new Panel();
+            dgvRoomTypes = new DataGridView();
+            pnlTypesToolbar = new Panel();
+            lblRoomTypesTitle = new Label();
+            txtRoomTypeSearch = new TextBox();
+            btnRoomTypeRefresh = new Button();
+            btnRoomTypeAdd = new Button();
+            btnRoomTypeEdit = new Button();
+            btnRoomTypeDelete = new Button();
+            tabFloors = new TabPage();
+            pnlFloorsRoot = new Panel();
+            pnlFloorsScroll = new Panel();
+            flowFloorMgmtLayout = new FlowLayoutPanel();
+            pnlFloorsToolbar = new Panel();
+            lblFloorsTitle = new Label();
+            txtFloorSearch = new TextBox();
+            btnFloorRefresh = new Button();
+            btnFloorAdd = new Button();
+            btnFloorEdit = new Button();
+            btnFloorDelete = new Button();
+            tabBranches = new TabPage();
+            pnlBranchesRoot = new Panel();
+            dgvBranches = new DataGridView();
+            pnlBranchesToolbar = new Panel();
+            lblBranchesTitle = new Label();
+            txtBranchSearch = new TextBox();
+            btnBranchRefresh = new Button();
+            btnBranchAdd = new Button();
+            btnBranchEdit = new Button();
+            btnBranchDelete = new Button();
+            tabMain.SuspendLayout();
+            tabRooms.SuspendLayout();
+            pnlRoomsRoot.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvRooms).BeginInit();
+            tlpRoomToolbar.SuspendLayout();
+            flpButton.SuspendLayout();
+            tabRoomTypes.SuspendLayout();
+            pnlRoomTypesRoot.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvRoomTypes).BeginInit();
+            pnlTypesToolbar.SuspendLayout();
+            tabFloors.SuspendLayout();
+            pnlFloorsRoot.SuspendLayout();
+            pnlFloorsScroll.SuspendLayout();
+            pnlFloorsToolbar.SuspendLayout();
+            tabBranches.SuspendLayout();
+            pnlBranchesRoot.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvBranches).BeginInit();
+            pnlBranchesToolbar.SuspendLayout();
             SuspendLayout();
             // 
-            // tabContainerPhong
+            // tabMain
             // 
-            tabContainerPhong.Controls.Add(tabPhong);
-            tabContainerPhong.Controls.Add(tabLoaiPhong);
-            tabContainerPhong.Dock = DockStyle.Fill;
-            tabContainerPhong.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            tabContainerPhong.Location = new Point(0, 0);
-            tabContainerPhong.Name = "tabContainerPhong";
-            tabContainerPhong.SelectedIndex = 0;
-            tabContainerPhong.Size = new Size(1300, 759);
-            tabContainerPhong.TabIndex = 1;
+            tabMain.Controls.Add(tabRooms);
+            tabMain.Controls.Add(tabRoomTypes);
+            tabMain.Controls.Add(tabFloors);
+            tabMain.Controls.Add(tabBranches);
+            tabMain.Dock = DockStyle.Fill;
+            tabMain.Font = new Font("Segoe UI", 10F);
+            tabMain.Location = new Point(0, 0);
+            tabMain.Margin = new Padding(2);
+            tabMain.Name = "tabMain";
+            tabMain.Padding = new Point(10, 8);
+            tabMain.SelectedIndex = 0;
+            tabMain.Size = new Size(1100, 552);
+            tabMain.TabIndex = 0;
             // 
-            // tabPhong
+            // tabRooms
             // 
-            tabPhong.Controls.Add(grpDanhSach);
-            tabPhong.Controls.Add(grpTimkiem);
-            tabPhong.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            tabPhong.Location = new Point(4, 34);
-            tabPhong.Name = "tabPhong";
-            tabPhong.Padding = new Padding(3);
-            tabPhong.Size = new Size(1292, 721);
-            tabPhong.TabIndex = 0;
-            tabPhong.Text = "Danh sách phòng";
-            tabPhong.UseVisualStyleBackColor = true;
+            tabRooms.Controls.Add(pnlRoomsRoot);
+            tabRooms.Location = new Point(4, 42);
+            tabRooms.Margin = new Padding(3, 4, 3, 4);
+            tabRooms.Name = "tabRooms";
+            tabRooms.Padding = new Padding(10, 12, 10, 10);
+            tabRooms.Size = new Size(1092, 506);
+            tabRooms.TabIndex = 0;
+            tabRooms.Text = "Quản lý phòng";
+            tabRooms.UseVisualStyleBackColor = true;
             // 
-            // grpDanhSach
+            // pnlRoomsRoot
             // 
-            grpDanhSach.Controls.Add(dgvDSPhong);
-            grpDanhSach.Dock = DockStyle.Fill;
-            grpDanhSach.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            grpDanhSach.Location = new Point(3, 137);
-            grpDanhSach.Name = "grpDanhSach";
-            grpDanhSach.Size = new Size(1286, 581);
-            grpDanhSach.TabIndex = 33;
-            grpDanhSach.TabStop = false;
-            grpDanhSach.Text = "Danh sách phòng";
+            pnlRoomsRoot.BackColor = Color.FromArgb(241, 245, 249);
+            pnlRoomsRoot.Controls.Add(dgvRooms);
+            pnlRoomsRoot.Controls.Add(tlpRoomToolbar);
+            pnlRoomsRoot.Dock = DockStyle.Fill;
+            pnlRoomsRoot.Location = new Point(10, 12);
+            pnlRoomsRoot.Name = "pnlRoomsRoot";
+            pnlRoomsRoot.Padding = new Padding(0, 0, 0, 6);
+            pnlRoomsRoot.Size = new Size(1072, 484);
+            pnlRoomsRoot.TabIndex = 0;
             // 
-            // dgvDSPhong
+            // dgvRooms
             // 
-            dgvDSPhong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.ControlLight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvDSPhong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvDSPhong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRooms.AllowUserToAddRows = false;
+            dgvRooms.AllowUserToDeleteRows = false;
+            dgvRooms.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
+            dgvRooms.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRooms.BackgroundColor = Color.White;
+            dgvRooms.BorderStyle = BorderStyle.None;
+            dgvRooms.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvRooms.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.ControlLight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvDSPhong.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvDSPhong.Dock = DockStyle.Fill;
-            dgvDSPhong.EnableHeadersVisualStyles = false;
-            dgvDSPhong.Location = new Point(3, 34);
-            dgvDSPhong.Name = "dgvDSPhong";
-            dgvDSPhong.ReadOnly = true;
-            dgvDSPhong.RowHeadersWidth = 51;
-            dgvDSPhong.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDSPhong.Size = new Size(1280, 544);
-            dgvDSPhong.TabIndex = 28;
-            dgvDSPhong.MouseDown += dgvDSPhong_MouseDown;
-            // 
-            // grpTimkiem
-            // 
-            grpTimkiem.Controls.Add(btnXoaPhong);
-            grpTimkiem.Controls.Add(btnLamMoi);
-            grpTimkiem.Controls.Add(btnChinhSua);
-            grpTimkiem.Controls.Add(btnThemPhong);
-            grpTimkiem.Controls.Add(cboLocTrangThai);
-            grpTimkiem.Controls.Add(txtTimKiem);
-            grpTimkiem.Controls.Add(cboLocLoaiPhong);
-            grpTimkiem.Dock = DockStyle.Top;
-            grpTimkiem.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            grpTimkiem.Location = new Point(3, 3);
-            grpTimkiem.Name = "grpTimkiem";
-            grpTimkiem.Size = new Size(1286, 134);
-            grpTimkiem.TabIndex = 31;
-            grpTimkiem.TabStop = false;
-            grpTimkiem.Text = "Thanh tìm kiếm";
-            // 
-            // btnXoaPhong
-            // 
-            btnXoaPhong.BackColor = Color.FromArgb(255, 128, 128);
-            btnXoaPhong.Cursor = Cursors.Hand;
-            btnXoaPhong.FlatAppearance.BorderSize = 0;
-            btnXoaPhong.FlatStyle = FlatStyle.Flat;
-            btnXoaPhong.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnXoaPhong.ForeColor = Color.White;
-            btnXoaPhong.Image = (Image)resources.GetObject("btnXoaPhong.Image");
-            btnXoaPhong.Location = new Point(1058, 53);
-            btnXoaPhong.Name = "btnXoaPhong";
-            btnXoaPhong.Size = new Size(90, 48);
-            btnXoaPhong.TabIndex = 20;
-            btnXoaPhong.TabStop = false;
-            btnXoaPhong.Text = "Xóa";
-            btnXoaPhong.TextAlign = ContentAlignment.MiddleRight;
-            btnXoaPhong.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnXoaPhong.UseVisualStyleBackColor = false;
-            btnXoaPhong.Click += btnXoaPhong_Click;
-            // 
-            // btnLamMoi
-            // 
-            btnLamMoi.BackColor = SystemColors.MenuHighlight;
-            btnLamMoi.FlatAppearance.BorderSize = 0;
-            btnLamMoi.FlatStyle = FlatStyle.Flat;
-            btnLamMoi.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnLamMoi.ForeColor = Color.White;
-            btnLamMoi.Image = (Image)resources.GetObject("btnLamMoi.Image");
-            btnLamMoi.Location = new Point(1154, 53);
-            btnLamMoi.Name = "btnLamMoi";
-            btnLamMoi.Size = new Size(126, 48);
-            btnLamMoi.TabIndex = 4;
-            btnLamMoi.TabStop = false;
-            btnLamMoi.Text = "Làm mới";
-            btnLamMoi.TextAlign = ContentAlignment.MiddleRight;
-            btnLamMoi.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnLamMoi.UseVisualStyleBackColor = false;
-            btnLamMoi.Click += btnLamMoi_Click;
-            // 
-            // btnChinhSua
-            // 
-            btnChinhSua.BackColor = Color.FromArgb(192, 192, 255);
-            btnChinhSua.Cursor = Cursors.Hand;
-            btnChinhSua.FlatAppearance.BorderSize = 0;
-            btnChinhSua.FlatStyle = FlatStyle.Flat;
-            btnChinhSua.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnChinhSua.ForeColor = Color.White;
-            btnChinhSua.Image = (Image)resources.GetObject("btnChinhSua.Image");
-            btnChinhSua.Location = new Point(962, 53);
-            btnChinhSua.Name = "btnChinhSua";
-            btnChinhSua.Size = new Size(90, 48);
-            btnChinhSua.TabIndex = 19;
-            btnChinhSua.TabStop = false;
-            btnChinhSua.Text = "Sửa";
-            btnChinhSua.TextAlign = ContentAlignment.MiddleRight;
-            btnChinhSua.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnChinhSua.UseVisualStyleBackColor = false;
-            btnChinhSua.Click += btnChinhSua_Click;
-            // 
-            // btnThemPhong
-            // 
-            btnThemPhong.BackColor = Color.Lime;
-            btnThemPhong.Cursor = Cursors.Hand;
-            btnThemPhong.FlatAppearance.BorderSize = 0;
-            btnThemPhong.FlatStyle = FlatStyle.Flat;
-            btnThemPhong.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnThemPhong.ForeColor = Color.White;
-            btnThemPhong.Image = (Image)resources.GetObject("btnThemPhong.Image");
-            btnThemPhong.Location = new Point(866, 53);
-            btnThemPhong.Name = "btnThemPhong";
-            btnThemPhong.Size = new Size(90, 48);
-            btnThemPhong.TabIndex = 18;
-            btnThemPhong.TabStop = false;
-            btnThemPhong.Text = "Thêm";
-            btnThemPhong.TextAlign = ContentAlignment.MiddleRight;
-            btnThemPhong.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnThemPhong.UseVisualStyleBackColor = false;
-            btnThemPhong.Click += btnThemPhong_Click;
-            // 
-            // cboLocTrangThai
-            // 
-            cboLocTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboLocTrangThai.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            cboLocTrangThai.FormattingEnabled = true;
-            cboLocTrangThai.Location = new Point(657, 53);
-            cboLocTrangThai.Name = "cboLocTrangThai";
-            cboLocTrangThai.Size = new Size(203, 43);
-            cboLocTrangThai.TabIndex = 7;
-            cboLocTrangThai.SelectedIndexChanged += cboLocTrangThai_SelectedIndexChanged;
-            // 
-            // txtTimKiem
-            // 
-            txtTimKiem.BorderStyle = BorderStyle.FixedSingle;
-            txtTimKiem.Font = new Font("Segoe UI", 18F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            txtTimKiem.Location = new Point(22, 51);
-            txtTimKiem.Name = "txtTimKiem";
-            txtTimKiem.PlaceholderText = "Tìm kiếm theo số phòng hoặc mô tả ";
-            txtTimKiem.Size = new Size(400, 47);
-            txtTimKiem.TabIndex = 17;
-            txtTimKiem.TextChanged += txtTimKiem_TextChanged;
-            // 
-            // cboLocLoaiPhong
-            // 
-            cboLocLoaiPhong.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboLocLoaiPhong.DropDownWidth = 200;
-            cboLocLoaiPhong.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            cboLocLoaiPhong.FormattingEnabled = true;
-            cboLocLoaiPhong.Items.AddRange(new object[] { "Tiêu chuẩn", "Hạng sang", "VIP" });
-            cboLocLoaiPhong.Location = new Point(440, 53);
-            cboLocLoaiPhong.Name = "cboLocLoaiPhong";
-            cboLocLoaiPhong.Size = new Size(211, 43);
-            cboLocLoaiPhong.TabIndex = 6;
-            cboLocLoaiPhong.SelectedIndexChanged += cboLocLoaiPhong_SelectedIndexChanged;
-            // 
-            // tabLoaiPhong
-            // 
-            tabLoaiPhong.Controls.Add(pnlContainerLoaiPhong);
-            tabLoaiPhong.Controls.Add(grpThanhTimKiem);
-            tabLoaiPhong.Location = new Point(4, 34);
-            tabLoaiPhong.Name = "tabLoaiPhong";
-            tabLoaiPhong.Padding = new Padding(3);
-            tabLoaiPhong.Size = new Size(1292, 721);
-            tabLoaiPhong.TabIndex = 1;
-            tabLoaiPhong.Text = "Danh sách loại phòng";
-            tabLoaiPhong.UseVisualStyleBackColor = true;
-            // 
-            // pnlContainerLoaiPhong
-            // 
-            pnlContainerLoaiPhong.Controls.Add(grpDanhSachLoaiPhong);
-            pnlContainerLoaiPhong.Controls.Add(grpChucNang);
-            pnlContainerLoaiPhong.Dock = DockStyle.Fill;
-            pnlContainerLoaiPhong.Location = new Point(3, 146);
-            pnlContainerLoaiPhong.Name = "pnlContainerLoaiPhong";
-            pnlContainerLoaiPhong.Size = new Size(1286, 572);
-            pnlContainerLoaiPhong.TabIndex = 3;
-            // 
-            // grpDanhSachLoaiPhong
-            // 
-            grpDanhSachLoaiPhong.Controls.Add(dgvDSLoaiPhong);
-            grpDanhSachLoaiPhong.Dock = DockStyle.Fill;
-            grpDanhSachLoaiPhong.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            grpDanhSachLoaiPhong.Location = new Point(0, 0);
-            grpDanhSachLoaiPhong.Name = "grpDanhSachLoaiPhong";
-            grpDanhSachLoaiPhong.Size = new Size(1065, 572);
-            grpDanhSachLoaiPhong.TabIndex = 3;
-            grpDanhSachLoaiPhong.TabStop = false;
-            grpDanhSachLoaiPhong.Text = "Danh sách loại phòng";
-            // 
-            // dgvDSLoaiPhong
-            // 
-            dgvDSLoaiPhong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvDSLoaiPhong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvRooms.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvRooms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.ControlLight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle3.ForeColor = Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = Color.LightCyan;
+            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvDSLoaiPhong.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvDSLoaiPhong.Dock = DockStyle.Fill;
-            dgvDSLoaiPhong.Location = new Point(3, 34);
-            dgvDSLoaiPhong.Name = "dgvDSLoaiPhong";
-            dgvDSLoaiPhong.ReadOnly = true;
-            dgvDSLoaiPhong.RowHeadersWidth = 51;
-            dgvDSLoaiPhong.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDSLoaiPhong.Size = new Size(1059, 535);
-            dgvDSLoaiPhong.TabIndex = 4;
+            dgvRooms.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvRooms.Dock = DockStyle.Fill;
+            dgvRooms.EnableHeadersVisualStyles = false;
+            dgvRooms.GridColor = Color.Gainsboro;
+            dgvRooms.Location = new Point(0, 132);
+            dgvRooms.Name = "dgvRooms";
+            dgvRooms.ReadOnly = true;
+            dgvRooms.RowHeadersVisible = false;
+            dgvRooms.RowHeadersWidth = 51;
+            dgvRooms.RowTemplate.Height = 40;
+            dgvRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRooms.Size = new Size(1072, 346);
+            dgvRooms.TabIndex = 1;
+            dgvRooms.SelectionChanged += DgvRooms_SelectionChanged;
             // 
-            // grpChucNang
+            // tlpRoomToolbar
             // 
-            grpChucNang.Controls.Add(cboLoaiPhong);
-            grpChucNang.Controls.Add(btnXoa2);
-            grpChucNang.Controls.Add(btnThem2);
-            grpChucNang.Controls.Add(btnLamMoi2);
-            grpChucNang.Controls.Add(btnSua2);
-            grpChucNang.Dock = DockStyle.Right;
-            grpChucNang.Location = new Point(1065, 0);
-            grpChucNang.Name = "grpChucNang";
-            grpChucNang.Size = new Size(221, 572);
-            grpChucNang.TabIndex = 2;
-            grpChucNang.TabStop = false;
-            grpChucNang.Text = "Chức năng";
+            tlpRoomToolbar.AutoSize = true;
+            tlpRoomToolbar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tlpRoomToolbar.BackColor = Color.White;
+            tlpRoomToolbar.ColumnCount = 9;
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 89F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 31.9444447F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 68.05556F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 116F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 57F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 133F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 103F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 119F));
+            tlpRoomToolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 149F));
+            tlpRoomToolbar.Controls.Add(lblSearch, 0, 0);
+            tlpRoomToolbar.Controls.Add(txtSearch, 1, 0);
+            tlpRoomToolbar.Controls.Add(lblFloor, 4, 0);
+            tlpRoomToolbar.Controls.Add(cmbFilterFloor, 5, 0);
+            tlpRoomToolbar.Controls.Add(lblRoomType, 6, 0);
+            tlpRoomToolbar.Controls.Add(cmbFilterRoomType, 7, 0);
+            tlpRoomToolbar.Controls.Add(lblOperational, 3, 1);
+            tlpRoomToolbar.Controls.Add(btnRefreshList, 3, 0);
+            tlpRoomToolbar.Controls.Add(btnBulkCreate, 8, 0);
+            tlpRoomToolbar.Controls.Add(cmbOperationalApply, 5, 1);
+            tlpRoomToolbar.Controls.Add(flpButton, 0, 1);
+            tlpRoomToolbar.Dock = DockStyle.Top;
+            tlpRoomToolbar.Location = new Point(0, 0);
+            tlpRoomToolbar.Margin = new Padding(0, 0, 0, 10);
+            tlpRoomToolbar.Name = "tlpRoomToolbar";
+            tlpRoomToolbar.Padding = new Padding(12);
+            tlpRoomToolbar.RowCount = 3;
+            tlpRoomToolbar.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
+            tlpRoomToolbar.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
+            tlpRoomToolbar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tlpRoomToolbar.Size = new Size(1072, 132);
+            tlpRoomToolbar.TabIndex = 0;
             // 
-            // cboLoaiPhong
+            // lblSearch
             // 
-            cboLoaiPhong.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboLoaiPhong.DropDownWidth = 200;
-            cboLoaiPhong.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            cboLoaiPhong.FormattingEnabled = true;
-            cboLoaiPhong.Items.AddRange(new object[] { "Tiêu chuẩn", "Hạng sang", "VIP" });
-            cboLoaiPhong.Location = new Point(12, 57);
-            cboLoaiPhong.Name = "cboLoaiPhong";
-            cboLoaiPhong.Size = new Size(203, 43);
-            cboLoaiPhong.TabIndex = 21;
-            cboLoaiPhong.SelectedIndexChanged += cboLoaiPhong_SelectedIndexChanged;
+            lblSearch.Anchor = AnchorStyles.Left;
+            lblSearch.AutoSize = true;
+            lblSearch.Location = new Point(15, 22);
+            lblSearch.Name = "lblSearch";
+            lblSearch.Size = new Size(79, 23);
+            lblSearch.TabIndex = 0;
+            lblSearch.Text = "Tìm kiếm";
             // 
-            // btnXoa2
+            // txtSearch
             // 
-            btnXoa2.BackColor = Color.FromArgb(255, 128, 128);
-            btnXoa2.Cursor = Cursors.Hand;
-            btnXoa2.FlatAppearance.BorderSize = 0;
-            btnXoa2.FlatStyle = FlatStyle.Flat;
-            btnXoa2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnXoa2.ForeColor = Color.White;
-            btnXoa2.Image = (Image)resources.GetObject("btnXoa2.Image");
-            btnXoa2.Location = new Point(50, 343);
-            btnXoa2.Name = "btnXoa2";
-            btnXoa2.Size = new Size(129, 48);
-            btnXoa2.TabIndex = 24;
-            btnXoa2.TabStop = false;
-            btnXoa2.Text = "Xóa";
-            btnXoa2.TextAlign = ContentAlignment.MiddleRight;
-            btnXoa2.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnXoa2.UseVisualStyleBackColor = false;
-            btnXoa2.Click += btnXoa2_Click;
+            txtSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            tlpRoomToolbar.SetColumnSpan(txtSearch, 2);
+            txtSearch.Location = new Point(104, 19);
+            txtSearch.Margin = new Padding(3, 4, 3, 4);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Tìm theo số phòng…";
+            txtSearch.Size = new Size(275, 30);
+            txtSearch.TabIndex = 1;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
-            // btnThem2
+            // lblFloor
             // 
-            btnThem2.BackColor = Color.Lime;
-            btnThem2.Cursor = Cursors.Hand;
-            btnThem2.FlatAppearance.BorderSize = 0;
-            btnThem2.FlatStyle = FlatStyle.Flat;
-            btnThem2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnThem2.ForeColor = Color.White;
-            btnThem2.Image = (Image)resources.GetObject("btnThem2.Image");
-            btnThem2.Location = new Point(50, 177);
-            btnThem2.Name = "btnThem2";
-            btnThem2.Size = new Size(129, 48);
-            btnThem2.TabIndex = 22;
-            btnThem2.TabStop = false;
-            btnThem2.Text = "Thêm";
-            btnThem2.TextAlign = ContentAlignment.MiddleRight;
-            btnThem2.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnThem2.UseVisualStyleBackColor = false;
-            btnThem2.Click += btnThem2_Click;
+            lblFloor.Anchor = AnchorStyles.Left;
+            lblFloor.AutoSize = true;
+            lblFloor.Location = new Point(501, 22);
+            lblFloor.Name = "lblFloor";
+            lblFloor.Size = new Size(48, 23);
+            lblFloor.TabIndex = 4;
+            lblFloor.Text = "Tầng";
             // 
-            // btnLamMoi2
+            // cmbFilterFloor
             // 
-            btnLamMoi2.BackColor = SystemColors.MenuHighlight;
-            btnLamMoi2.FlatAppearance.BorderSize = 0;
-            btnLamMoi2.FlatStyle = FlatStyle.Flat;
-            btnLamMoi2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnLamMoi2.ForeColor = Color.White;
-            btnLamMoi2.Image = (Image)resources.GetObject("btnLamMoi2.Image");
-            btnLamMoi2.Location = new Point(50, 435);
-            btnLamMoi2.Name = "btnLamMoi2";
-            btnLamMoi2.Size = new Size(129, 48);
-            btnLamMoi2.TabIndex = 21;
-            btnLamMoi2.TabStop = false;
-            btnLamMoi2.Text = "Làm mới";
-            btnLamMoi2.TextAlign = ContentAlignment.MiddleRight;
-            btnLamMoi2.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnLamMoi2.UseVisualStyleBackColor = false;
-            btnLamMoi2.Click += btnLamMoi2_Click;
+            cmbFilterFloor.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            cmbFilterFloor.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilterFloor.FormattingEnabled = true;
+            cmbFilterFloor.Location = new Point(558, 20);
+            cmbFilterFloor.Margin = new Padding(3, 4, 3, 4);
+            cmbFilterFloor.Name = "cmbFilterFloor";
+            cmbFilterFloor.Size = new Size(127, 31);
+            cmbFilterFloor.TabIndex = 5;
+            cmbFilterFloor.SelectedIndexChanged += CmbFilterFloor_SelectedIndexChanged;
             // 
-            // btnSua2
+            // lblRoomType
             // 
-            btnSua2.BackColor = Color.FromArgb(192, 192, 255);
-            btnSua2.Cursor = Cursors.Hand;
-            btnSua2.FlatAppearance.BorderSize = 0;
-            btnSua2.FlatStyle = FlatStyle.Flat;
-            btnSua2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnSua2.ForeColor = Color.White;
-            btnSua2.Image = (Image)resources.GetObject("btnSua2.Image");
-            btnSua2.Location = new Point(50, 258);
-            btnSua2.Name = "btnSua2";
-            btnSua2.Size = new Size(129, 48);
-            btnSua2.TabIndex = 23;
-            btnSua2.TabStop = false;
-            btnSua2.Text = "Sửa";
-            btnSua2.TextAlign = ContentAlignment.MiddleRight;
-            btnSua2.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnSua2.UseVisualStyleBackColor = false;
-            btnSua2.Click += btnSua2_Click;
+            lblRoomType.Anchor = AnchorStyles.Left;
+            lblRoomType.AutoSize = true;
+            lblRoomType.Location = new Point(691, 22);
+            lblRoomType.Name = "lblRoomType";
+            lblRoomType.Size = new Size(96, 23);
+            lblRoomType.TabIndex = 6;
+            lblRoomType.Text = "Loại phòng";
             // 
-            // grpThanhTimKiem
+            // cmbFilterRoomType
             // 
-            grpThanhTimKiem.Controls.Add(groupBox1);
-            grpThanhTimKiem.Controls.Add(cboSapXep);
-            grpThanhTimKiem.Controls.Add(txtThanhTimKiem2);
-            grpThanhTimKiem.Dock = DockStyle.Top;
-            grpThanhTimKiem.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            grpThanhTimKiem.Location = new Point(3, 3);
-            grpThanhTimKiem.Name = "grpThanhTimKiem";
-            grpThanhTimKiem.Size = new Size(1286, 143);
-            grpThanhTimKiem.TabIndex = 2;
-            grpThanhTimKiem.TabStop = false;
-            grpThanhTimKiem.Text = "Thanh tìm kiếm";
+            cmbFilterRoomType.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            cmbFilterRoomType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilterRoomType.FormattingEnabled = true;
+            cmbFilterRoomType.Location = new Point(794, 20);
+            cmbFilterRoomType.Margin = new Padding(3, 4, 3, 4);
+            cmbFilterRoomType.Name = "cmbFilterRoomType";
+            cmbFilterRoomType.Size = new Size(113, 31);
+            cmbFilterRoomType.TabIndex = 7;
+            cmbFilterRoomType.SelectedIndexChanged += CmbFilterRoomType_SelectedIndexChanged;
             // 
-            // groupBox1
+            // lblOperational
             // 
-            groupBox1.Controls.Add(btnLocTheoGia);
-            groupBox1.Controls.Add(lblDen);
-            groupBox1.Controls.Add(lblTu);
-            groupBox1.Controls.Add(numGiaMax);
-            groupBox1.Controls.Add(numGiaMin);
-            groupBox1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            groupBox1.Location = new Point(657, 21);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(587, 102);
-            groupBox1.TabIndex = 24;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Tìm theo giá";
+            lblOperational.Anchor = AnchorStyles.Left;
+            lblOperational.AutoSize = true;
+            tlpRoomToolbar.SetColumnSpan(lblOperational, 2);
+            lblOperational.Location = new Point(385, 66);
+            lblOperational.Name = "lblOperational";
+            lblOperational.Size = new Size(138, 23);
+            lblOperational.TabIndex = 11;
+            lblOperational.Text = "Vận hành / khóa";
             // 
-            // btnLocTheoGia
+            // btnRefreshList
             // 
-            btnLocTheoGia.BackColor = Color.Gold;
-            btnLocTheoGia.FlatAppearance.BorderSize = 0;
-            btnLocTheoGia.FlatStyle = FlatStyle.Flat;
-            btnLocTheoGia.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            btnLocTheoGia.ForeColor = Color.White;
-            btnLocTheoGia.Image = (Image)resources.GetObject("btnLocTheoGia.Image");
-            btnLocTheoGia.Location = new Point(408, 29);
-            btnLocTheoGia.Name = "btnLocTheoGia";
-            btnLocTheoGia.Size = new Size(163, 52);
-            btnLocTheoGia.TabIndex = 30;
-            btnLocTheoGia.Text = "Tìm theo giá ";
-            btnLocTheoGia.TextAlign = ContentAlignment.MiddleRight;
-            btnLocTheoGia.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnLocTheoGia.UseVisualStyleBackColor = false;
-            btnLocTheoGia.Click += btnLocTheoGia_Click;
+            btnRefreshList.Anchor = AnchorStyles.Right;
+            btnRefreshList.Location = new Point(400, 16);
+            btnRefreshList.Margin = new Padding(3, 4, 3, 4);
+            btnRefreshList.Name = "btnRefreshList";
+            btnRefreshList.Size = new Size(95, 36);
+            btnRefreshList.TabIndex = 3;
+            btnRefreshList.Text = "Làm mới";
+            btnRefreshList.UseVisualStyleBackColor = true;
+            btnRefreshList.Click += BtnRefreshList_Click;
             // 
-            // lblDen
+            // btnBulkCreate
             // 
-            lblDen.AutoSize = true;
-            lblDen.Location = new Point(217, 44);
-            lblDen.Name = "lblDen";
-            lblDen.Size = new Size(47, 23);
-            lblDen.TabIndex = 29;
-            lblDen.Text = "Đến:";
+            btnBulkCreate.Anchor = AnchorStyles.Right;
+            btnBulkCreate.BackColor = Color.Silver;
+            btnBulkCreate.FlatStyle = FlatStyle.Flat;
+            btnBulkCreate.ForeColor = Color.White;
+            btnBulkCreate.Location = new Point(926, 17);
+            btnBulkCreate.Margin = new Padding(3, 4, 3, 4);
+            btnBulkCreate.Name = "btnBulkCreate";
+            btnBulkCreate.Size = new Size(131, 34);
+            btnBulkCreate.TabIndex = 14;
+            btnBulkCreate.Text = "Tạo hàng loạt";
+            btnBulkCreate.UseVisualStyleBackColor = false;
+            btnBulkCreate.Click += BtnBulkCreate_Click;
             // 
-            // lblTu
+            // cmbOperationalApply
             // 
-            lblTu.AutoSize = true;
-            lblTu.Location = new Point(19, 45);
-            lblTu.Name = "lblTu";
-            lblTu.Size = new Size(36, 23);
-            lblTu.TabIndex = 28;
-            lblTu.Text = "Từ:";
+            cmbOperationalApply.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            tlpRoomToolbar.SetColumnSpan(cmbOperationalApply, 4);
+            cmbOperationalApply.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbOperationalApply.FormattingEnabled = true;
+            cmbOperationalApply.Location = new Point(558, 64);
+            cmbOperationalApply.Margin = new Padding(3, 4, 3, 4);
+            cmbOperationalApply.Name = "cmbOperationalApply";
+            cmbOperationalApply.Size = new Size(499, 31);
+            cmbOperationalApply.TabIndex = 12;
+            cmbOperationalApply.SelectedIndexChanged += CmbOperationalApply_SelectedIndexChanged;
             // 
-            // numGiaMax
+            // flpButton
             // 
-            numGiaMax.Location = new Point(270, 42);
-            numGiaMax.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
-            numGiaMax.Name = "numGiaMax";
-            numGiaMax.Size = new Size(116, 30);
-            numGiaMax.TabIndex = 27;
-            numGiaMax.ThousandsSeparator = true;
+            tlpRoomToolbar.SetColumnSpan(flpButton, 3);
+            flpButton.Controls.Add(btnAddRoom);
+            flpButton.Controls.Add(btnEditRoom);
+            flpButton.Controls.Add(btnDeleteRoom);
+            flpButton.Location = new Point(15, 59);
+            flpButton.Name = "flpButton";
+            flpButton.Size = new Size(283, 38);
+            flpButton.TabIndex = 15;
             // 
-            // numGiaMin
+            // btnAddRoom
             // 
-            numGiaMin.Location = new Point(61, 43);
-            numGiaMin.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
-            numGiaMin.Name = "numGiaMin";
-            numGiaMin.Size = new Size(116, 30);
-            numGiaMin.TabIndex = 26;
-            numGiaMin.ThousandsSeparator = true;
+            btnAddRoom.Anchor = AnchorStyles.Right;
+            btnAddRoom.BackColor = Color.FromArgb(21, 128, 61);
+            btnAddRoom.FlatStyle = FlatStyle.Flat;
+            btnAddRoom.ForeColor = Color.White;
+            btnAddRoom.Location = new Point(3, 4);
+            btnAddRoom.Margin = new Padding(3, 4, 3, 4);
+            btnAddRoom.Name = "btnAddRoom";
+            btnAddRoom.Size = new Size(83, 36);
+            btnAddRoom.TabIndex = 8;
+            btnAddRoom.Text = "Thêm";
+            btnAddRoom.UseVisualStyleBackColor = false;
+            btnAddRoom.Click += BtnAddRoom_Click;
             // 
-            // cboSapXep
+            // btnEditRoom
             // 
-            cboSapXep.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboSapXep.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            cboSapXep.FormattingEnabled = true;
-            cboSapXep.Location = new Point(449, 54);
-            cboSapXep.Name = "cboSapXep";
-            cboSapXep.Size = new Size(181, 43);
-            cboSapXep.TabIndex = 19;
-            cboSapXep.SelectedIndexChanged += cboSapXep_SelectedIndexChanged;
+            btnEditRoom.Anchor = AnchorStyles.Left;
+            btnEditRoom.BackColor = Color.DeepSkyBlue;
+            btnEditRoom.FlatStyle = FlatStyle.Flat;
+            btnEditRoom.ForeColor = Color.White;
+            btnEditRoom.Location = new Point(92, 5);
+            btnEditRoom.Margin = new Padding(3, 4, 3, 4);
+            btnEditRoom.Name = "btnEditRoom";
+            btnEditRoom.Size = new Size(76, 34);
+            btnEditRoom.TabIndex = 9;
+            btnEditRoom.Text = "Sửa";
+            btnEditRoom.UseVisualStyleBackColor = false;
+            btnEditRoom.Click += BtnEditRoom_Click;
             // 
-            // txtThanhTimKiem2
+            // btnDeleteRoom
             // 
-            txtThanhTimKiem2.BorderStyle = BorderStyle.FixedSingle;
-            txtThanhTimKiem2.Font = new Font("Segoe UI", 18F, FontStyle.Italic, GraphicsUnit.Point, 163);
-            txtThanhTimKiem2.Location = new Point(17, 55);
-            txtThanhTimKiem2.Name = "txtThanhTimKiem2";
-            txtThanhTimKiem2.PlaceholderText = "Tìm kiếm theo tên loại phòng hoặc mô tả ";
-            txtThanhTimKiem2.Size = new Size(400, 47);
-            txtThanhTimKiem2.TabIndex = 18;
-            txtThanhTimKiem2.TextChanged += txtThanhTimKiem2_TextChanged;
+            btnDeleteRoom.Anchor = AnchorStyles.Left;
+            btnDeleteRoom.BackColor = Color.Red;
+            btnDeleteRoom.FlatStyle = FlatStyle.Flat;
+            btnDeleteRoom.ForeColor = Color.White;
+            btnDeleteRoom.Location = new Point(174, 5);
+            btnDeleteRoom.Margin = new Padding(3, 4, 3, 4);
+            btnDeleteRoom.Name = "btnDeleteRoom";
+            btnDeleteRoom.Size = new Size(84, 34);
+            btnDeleteRoom.TabIndex = 10;
+            btnDeleteRoom.Text = "Xóa";
+            btnDeleteRoom.UseVisualStyleBackColor = false;
+            btnDeleteRoom.Click += BtnDeleteRoom_Click;
             // 
-            // usPhong
+            // tabRoomTypes
             // 
-            AutoScaleMode = AutoScaleMode.None;
-            Controls.Add(tabContainerPhong);
-            Name = "usPhong";
-            Size = new Size(1300, 759);
-            Load += usPhong_Load;
-            tabContainerPhong.ResumeLayout(false);
-            tabPhong.ResumeLayout(false);
-            grpDanhSach.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvDSPhong).EndInit();
-            grpTimkiem.ResumeLayout(false);
-            grpTimkiem.PerformLayout();
-            tabLoaiPhong.ResumeLayout(false);
-            pnlContainerLoaiPhong.ResumeLayout(false);
-            grpDanhSachLoaiPhong.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvDSLoaiPhong).EndInit();
-            grpChucNang.ResumeLayout(false);
-            grpThanhTimKiem.ResumeLayout(false);
-            grpThanhTimKiem.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numGiaMax).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numGiaMin).EndInit();
+            tabRoomTypes.Controls.Add(pnlRoomTypesRoot);
+            tabRoomTypes.Location = new Point(4, 42);
+            tabRoomTypes.Margin = new Padding(3, 4, 3, 4);
+            tabRoomTypes.Name = "tabRoomTypes";
+            tabRoomTypes.Padding = new Padding(10);
+            tabRoomTypes.Size = new Size(1092, 506);
+            tabRoomTypes.TabIndex = 1;
+            tabRoomTypes.Text = "Quản lý loại phòng";
+            tabRoomTypes.UseVisualStyleBackColor = true;
+            // 
+            // pnlRoomTypesRoot
+            // 
+            pnlRoomTypesRoot.BackColor = Color.FromArgb(241, 245, 249);
+            pnlRoomTypesRoot.Controls.Add(dgvRoomTypes);
+            pnlRoomTypesRoot.Controls.Add(pnlTypesToolbar);
+            pnlRoomTypesRoot.Dock = DockStyle.Fill;
+            pnlRoomTypesRoot.Location = new Point(10, 10);
+            pnlRoomTypesRoot.Name = "pnlRoomTypesRoot";
+            pnlRoomTypesRoot.Padding = new Padding(0, 0, 0, 6);
+            pnlRoomTypesRoot.Size = new Size(1072, 486);
+            pnlRoomTypesRoot.TabIndex = 0;
+            // 
+            // dgvRoomTypes
+            // 
+            dgvRoomTypes.AllowUserToAddRows = false;
+            dgvRoomTypes.AllowUserToDeleteRows = false;
+            dgvRoomTypes.AllowUserToResizeRows = false;
+            dataGridViewCellStyle4.BackColor = Color.WhiteSmoke;
+            dgvRoomTypes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dgvRoomTypes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRoomTypes.BackgroundColor = Color.White;
+            dgvRoomTypes.BorderStyle = BorderStyle.None;
+            dgvRoomTypes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvRoomTypes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle5.ForeColor = Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvRoomTypes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dgvRoomTypes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle6.ForeColor = Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = Color.LightCyan;
+            dataGridViewCellStyle6.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvRoomTypes.DefaultCellStyle = dataGridViewCellStyle6;
+            dgvRoomTypes.Dock = DockStyle.Fill;
+            dgvRoomTypes.EnableHeadersVisualStyles = false;
+            dgvRoomTypes.GridColor = Color.Gainsboro;
+            dgvRoomTypes.Location = new Point(0, 108);
+            dgvRoomTypes.Name = "dgvRoomTypes";
+            dgvRoomTypes.ReadOnly = true;
+            dgvRoomTypes.RowHeadersVisible = false;
+            dgvRoomTypes.RowHeadersWidth = 51;
+            dgvRoomTypes.RowTemplate.Height = 40;
+            dgvRoomTypes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRoomTypes.Size = new Size(1072, 372);
+            dgvRoomTypes.TabIndex = 1;
+            // 
+            // pnlTypesToolbar
+            // 
+            pnlTypesToolbar.BackColor = Color.White;
+            pnlTypesToolbar.Controls.Add(lblRoomTypesTitle);
+            pnlTypesToolbar.Controls.Add(txtRoomTypeSearch);
+            pnlTypesToolbar.Controls.Add(btnRoomTypeRefresh);
+            pnlTypesToolbar.Controls.Add(btnRoomTypeAdd);
+            pnlTypesToolbar.Controls.Add(btnRoomTypeEdit);
+            pnlTypesToolbar.Controls.Add(btnRoomTypeDelete);
+            pnlTypesToolbar.Dock = DockStyle.Top;
+            pnlTypesToolbar.Location = new Point(0, 0);
+            pnlTypesToolbar.Name = "pnlTypesToolbar";
+            pnlTypesToolbar.Padding = new Padding(12, 10, 12, 10);
+            pnlTypesToolbar.Size = new Size(1072, 108);
+            pnlTypesToolbar.TabIndex = 0;
+            // 
+            // lblRoomTypesTitle
+            // 
+            lblRoomTypesTitle.AutoSize = true;
+            lblRoomTypesTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblRoomTypesTitle.Location = new Point(16, 14);
+            lblRoomTypesTitle.Name = "lblRoomTypesTitle";
+            lblRoomTypesTitle.Size = new Size(432, 23);
+            lblRoomTypesTitle.TabIndex = 0;
+            lblRoomTypesTitle.Text = "Danh sách loại phòng — mã, giá, sức chứa, số phòng";
+            // 
+            // txtRoomTypeSearch
+            // 
+            txtRoomTypeSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtRoomTypeSearch.Location = new Point(16, 44);
+            txtRoomTypeSearch.Margin = new Padding(3, 4, 3, 4);
+            txtRoomTypeSearch.Name = "txtRoomTypeSearch";
+            txtRoomTypeSearch.PlaceholderText = "Tìm theo mã, tên, mô tả, loại giường…";
+            txtRoomTypeSearch.Size = new Size(548, 30);
+            txtRoomTypeSearch.TabIndex = 1;
+            txtRoomTypeSearch.TextChanged += TxtRoomTypeSearch_TextChanged;
+            // 
+            // btnRoomTypeRefresh
+            // 
+            btnRoomTypeRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRoomTypeRefresh.BackColor = Color.LightGray;
+            btnRoomTypeRefresh.FlatStyle = FlatStyle.Flat;
+            btnRoomTypeRefresh.ForeColor = Color.White;
+            btnRoomTypeRefresh.Location = new Point(582, 40);
+            btnRoomTypeRefresh.Name = "btnRoomTypeRefresh";
+            btnRoomTypeRefresh.Size = new Size(110, 36);
+            btnRoomTypeRefresh.TabIndex = 2;
+            btnRoomTypeRefresh.Text = "Làm mới";
+            btnRoomTypeRefresh.UseVisualStyleBackColor = false;
+            btnRoomTypeRefresh.Click += BtnRoomTypeRefresh_Click;
+            // 
+            // btnRoomTypeAdd
+            // 
+            btnRoomTypeAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRoomTypeAdd.BackColor = Color.FromArgb(21, 128, 61);
+            btnRoomTypeAdd.FlatStyle = FlatStyle.Flat;
+            btnRoomTypeAdd.ForeColor = Color.White;
+            btnRoomTypeAdd.Location = new Point(702, 40);
+            btnRoomTypeAdd.Name = "btnRoomTypeAdd";
+            btnRoomTypeAdd.Size = new Size(110, 36);
+            btnRoomTypeAdd.TabIndex = 3;
+            btnRoomTypeAdd.Text = "Thêm";
+            btnRoomTypeAdd.UseVisualStyleBackColor = false;
+            btnRoomTypeAdd.Click += BtnRoomTypeAdd_Click;
+            // 
+            // btnRoomTypeEdit
+            // 
+            btnRoomTypeEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRoomTypeEdit.BackColor = Color.DeepSkyBlue;
+            btnRoomTypeEdit.FlatStyle = FlatStyle.Flat;
+            btnRoomTypeEdit.ForeColor = Color.White;
+            btnRoomTypeEdit.Location = new Point(822, 40);
+            btnRoomTypeEdit.Name = "btnRoomTypeEdit";
+            btnRoomTypeEdit.Size = new Size(110, 36);
+            btnRoomTypeEdit.TabIndex = 4;
+            btnRoomTypeEdit.Text = "Sửa";
+            btnRoomTypeEdit.UseVisualStyleBackColor = false;
+            btnRoomTypeEdit.Click += BtnRoomTypeEdit_Click;
+            // 
+            // btnRoomTypeDelete
+            // 
+            btnRoomTypeDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRoomTypeDelete.BackColor = Color.Red;
+            btnRoomTypeDelete.FlatStyle = FlatStyle.Flat;
+            btnRoomTypeDelete.ForeColor = Color.White;
+            btnRoomTypeDelete.Location = new Point(942, 40);
+            btnRoomTypeDelete.Name = "btnRoomTypeDelete";
+            btnRoomTypeDelete.Size = new Size(110, 36);
+            btnRoomTypeDelete.TabIndex = 5;
+            btnRoomTypeDelete.Text = "Xóa";
+            btnRoomTypeDelete.UseVisualStyleBackColor = false;
+            btnRoomTypeDelete.Click += BtnRoomTypeDelete_Click;
+            // 
+            // tabFloors
+            // 
+            tabFloors.Controls.Add(pnlFloorsRoot);
+            tabFloors.Location = new Point(4, 42);
+            tabFloors.Margin = new Padding(3, 4, 3, 4);
+            tabFloors.Name = "tabFloors";
+            tabFloors.Padding = new Padding(10, 12, 10, 10);
+            tabFloors.Size = new Size(1092, 506);
+            tabFloors.TabIndex = 2;
+            tabFloors.Text = "Quản lý trạng thái tầng";
+            tabFloors.UseVisualStyleBackColor = true;
+            // 
+            // pnlFloorsRoot
+            // 
+            pnlFloorsRoot.BackColor = Color.FromArgb(241, 245, 249);
+            pnlFloorsRoot.Controls.Add(pnlFloorsScroll);
+            pnlFloorsRoot.Controls.Add(pnlFloorsToolbar);
+            pnlFloorsRoot.Dock = DockStyle.Fill;
+            pnlFloorsRoot.Location = new Point(10, 12);
+            pnlFloorsRoot.Name = "pnlFloorsRoot";
+            pnlFloorsRoot.Padding = new Padding(0, 0, 0, 6);
+            pnlFloorsRoot.Size = new Size(1072, 484);
+            pnlFloorsRoot.TabIndex = 0;
+            // 
+            // pnlFloorsScroll
+            // 
+            pnlFloorsScroll.AutoScroll = true;
+            pnlFloorsScroll.BackColor = Color.FromArgb(241, 245, 249);
+            pnlFloorsScroll.Controls.Add(flowFloorMgmtLayout);
+            pnlFloorsScroll.Dock = DockStyle.Fill;
+            pnlFloorsScroll.Location = new Point(0, 108);
+            pnlFloorsScroll.Name = "pnlFloorsScroll";
+            pnlFloorsScroll.Padding = new Padding(8, 4, 8, 8);
+            pnlFloorsScroll.Size = new Size(1072, 370);
+            pnlFloorsScroll.TabIndex = 1;
+            // 
+            // flowFloorMgmtLayout
+            // 
+            flowFloorMgmtLayout.AutoSize = true;
+            flowFloorMgmtLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowFloorMgmtLayout.Dock = DockStyle.Top;
+            flowFloorMgmtLayout.Location = new Point(8, 4);
+            flowFloorMgmtLayout.Name = "flowFloorMgmtLayout";
+            flowFloorMgmtLayout.Padding = new Padding(4);
+            flowFloorMgmtLayout.Size = new Size(1056, 8);
+            flowFloorMgmtLayout.TabIndex = 0;
+            // 
+            // pnlFloorsToolbar
+            // 
+            pnlFloorsToolbar.BackColor = Color.White;
+            pnlFloorsToolbar.Controls.Add(lblFloorsTitle);
+            pnlFloorsToolbar.Controls.Add(txtFloorSearch);
+            pnlFloorsToolbar.Controls.Add(btnFloorRefresh);
+            pnlFloorsToolbar.Controls.Add(btnFloorAdd);
+            pnlFloorsToolbar.Controls.Add(btnFloorEdit);
+            pnlFloorsToolbar.Controls.Add(btnFloorDelete);
+            pnlFloorsToolbar.Dock = DockStyle.Top;
+            pnlFloorsToolbar.Location = new Point(0, 0);
+            pnlFloorsToolbar.Name = "pnlFloorsToolbar";
+            pnlFloorsToolbar.Padding = new Padding(12, 10, 12, 10);
+            pnlFloorsToolbar.Size = new Size(1072, 108);
+            pnlFloorsToolbar.TabIndex = 0;
+            // 
+            // lblFloorsTitle
+            // 
+            lblFloorsTitle.AutoSize = true;
+            lblFloorsTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblFloorsTitle.Location = new Point(16, 14);
+            lblFloorsTitle.Name = "lblFloorsTitle";
+            lblFloorsTitle.Size = new Size(460, 23);
+            lblFloorsTitle.TabIndex = 0;
+            lblFloorsTitle.Text = "Lưới tầng — đóng/mở bảo trì (khóa đặt phòng cả tầng)";
+            // 
+            // txtFloorSearch
+            // 
+            txtFloorSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtFloorSearch.Location = new Point(16, 44);
+            txtFloorSearch.Margin = new Padding(3, 4, 3, 4);
+            txtFloorSearch.Name = "txtFloorSearch";
+            txtFloorSearch.PlaceholderText = "Tìm theo ID, tên tầng, chi nhánh…";
+            txtFloorSearch.Size = new Size(548, 30);
+            txtFloorSearch.TabIndex = 1;
+            txtFloorSearch.TextChanged += TxtFloorSearch_TextChanged;
+            // 
+            // btnFloorRefresh
+            // 
+            btnFloorRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnFloorRefresh.BackColor = Color.LightGray;
+            btnFloorRefresh.FlatStyle = FlatStyle.Flat;
+            btnFloorRefresh.ForeColor = Color.White;
+            btnFloorRefresh.Location = new Point(582, 40);
+            btnFloorRefresh.Name = "btnFloorRefresh";
+            btnFloorRefresh.Size = new Size(110, 36);
+            btnFloorRefresh.TabIndex = 2;
+            btnFloorRefresh.Text = "Làm mới";
+            btnFloorRefresh.UseVisualStyleBackColor = false;
+            btnFloorRefresh.Click += BtnFloorRefresh_Click;
+            // 
+            // btnFloorAdd
+            // 
+            btnFloorAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnFloorAdd.BackColor = Color.FromArgb(21, 128, 61);
+            btnFloorAdd.FlatStyle = FlatStyle.Flat;
+            btnFloorAdd.ForeColor = Color.White;
+            btnFloorAdd.Location = new Point(702, 40);
+            btnFloorAdd.Name = "btnFloorAdd";
+            btnFloorAdd.Size = new Size(110, 36);
+            btnFloorAdd.TabIndex = 3;
+            btnFloorAdd.Text = "Thêm";
+            btnFloorAdd.UseVisualStyleBackColor = false;
+            btnFloorAdd.Click += BtnFloorAdd_Click;
+            // 
+            // btnFloorEdit
+            // 
+            btnFloorEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnFloorEdit.BackColor = Color.DeepSkyBlue;
+            btnFloorEdit.FlatStyle = FlatStyle.Flat;
+            btnFloorEdit.ForeColor = Color.White;
+            btnFloorEdit.Location = new Point(822, 40);
+            btnFloorEdit.Name = "btnFloorEdit";
+            btnFloorEdit.Size = new Size(110, 36);
+            btnFloorEdit.TabIndex = 4;
+            btnFloorEdit.Text = "Sửa";
+            btnFloorEdit.UseVisualStyleBackColor = false;
+            btnFloorEdit.Click += BtnFloorEdit_Click;
+            // 
+            // btnFloorDelete
+            // 
+            btnFloorDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnFloorDelete.BackColor = Color.Red;
+            btnFloorDelete.FlatStyle = FlatStyle.Flat;
+            btnFloorDelete.ForeColor = Color.White;
+            btnFloorDelete.Location = new Point(942, 40);
+            btnFloorDelete.Name = "btnFloorDelete";
+            btnFloorDelete.Size = new Size(110, 36);
+            btnFloorDelete.TabIndex = 5;
+            btnFloorDelete.Text = "Xóa";
+            btnFloorDelete.UseVisualStyleBackColor = false;
+            btnFloorDelete.Click += BtnFloorDelete_Click;
+            // 
+            // tabBranches
+            // 
+            tabBranches.Controls.Add(pnlBranchesRoot);
+            tabBranches.Location = new Point(4, 42);
+            tabBranches.Margin = new Padding(3, 4, 3, 4);
+            tabBranches.Name = "tabBranches";
+            tabBranches.Padding = new Padding(10);
+            tabBranches.Size = new Size(1092, 506);
+            tabBranches.TabIndex = 3;
+            tabBranches.Text = "Quản lý chi nhánh";
+            tabBranches.UseVisualStyleBackColor = true;
+            // 
+            // pnlBranchesRoot
+            // 
+            pnlBranchesRoot.BackColor = Color.FromArgb(241, 245, 249);
+            pnlBranchesRoot.Controls.Add(dgvBranches);
+            pnlBranchesRoot.Controls.Add(pnlBranchesToolbar);
+            pnlBranchesRoot.Dock = DockStyle.Fill;
+            pnlBranchesRoot.Location = new Point(10, 10);
+            pnlBranchesRoot.Name = "pnlBranchesRoot";
+            pnlBranchesRoot.Padding = new Padding(0, 0, 0, 6);
+            pnlBranchesRoot.Size = new Size(1072, 486);
+            pnlBranchesRoot.TabIndex = 0;
+            // 
+            // dgvBranches
+            // 
+            dgvBranches.AllowUserToAddRows = false;
+            dgvBranches.AllowUserToDeleteRows = false;
+            dgvBranches.AllowUserToResizeRows = false;
+            dataGridViewCellStyle7.BackColor = Color.WhiteSmoke;
+            dgvBranches.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dgvBranches.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvBranches.BackgroundColor = Color.White;
+            dgvBranches.BorderStyle = BorderStyle.None;
+            dgvBranches.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvBranches.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle8.ForeColor = Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dgvBranches.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dgvBranches.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = SystemColors.Window;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle9.ForeColor = Color.Black;
+            dataGridViewCellStyle9.SelectionBackColor = Color.LightCyan;
+            dataGridViewCellStyle9.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
+            dgvBranches.DefaultCellStyle = dataGridViewCellStyle9;
+            dgvBranches.Dock = DockStyle.Fill;
+            dgvBranches.EnableHeadersVisualStyles = false;
+            dgvBranches.GridColor = Color.Gainsboro;
+            dgvBranches.Location = new Point(0, 108);
+            dgvBranches.Name = "dgvBranches";
+            dgvBranches.ReadOnly = true;
+            dgvBranches.RowHeadersVisible = false;
+            dgvBranches.RowHeadersWidth = 51;
+            dgvBranches.RowTemplate.Height = 40;
+            dgvBranches.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvBranches.Size = new Size(1072, 372);
+            dgvBranches.TabIndex = 1;
+            // 
+            // pnlBranchesToolbar
+            // 
+            pnlBranchesToolbar.BackColor = Color.White;
+            pnlBranchesToolbar.Controls.Add(lblBranchesTitle);
+            pnlBranchesToolbar.Controls.Add(txtBranchSearch);
+            pnlBranchesToolbar.Controls.Add(btnBranchRefresh);
+            pnlBranchesToolbar.Controls.Add(btnBranchAdd);
+            pnlBranchesToolbar.Controls.Add(btnBranchEdit);
+            pnlBranchesToolbar.Controls.Add(btnBranchDelete);
+            pnlBranchesToolbar.Dock = DockStyle.Top;
+            pnlBranchesToolbar.Location = new Point(0, 0);
+            pnlBranchesToolbar.Name = "pnlBranchesToolbar";
+            pnlBranchesToolbar.Padding = new Padding(12, 10, 12, 10);
+            pnlBranchesToolbar.Size = new Size(1072, 108);
+            pnlBranchesToolbar.TabIndex = 0;
+            // 
+            // lblBranchesTitle
+            // 
+            lblBranchesTitle.AutoSize = true;
+            lblBranchesTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblBranchesTitle.Location = new Point(16, 14);
+            lblBranchesTitle.Name = "lblBranchesTitle";
+            lblBranchesTitle.Size = new Size(256, 23);
+            lblBranchesTitle.TabIndex = 0;
+            lblBranchesTitle.Text = "Danh sách chi nhánh khách sạn";
+            // 
+            // txtBranchSearch
+            // 
+            txtBranchSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBranchSearch.Location = new Point(16, 44);
+            txtBranchSearch.Margin = new Padding(3, 4, 3, 4);
+            txtBranchSearch.Name = "txtBranchSearch";
+            txtBranchSearch.PlaceholderText = "Tìm theo ID, tên đường, thành phố...";
+            txtBranchSearch.Size = new Size(548, 30);
+            txtBranchSearch.TabIndex = 1;
+            txtBranchSearch.TextChanged += TxtBranchSearch_TextChanged;
+            // 
+            // btnBranchRefresh
+            // 
+            btnBranchRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBranchRefresh.BackColor = Color.LightGray;
+            btnBranchRefresh.FlatStyle = FlatStyle.Flat;
+            btnBranchRefresh.ForeColor = Color.White;
+            btnBranchRefresh.Location = new Point(582, 40);
+            btnBranchRefresh.Name = "btnBranchRefresh";
+            btnBranchRefresh.Size = new Size(110, 36);
+            btnBranchRefresh.TabIndex = 2;
+            btnBranchRefresh.Text = "Làm mới";
+            btnBranchRefresh.UseVisualStyleBackColor = false;
+            btnBranchRefresh.Click += BtnBranchRefresh_Click;
+            // 
+            // btnBranchAdd
+            // 
+            btnBranchAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBranchAdd.BackColor = Color.FromArgb(21, 128, 61);
+            btnBranchAdd.FlatStyle = FlatStyle.Flat;
+            btnBranchAdd.ForeColor = Color.White;
+            btnBranchAdd.Location = new Point(702, 40);
+            btnBranchAdd.Name = "btnBranchAdd";
+            btnBranchAdd.Size = new Size(110, 36);
+            btnBranchAdd.TabIndex = 3;
+            btnBranchAdd.Text = "Thêm";
+            btnBranchAdd.UseVisualStyleBackColor = false;
+            btnBranchAdd.Click += BtnBranchAdd_Click;
+            // 
+            // btnBranchEdit
+            // 
+            btnBranchEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBranchEdit.BackColor = Color.DeepSkyBlue;
+            btnBranchEdit.FlatStyle = FlatStyle.Flat;
+            btnBranchEdit.ForeColor = Color.White;
+            btnBranchEdit.Location = new Point(822, 40);
+            btnBranchEdit.Name = "btnBranchEdit";
+            btnBranchEdit.Size = new Size(110, 36);
+            btnBranchEdit.TabIndex = 4;
+            btnBranchEdit.Text = "Sửa";
+            btnBranchEdit.UseVisualStyleBackColor = false;
+            btnBranchEdit.Click += BtnBranchEdit_Click;
+            // 
+            // btnBranchDelete
+            // 
+            btnBranchDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBranchDelete.BackColor = Color.Red;
+            btnBranchDelete.FlatStyle = FlatStyle.Flat;
+            btnBranchDelete.ForeColor = Color.White;
+            btnBranchDelete.Location = new Point(942, 40);
+            btnBranchDelete.Name = "btnBranchDelete";
+            btnBranchDelete.Size = new Size(110, 36);
+            btnBranchDelete.TabIndex = 5;
+            btnBranchDelete.Text = "Xóa";
+            btnBranchDelete.UseVisualStyleBackColor = false;
+            btnBranchDelete.Click += BtnBranchDelete_Click;
+            // 
+            // usRoom
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(241, 245, 249);
+            Controls.Add(tabMain);
+            Name = "usRoom";
+            Size = new Size(1100, 552);
+            Load += usRoom_Load;
+            tabMain.ResumeLayout(false);
+            tabRooms.ResumeLayout(false);
+            pnlRoomsRoot.ResumeLayout(false);
+            pnlRoomsRoot.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvRooms).EndInit();
+            tlpRoomToolbar.ResumeLayout(false);
+            tlpRoomToolbar.PerformLayout();
+            flpButton.ResumeLayout(false);
+            tabRoomTypes.ResumeLayout(false);
+            pnlRoomTypesRoot.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvRoomTypes).EndInit();
+            pnlTypesToolbar.ResumeLayout(false);
+            pnlTypesToolbar.PerformLayout();
+            tabFloors.ResumeLayout(false);
+            pnlFloorsRoot.ResumeLayout(false);
+            pnlFloorsScroll.ResumeLayout(false);
+            pnlFloorsScroll.PerformLayout();
+            pnlFloorsToolbar.ResumeLayout(false);
+            pnlFloorsToolbar.PerformLayout();
+            tabBranches.ResumeLayout(false);
+            pnlBranchesRoot.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvBranches).EndInit();
+            pnlBranchesToolbar.ResumeLayout(false);
+            pnlBranchesToolbar.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
-        private Panel pnlThongTinPhong;
-        private TabControl tabContainerPhong;
-        private TabPage tabPhong;
-        private TabPage tabLoaiPhong;
-        private GroupBox grpTimkiem;
-        private ComboBox cboLocTrangThai;
-        private TextBox txtTimKiem;
-        private ComboBox cboLocLoaiPhong;
-        private Button btnLamMoi;
-        private Button btnThemPhong;
-        private Button btnChinhSua;
-        private Button btnXoaPhong;
-        private GroupBox grpDanhSach;
-        private DataGridView dgvDSPhong;
-        private GroupBox grpThanhTimKiem;
-        private ComboBox cboSapXepMax;
-        private TextBox txtThanhTimKiem2;
-        private ComboBox cboLoaiPhong;
-        private Panel pnlContainerLoaiPhong;
-        private GroupBox grpChucNang;
-        private Button btnXoa2;
-        private Button btnThem2;
-        private Button btnLamMoi2;
-        private Button btnSua2;
-        private GroupBox grpDanhSachLoaiPhong;
-        private DataGridView dgvDSLoaiPhong;
-        private ComboBox cboSapXep;
-        private GroupBox groupBox1;
-        private Label lblDen;
-        private Label lblTu;
-        private NumericUpDown numGiaMax;
-        private NumericUpDown numGiaMin;
-        private Button btnLocTheoGia;
+
+        private TabControl tabMain;
+
+        // ... (Khai báo biến Tab Phòng giữ nguyên)
+        private TabPage tabRooms;
+        private Panel pnlRoomsRoot;
+        private TableLayoutPanel tlpRoomToolbar;
+        private Label lblSearch;
+        private TextBox txtSearch;
+        private Button btnRefreshList;
+        private Label lblFloor;
+        private ComboBox cmbFilterFloor;
+        private Label lblRoomType;
+        private ComboBox cmbFilterRoomType;
+        private Button btnAddRoom;
+        private Button btnEditRoom;
+        private Button btnDeleteRoom;
+        private Label lblOperational;
+        private ComboBox cmbOperationalApply;
+        private Button btnBulkCreate;
+        private DataGridView dgvRooms;
+
+        // ... (Khai báo biến Tab Loại Phòng giữ nguyên)
+        private TabPage tabRoomTypes;
+        private Panel pnlRoomTypesRoot;
+        private Panel pnlTypesToolbar;
+        private Label lblRoomTypesTitle;
+        private TextBox txtRoomTypeSearch;
+        private Button btnRoomTypeRefresh;
+        private Button btnRoomTypeAdd;
+        private Button btnRoomTypeEdit;
+        private Button btnRoomTypeDelete;
+        private DataGridView dgvRoomTypes;
+        private DataGridViewTextBoxColumn colRtCode;
+        private DataGridViewTextBoxColumn colRtTypeName;
+        private DataGridViewTextBoxColumn colRtUnitPrice;
+        private DataGridViewTextBoxColumn colRtCapacity;
+        private DataGridViewTextBoxColumn colRtRoomCount;
+
+        // ... (Khai báo biến Tab Tầng giữ nguyên)
+        private TabPage tabFloors;
+        private Panel pnlFloorsRoot;
+        private Panel pnlFloorsToolbar;
+        private Label lblFloorsTitle;
+        private TextBox txtFloorSearch;
+        private Button btnFloorRefresh;
+        private Button btnFloorAdd;
+        private Button btnFloorEdit;
+        private Button btnFloorDelete;
+        private Panel pnlFloorsScroll;
+        private FlowLayoutPanel flowFloorMgmtLayout;
+        private FlowLayoutPanel flpButton;
+
+        // =======================================================
+        // THÊM MỚI: Khai báo biến các Component của Tab Chi nhánh
+        // =======================================================
+        private TabPage tabBranches;
+        private Panel pnlBranchesRoot;
+        private Panel pnlBranchesToolbar;
+        private Label lblBranchesTitle;
+        private TextBox txtBranchSearch;
+        private Button btnBranchRefresh;
+        private Button btnBranchAdd;
+        private Button btnBranchEdit;
+        private Button btnBranchDelete;
+        private DataGridView dgvBranches;
     }
 }

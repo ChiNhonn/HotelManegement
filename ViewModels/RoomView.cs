@@ -1,20 +1,28 @@
 ﻿namespace HotelManagement.ViewModels
 {
     /// <summary>
-    /// Dòng hiển thị danh sách phòng, khớp cột DB: Name, Status, IdRoomType, IdFloor (+ join loại/tầng).
+    /// Row for room list grid: matches DB columns Name, Status, IdRoomType, IdFloor (+ joined type/floor names).
     /// </summary>
     public class RoomView
     {
-        public int MaPhong { get; set; }
+        public int RoomId { get; set; }
 
-        public string SoPhong { get; set; } = "";
+        public string RoomNumber { get; set; } = "";
 
-        public string LoaiPhong { get; set; } = "";
+        public string RoomTypeName { get; set; } = "";
 
-        /// <summary>Tên tầng từ bảng Floors (Floor.Name).</summary>
-        public string Tang { get; set; } = "";
+        /// <summary>Floor name from Floors (Floor.Name).</summary>
+        public string FloorName { get; set; } = "";
 
-        /// <summary>Trạng thái hiển thị tiếng Việt.</summary>
-        public string TrangThai { get; set; } = "";
+        /// <summary>Localized status label for display.</summary>
+        public string StatusDisplay { get; set; } = "";
+
+        /// <summary>Raw Status in DB (for filters / operations).</summary>
+        public string? StatusDb { get; set; }
+
+        public int? IdFloor { get; set; }
+        public int? IdRoomType { get; set; }
+
+        public string OperationalDisplay => HotelManagement.Helpers.RoomStatusMap.OperationalUiLabel(StatusDb);
     }
 }

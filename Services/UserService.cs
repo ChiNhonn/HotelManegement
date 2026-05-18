@@ -126,5 +126,30 @@ namespace HotelManagement.Services
 
             return regex.IsMatch(email);
         }
+        public void UpdatePassword(string email, string newPassword)
+        {
+            try
+            {
+                // Nếu có logic kiểm tra nghiệp vụ phức tạp (như độ dài mật khẩu, 
+                // ký tự đặc biệt, hoặc mã hóa băm mật khẩu) thì viết ở đây.
+
+                // Sau đó gọi xuống Repo để lưu vào DB
+                _userRepo.UpdatePassword(email, newPassword);
+            }
+            catch (Exception ex)
+            {
+                // Thăng cấp lỗi lên Form hiển thị
+                throw new Exception(ex.Message);
+            }
+        }
+        public bool CheckEmailExists(string email)
+        {
+            // Bắt nhanh trường hợp dữ liệu rỗng ở tầng nghiệp vụ (Service)
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            // Gọi xuống tầng Repository để check dưới Database
+            return _userRepo.CheckEmailExists(email);
+        }
     }
 }

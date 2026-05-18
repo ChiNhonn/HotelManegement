@@ -45,9 +45,9 @@
             lblMaOTP.Font = new Font("Segoe UI Emoji", 13.2000008F, FontStyle.Bold);
             lblMaOTP.Location = new Point(12, 55);
             lblMaOTP.Name = "lblMaOTP";
-            lblMaOTP.Size = new Size(175, 31);
+            lblMaOTP.Size = new Size(115, 31);
             lblMaOTP.TabIndex = 0;
-            lblMaOTP.Text = "Nhập Mã OTP:";
+            lblMaOTP.Text = "Mã OTP:";
             // 
             // lblMKlan1
             // 
@@ -56,9 +56,9 @@
             lblMKlan1.Font = new Font("Segoe UI Emoji", 13.2000008F, FontStyle.Bold);
             lblMKlan1.Location = new Point(12, 148);
             lblMKlan1.Name = "lblMKlan1";
-            lblMKlan1.Size = new Size(203, 31);
+            lblMKlan1.Size = new Size(181, 31);
             lblMKlan1.TabIndex = 1;
-            lblMKlan1.Text = "Nhập Mật Khẩu: ";
+            lblMKlan1.Text = "Mật khẩu mới:";
             // 
             // lblMKlan2
             // 
@@ -67,9 +67,9 @@
             lblMKlan2.Font = new Font("Segoe UI Emoji", 13.2000008F, FontStyle.Bold);
             lblMKlan2.Location = new Point(12, 239);
             lblMKlan2.Name = "lblMKlan2";
-            lblMKlan2.Size = new Size(243, 31);
+            lblMKlan2.Size = new Size(231, 31);
             lblMKlan2.TabIndex = 2;
-            lblMKlan2.Text = "Nhập Lại Mật Khẩu: ";
+            lblMKlan2.Text = "Nhập lại mật khẩu:";
             // 
             // txtNhapMaOTP
             // 
@@ -78,9 +78,8 @@
             txtNhapMaOTP.ForeColor = SystemColors.WindowText;
             txtNhapMaOTP.ImeMode = ImeMode.NoControl;
             txtNhapMaOTP.Location = new Point(248, 55);
-            txtNhapMaOTP.Multiline = true;
             txtNhapMaOTP.Name = "txtNhapMaOTP";
-            txtNhapMaOTP.PlaceholderText = "Nhập mã otp.....";
+            txtNhapMaOTP.PlaceholderText = "Nhập mã OTP 6 số...";
             txtNhapMaOTP.Size = new Size(304, 37);
             txtNhapMaOTP.TabIndex = 3;
             txtNhapMaOTP.TextChanged += txtNhapMaOTP_TextChanged;
@@ -94,7 +93,7 @@
             txtNhapMK.Location = new Point(248, 142);
             txtNhapMK.Name = "txtNhapMK";
             txtNhapMK.PasswordChar = '*';
-            txtNhapMK.PlaceholderText = "Nhập mật khẩu.....";
+            txtNhapMK.PlaceholderText = "Nhập mật khẩu mới...";
             txtNhapMK.Size = new Size(304, 37);
             txtNhapMK.TabIndex = 4;
             txtNhapMK.TextChanged += txtNhapMK_TextChanged;
@@ -108,7 +107,7 @@
             txtNhaplaiMK.Location = new Point(249, 233);
             txtNhaplaiMK.Name = "txtNhaplaiMK";
             txtNhaplaiMK.PasswordChar = '*';
-            txtNhaplaiMK.PlaceholderText = "Nhập lại mật khẩu.....";
+            txtNhaplaiMK.PlaceholderText = "Xác nhận mật khẩu mới...";
             txtNhaplaiMK.Size = new Size(303, 37);
             txtNhaplaiMK.TabIndex = 5;
             // 
@@ -124,7 +123,7 @@
             btnXacNhan.Name = "btnXacNhan";
             btnXacNhan.Size = new Size(153, 56);
             btnXacNhan.TabIndex = 6;
-            btnXacNhan.Text = "Xác Nhận";
+            btnXacNhan.Text = "Xác nhận";
             btnXacNhan.UseVisualStyleBackColor = false;
             btnXacNhan.Click += btnXacNhan_Click;
             // 
@@ -146,7 +145,7 @@
             MaximizeBox = false;
             Name = "DoiMKForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "DoiMKForm";
+            Text = "Đặt lại mật khẩu";
             ResumeLayout(false);
             PerformLayout();
         }

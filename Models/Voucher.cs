@@ -21,7 +21,8 @@ namespace HotelManagement.Models
         public int? MinNumber { get; set; } = null;
         [MaxLength(50)]
         public string? RoomType { get; set; } = null;
-        public int? MinTotalPrice { get; set; } = null;
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? MinTotalPrice { get; set; } = null;
         public int? MinDay { get; set; } = null;
         public DateTime StartDate { get; set; } 
         public DateTime? EndDate { get; set; } = null;
