@@ -28,17 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
-            dataGridView1 = new DataGridView();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            btnSearch = new Button();
-            textBox1 = new TextBox();
             panel1 = new Panel();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            textBox1 = new TextBox();
+            btnSearch = new Button();
+            dataGridView1 = new DataGridView();
             btnXacNhan = new Button();
             tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            tableLayoutPanel2.SuspendLayout();
             panel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -57,15 +59,15 @@
             tableLayoutPanel1.TabIndex = 0;
             tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
             // 
-            // dataGridView1
+            // panel1
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Dock = DockStyle.Bottom;
-            dataGridView1.Location = new Point(0, 54);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(991, 213);
-            dataGridView1.TabIndex = 0;
+            panel1.Controls.Add(tableLayoutPanel2);
+            panel1.Controls.Add(dataGridView1);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(3, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(991, 267);
+            panel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
             // 
@@ -82,6 +84,14 @@
             tableLayoutPanel2.Size = new Size(991, 44);
             tableLayoutPanel2.TabIndex = 1;
             // 
+            // textBox1
+            // 
+            textBox1.Dock = DockStyle.Left;
+            textBox1.Location = new Point(3, 3);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(412, 27);
+            textBox1.TabIndex = 0;
+            // 
             // btnSearch
             // 
             btnSearch.AutoSize = true;
@@ -95,23 +105,31 @@
             btnSearch.Text = "Tìm kiếm";
             btnSearch.UseVisualStyleBackColor = false;
             // 
-            // textBox1
+            // dataGridView1
             // 
-            textBox1.Dock = DockStyle.Left;
-            textBox1.Location = new Point(3, 3);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(412, 27);
-            textBox1.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(tableLayoutPanel2);
-            panel1.Controls.Add(dataGridView1);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(3, 3);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(991, 267);
-            panel1.TabIndex = 0;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridView1.Dock = DockStyle.Bottom;
+            dataGridView1.Location = new Point(0, 54);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.Size = new Size(991, 213);
+            dataGridView1.TabIndex = 0;
             // 
             // btnXacNhan
             // 
@@ -136,10 +154,10 @@
             Text = "OderRoomForm";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            panel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
-            panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 

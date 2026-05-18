@@ -13,9 +13,8 @@ namespace HotelManagement;
 
 internal static class Program
 {
-    public static IServiceProvider ServiceProvider { get; private set; } = null!;
+    public static IServiceProvider ServiceProvider ;
 
-    private static IServiceScope? _rootScope;
 
     /// <summary>
     ///  The main entry point for the application.
@@ -23,12 +22,13 @@ internal static class Program
     [STAThread]
     static void Main()
     {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.SetHighDpiMode(HighDpiMode.SystemAware);
         ApplicationConfiguration.Initialize();
 
         var services = new ServiceCollection();
-        services.AddDbContext<HotelDbContext>(options =>
-            options.UseSqlServer(
-                @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
+        services.AddDbContext<IMyDbContext,HotelDbContext>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
@@ -44,36 +44,11 @@ internal static class Program
         services.AddTransient<usRoom>();
         services.AddTransient<AddRoomDialogForm>();
         services.AddTransient<AddRoomTypeDiaLogForm>();
+        services.AddTransient<CustomerForm>();
 
-        var rootProvider = services.BuildServiceProvider();
-        _rootScope = rootProvider.CreateScope();
-        ServiceProvider = _rootScope.ServiceProvider;
+        ServiceProvider = services.BuildServiceProvider();
+        var main = ServiceProvider.GetRequiredService<CustomerForm>();
 
-        Application.ApplicationExit += (_, _) =>
-        {
-            _rootScope?.Dispose();
-            _rootScope = null;
-            (rootProvider as IDisposable)?.Dispose();
-        };
-
-        try
-        {
-            using (var migrateScope = rootProvider.CreateScope())
-            {
-                var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
-                db.Database.Migrate();
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                $"Không thể kết nối hoặc migrate database. Kiểm tra SQL Server và chuỗi kết nối.\n\n{ex.Message}",
-                "Lỗi database",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-            return;
-        }
-
-        Application.Run(ServiceProvider.GetRequiredService<LoginForm>());
+        Application.Run(main);
     }
 }

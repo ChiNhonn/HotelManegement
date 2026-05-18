@@ -28,8 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
+            btnPayment = new Button();
+            btnExport = new Button();
+            btnAddCustomer = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
             panel1 = new Panel();
             lblPeople = new Label();
@@ -51,8 +56,6 @@
             cboSapXep = new ComboBox();
             cboFilter = new ComboBox();
             dgvCustomer = new DataGridView();
-            btnExport = new Button();
-            btnAddCustomer = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             panel1.SuspendLayout();
@@ -66,27 +69,30 @@
             // 
             // label1
             // 
-            label1.Anchor = AnchorStyles.None;
-            label1.AutoSize = true;
+            label1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             label1.BackColor = Color.White;
             label1.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(381, 9);
+            label1.Location = new Point(6, 9);
+            label1.Margin = new Padding(6);
             label1.Name = "label1";
-            label1.Size = new Size(171, 35);
+            label1.Size = new Size(770, 35);
             label1.TabIndex = 0;
             label1.Text = "DASHBOARD";
+            label1.Click += label1_Click;
             // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.BackColor = Color.White;
-            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnCount = 4;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Controls.Add(btnPayment, 4, 0);
             tableLayoutPanel1.Controls.Add(btnExport, 1, 0);
+            tableLayoutPanel1.Controls.Add(btnAddCustomer, 2, 0);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
-            tableLayoutPanel1.Controls.Add(btnAddCustomer, 3, 0);
             tableLayoutPanel1.Dock = DockStyle.Top;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Margin = new Padding(20);
@@ -95,6 +101,46 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(1256, 53);
             tableLayoutPanel1.TabIndex = 1;
+            // 
+            // btnPayment
+            // 
+            btnPayment.AutoSize = true;
+            btnPayment.BackColor = Color.FromArgb(0, 192, 0);
+            btnPayment.Dock = DockStyle.Fill;
+            btnPayment.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPayment.Location = new Point(1107, 3);
+            btnPayment.Name = "btnPayment";
+            btnPayment.Size = new Size(146, 47);
+            btnPayment.TabIndex = 5;
+            btnPayment.Text = "Thanh toán";
+            btnPayment.UseVisualStyleBackColor = false;
+            // 
+            // btnExport
+            // 
+            btnExport.AutoSize = true;
+            btnExport.BackColor = SystemColors.ActiveCaption;
+            btnExport.Dock = DockStyle.Fill;
+            btnExport.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExport.Location = new Point(785, 3);
+            btnExport.Name = "btnExport";
+            btnExport.Size = new Size(96, 47);
+            btnExport.TabIndex = 3;
+            btnExport.Text = "Export";
+            btnExport.UseVisualStyleBackColor = false;
+            // 
+            // btnAddCustomer
+            // 
+            btnAddCustomer.AutoSize = true;
+            btnAddCustomer.BackColor = Color.FromArgb(192, 192, 255);
+            btnAddCustomer.Dock = DockStyle.Fill;
+            btnAddCustomer.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAddCustomer.Location = new Point(887, 3);
+            btnAddCustomer.Name = "btnAddCustomer";
+            btnAddCustomer.Size = new Size(214, 47);
+            btnAddCustomer.TabIndex = 4;
+            btnAddCustomer.Text = "Thêm khách hàng";
+            btnAddCustomer.UseVisualStyleBackColor = false;
+            btnAddCustomer.Click += btnAddCustomer_Click;
             // 
             // tableLayoutPanel2
             // 
@@ -348,38 +394,29 @@
             // 
             dgvCustomer.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvCustomer.BackgroundColor = Color.White;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvCustomer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvCustomer.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvCustomer.DefaultCellStyle = dataGridViewCellStyle2;
             dgvCustomer.Location = new Point(23, 219);
             dgvCustomer.Name = "dgvCustomer";
             dgvCustomer.RowHeadersWidth = 51;
             dgvCustomer.Size = new Size(1213, 394);
             dgvCustomer.TabIndex = 4;
-            // 
-            // btnExport
-            // 
-            btnExport.AutoSize = true;
-            btnExport.BackColor = SystemColors.ActiveCaption;
-            btnExport.Dock = DockStyle.Fill;
-            btnExport.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExport.Location = new Point(937, 3);
-            btnExport.Name = "btnExport";
-            btnExport.Size = new Size(96, 47);
-            btnExport.TabIndex = 3;
-            btnExport.Text = "Export";
-            btnExport.UseVisualStyleBackColor = false;
-            // 
-            // btnAddCustomer
-            // 
-            btnAddCustomer.AutoSize = true;
-            btnAddCustomer.BackColor = Color.FromArgb(192, 192, 255);
-            btnAddCustomer.Dock = DockStyle.Fill;
-            btnAddCustomer.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAddCustomer.Location = new Point(1039, 3);
-            btnAddCustomer.Name = "btnAddCustomer";
-            btnAddCustomer.Size = new Size(214, 47);
-            btnAddCustomer.TabIndex = 4;
-            btnAddCustomer.Text = "Thêm khách hàng";
-            btnAddCustomer.UseVisualStyleBackColor = false;
+            dgvCustomer.CellContentClick += dgvCustomer_CellContentClick;
             // 
             // CustomerForm
             // 
@@ -435,5 +472,6 @@
         private DataGridView dgvCustomer;
         private Button btnExport;
         private Button btnAddCustomer;
+        private Button btnPayment;
     }
 }

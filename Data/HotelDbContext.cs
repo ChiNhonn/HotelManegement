@@ -18,7 +18,7 @@ namespace HotelManagement.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;");
             }
         }
          
