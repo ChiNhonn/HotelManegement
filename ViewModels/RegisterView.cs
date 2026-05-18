@@ -1,19 +1,12 @@
-﻿namespace HotelManagement.ViewModels
+﻿namespace HotelManagement.ViewModels;
+
+public sealed class RegisterView
 {
-    public class RegisterView
-    {
-        public string FullName { get; set; }
-
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
-        public string Phone { get; set; }
-
-        public string Email { get; set; }
-
-        public string CitizenId { get; set; }
-
-        public int IdBranch { get; set; }
-    }
+    public string FullName { get; init; } = "";
+    public string Username { get; init; } = "";
+    public string Password { get; init; } = "";
+    public string Phone { get; init; } = "";
+    public string Email { get; init; } = "";
+    public string CitizenId { get; init; } = "";
+    public int IdBranch { get; init; }
 }

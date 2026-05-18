@@ -47,6 +47,13 @@ namespace HotelManagement.Services
                     "Email không hợp lệ.");
             }
 
+            var phone = dto.Phone.Trim();
+            if (!Regex.IsMatch(phone, @"^0\d{9,10}$"))
+            {
+                return (false,
+                    "Số điện thoại không hợp lệ.");
+            }
+
             if (_userRepo.CheckUsernameExists(dto.Username))
             {
                 return (false,
@@ -81,7 +88,7 @@ namespace HotelManagement.Services
                 {
                     Email = dto.Email,
 
-                    Phone = dto.Phone,
+                    Phone = phone,
 
                     CitizenId = dto.CitizenId,
 
