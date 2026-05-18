@@ -127,6 +127,8 @@ public sealed class BookingService : IBookingService
         room.UpdateAt = DateTime.Now;
 
         _db.SaveChanges();
+
+        SyncRoomChargesIntoBill(order.Id);
     }
 
     public BookingDetailsDto GetBookingDetails(int orderId, int? forRoomId = null)
@@ -221,10 +223,19 @@ public sealed class BookingService : IBookingService
             }
         }
 
+        var line = o.OrderDetails?.FirstOrDefault(d => d.IdRoom != null);
+        if (line != null)
+        {
+            var actualNights = Math.Max(1, (day - o.DateCheckIn.Date).Days);
+            line.Quantity = actualNights;
+        }
+
         o.DateCheckOut = day;
         o.Status = "checked_out";
         o.UpdateAt = DateTime.Now;
         _db.SaveChanges();
+
+        SyncRoomChargesIntoBill(o.Id);
     }
 
     public void UpdateBooking(ReservationUpdateRequest r)
@@ -292,6 +303,97 @@ public sealed class BookingService : IBookingService
 
         line.Quantity = nights;
 
+        _db.SaveChanges();
+
+        SyncRoomChargesIntoBill(o.Id);
+    }
+
+    /// <summary>
+    /// Đảm bảo hóa đơn của đơn có dòng tiền phòng khớp <see cref="OrderDetail"/> (đêm × đơn giá đêm).
+    /// Dòng dịch vụ có <see cref="BillDetail.IdService"/> được giữ nguyên.
+    /// </summary>
+    private void SyncRoomChargesIntoBill(int orderId)
+    {
+        if (!_db.Orders.Any(o => o.Id == orderId && o.SoftDelete == null))
+            return;
+
+        var bill = EnsureBillForOrder(orderId);
+
+        var roomLines = _db.OrderDetails
+            .Where(od => od.IdOrder == orderId && od.IdRoom != null)
+            .ToList();
+
+        var billDetailRows = _db.BillDetails.Where(d => d.IdBill == bill.Id).ToList();
+
+        foreach (var od in roomLines)
+        {
+            var product = string.IsNullOrWhiteSpace(od.NameOrder) ? "Tiền phòng" : od.NameOrder.Trim();
+            if (product.Length > 255)
+                product = product[..255];
+
+            var qty = od.Quantity;
+            var unit = od.UnitPrice;
+            var sub = unit * qty;
+
+            var bd = billDetailRows.FirstOrDefault(d => d.IdService == null && d.Product == product);
+            if (bd == null)
+            {
+                bd = new BillDetail
+                {
+                    IdBill = bill.Id,
+                    Product = product,
+                    Quantity = qty,
+                    UnitPrice = unit,
+                    SubTotal = sub,
+                    IdService = null
+                };
+                _db.BillDetails.Add(bd);
+                billDetailRows.Add(bd);
+            }
+            else
+            {
+                bd.Quantity = qty;
+                bd.UnitPrice = unit;
+                bd.SubTotal = sub;
+            }
+        }
+
+        _db.SaveChanges();
+        RecalculateBillTotal(bill.Id);
+    }
+
+    private Bill EnsureBillForOrder(int orderId)
+    {
+        var bill = _db.Bills.FirstOrDefault(b => b.IdOrder == orderId && b.SoftDelete == null);
+        if (bill != null)
+            return bill;
+
+        var order = _db.Orders.FirstOrDefault(o => o.Id == orderId && o.SoftDelete == null)
+                    ?? throw new InvalidOperationException("Không tìm thấy đơn.");
+
+        bill = new Bill
+        {
+            IdOrder = orderId,
+            IdUser = order.IdUser,
+            Status = "Pending",
+            CreateAt = DateTime.Now,
+            TotalAmount = 0,
+            Discount = 0,
+            Tax = 0
+        };
+        _db.Bills.Add(bill);
+        _db.SaveChanges();
+        return bill;
+    }
+
+    private void RecalculateBillTotal(int billId)
+    {
+        var bill = _db.Bills.Include(b => b.BillDetails).FirstOrDefault(b => b.Id == billId && b.SoftDelete == null);
+        if (bill == null)
+            return;
+
+        var sub = bill.BillDetails?.Sum(d => d.SubTotal) ?? 0;
+        bill.TotalAmount = Math.Max(0, sub - bill.Discount + bill.Tax);
         _db.SaveChanges();
     }
 

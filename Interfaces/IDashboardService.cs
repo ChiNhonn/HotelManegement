@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HotelManagement.ViewModels;
 
@@ -27,6 +28,9 @@ public interface IDashboardService
 
     /// <summary>Ghi nhận thanh toán (tiền mặt / chuyển khoản) cho một hóa đơn.</summary>
     void RecordManualBillPayment(int billId, string method);
+
+    /// <summary>Ghi nhận khoản thu trực tiếp không gắn hóa đơn.</summary>
+    void RecordStandalonePayment(decimal amount, string method);
 
     /// <summary>Chi trả đã ghi nhận từ dashboard (bảng <c>StaffPayouts</c>).</summary>
     IReadOnlyList<DashboardRecentTransactionItem> GetRecentStaffPayouts(int take = 15);

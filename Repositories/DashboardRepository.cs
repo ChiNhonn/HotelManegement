@@ -55,8 +55,9 @@ public sealed class DashboardRepository : IDashboardRepository
     public IReadOnlyList<Payment> LoadRecentSuccessfulPayments(int take, int scanBatch = 80)
     {
         take = Math.Clamp(take, 1, 1000);
-        scanBatch = Math.Clamp(scanBatch, take, 2000);
-        return _db.Payments.AsNoTracking()
+        scanBatch = Math.Clamp(scanBatch, Math.Max(take, 50), 2000);
+
+        var billPayments = _db.Payments.AsNoTracking()
             .Include(p => p.Bill!)
             .ThenInclude(b => b.User)
             .Where(p => p.SoftDelete == null && p.IdBill != null)
@@ -66,6 +67,22 @@ public sealed class DashboardRepository : IDashboardRepository
             .Where(p => p.Bill != null
                         && p.Bill.SoftDelete == null
                         && IsPaymentSuccess(p.Status))
+            .ToList();
+
+        var standalone = _db.Payments.AsNoTracking()
+            .Where(p => p.SoftDelete == null
+                        && p.IdBill == null
+                        && p.Amount != null
+                        && p.Amount.Value > 0m)
+            .OrderByDescending(p => p.CreateAt)
+            .Take(scanBatch)
+            .AsEnumerable()
+            .Where(p => IsPaymentSuccess(p.Status))
+            .ToList();
+
+        return billPayments
+            .Concat(standalone)
+            .OrderByDescending(p => p.CreateAt)
             .Take(take)
             .ToList();
     }
@@ -193,6 +210,29 @@ public sealed class DashboardRepository : IDashboardRepository
         bill.Status = "Paid";
 
         MarkImmediateServiceOrdersPaidForBill(bill.Id);
+
+        _db.SaveChanges();
+    }
+
+    public void RecordStandalonePayment(decimal amount, string method)
+    {
+        if (amount <= 0)
+            throw new ArgumentOutOfRangeException(nameof(amount), "Số tiền phải lớn hơn 0.");
+
+        method = string.IsNullOrWhiteSpace(method) ? "Tiền mặt" : method.Trim();
+        if (method.Length > 100)
+            method = method[..100];
+
+        amount = decimal.Round(amount, 2, MidpointRounding.AwayFromZero);
+
+        _db.Payments.Add(new Payment
+        {
+            IdBill = null,
+            Amount = amount,
+            Method = method,
+            Status = "Paid",
+            CreateAt = DateTime.Now
+        });
 
         _db.SaveChanges();
     }

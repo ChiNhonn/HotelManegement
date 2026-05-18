@@ -110,7 +110,6 @@ namespace HotelManagement.Forms
             btnRooms.Image = CreateNavGlyph('\uE8F2');
             btnBookings.Image = CreateNavGlyph('\uE787');
             btnServices.Image = CreateNavGlyph('\uE8A7');
-            btnFinance.Image = CreateNavGlyph('\uE8CB');
             btnBill.Image = CreateNavGlyph('\uE9F3');
             btnCustomers.Image = CreateNavGlyph('\uE716');
             btnRolesStaff.Image = CreateNavGlyph('\uEA18');
@@ -210,7 +209,7 @@ namespace HotelManagement.Forms
             int y = SidebarHeaderBottom + 6;
             var navOrder = new[]
             {
-                btnDashboard, btnRooms, btnBookings, btnServices, btnFinance, btnBill, btnCustomers, btnRolesStaff
+                btnDashboard, btnRooms, btnBookings, btnServices, btnBill, btnCustomers, btnRolesStaff
             };
 
             foreach (var b in navOrder)
@@ -294,12 +293,6 @@ namespace HotelManagement.Forms
         {
             SetActiveNav(btnServices);
             chuyentrang(Program.ServiceProvider.GetRequiredService<usService>());
-        }
-
-        private void btnFinance_Click(object sender, EventArgs e)
-        {
-            SetActiveNav(btnFinance);
-            chuyentrang(new usStatistics());
         }
 
         private void btnDashboard_Click(object sender, EventArgs e)

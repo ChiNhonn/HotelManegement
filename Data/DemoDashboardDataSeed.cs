@@ -17,13 +17,17 @@ public static class DemoDashboardDataSeed
 {
     public const string DemoMarker = "[DEMO]";
 
-    public static void EnsureSeed(HotelDbContext db)
+    /// <param name="skipDemoOrdersAndBills">
+    /// Đặt <c>true</c> sau khi vừa reset khách/đơn (ví dụ <c>HOTEL_RESET_CUSTOMERS=1</c>) để không tạo lại 5 khách + 5 đơn demo.
+    /// </param>
+    public static void EnsureSeed(HotelDbContext db, bool skipDemoOrdersAndBills = false)
     {
         EnsureDemoUser(db);
         EnsureDemoServices(db);
         EnsureDemoStaffPayouts(db);
         EnsureDemoRoomsNeedingCleaning(db);
-        EnsureDemoOrdersAndBills(db);
+        if (!skipDemoOrdersAndBills)
+            EnsureDemoOrdersAndBills(db);
     }
 
     private static Userr EnsureDemoUser(HotelDbContext db)

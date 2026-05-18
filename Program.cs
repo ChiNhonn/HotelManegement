@@ -98,7 +98,17 @@ internal static class Program
                 ServiceModuleDatabaseEnsurer.EnsureSchema(db);
                 FloorSchemaPatcher.EnsureFloorStatusColumn(db);
                 DemoHotelRoomsSeed.EnsureSeed(db);
-                DemoDashboardDataSeed.EnsureSeed(db);
+
+                var resetCustomers = string.Equals(
+                    Environment.GetEnvironmentVariable("HOTEL_RESET_CUSTOMERS"),
+                    "1",
+                    StringComparison.OrdinalIgnoreCase);
+                if (resetCustomers)
+                {
+                    DemoCustomerBookingReset.ClearAllCustomersOrdersAndBills(db);
+                }
+
+                DemoDashboardDataSeed.EnsureSeed(db, skipDemoOrdersAndBills: resetCustomers);
                 AuthSeed.EnsureDefaultAdmin(db);
             }
         }

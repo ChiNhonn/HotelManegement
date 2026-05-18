@@ -24,7 +24,7 @@ namespace HotelManagement.Repositories
             CapacityDisplay = $"{lp.MaxAdults} NL / {lp.MaxChildren} TE",
             TotalMaxGuests = lp.MaxNumber,
             RoomCount = roomCount,
-            Description = lp.DescriptionRoom?.Content ?? "",
+            Description = lp.DescriptionRoom is { SoftDelete: null } dr ? dr.Content ?? "" : "",
             BedTypeDescription = lp.BedTypeDescription
         };
 
@@ -53,7 +53,7 @@ namespace HotelManagement.Repositories
         {
             var existing = _context.RoomTypes
                 .Include(x => x.DescriptionRoom)
-                .FirstOrDefault(x => x.Id == lp.Id);
+                .FirstOrDefault(x => x.Id == lp.Id && x.SoftDelete == null);
             if (existing == null)
                 throw new Exception("Không tìm thấy loại phòng");
 
@@ -94,13 +94,14 @@ namespace HotelManagement.Repositories
 
         public List<RoomType> GetAll()
         {
-            return _context.RoomTypes.OrderBy(x => x.Id).ToList();
+            return _context.RoomTypes.Where(x => x.SoftDelete == null).OrderBy(x => x.Id).ToList();
         }
 
         public List<RoomTypeView> GetAllWithRoomCount()
         {
             var types = _context.RoomTypes
                 .AsNoTracking()
+                .Where(lp => lp.SoftDelete == null)
                 .Include(x => x.DescriptionRoom)
                 .OrderBy(lp => lp.Id)
                 .ToList();
@@ -112,6 +113,7 @@ namespace HotelManagement.Repositories
             var k = keyword.Trim();
             var types = _context.RoomTypes
                 .AsNoTracking()
+                .Where(lp => lp.SoftDelete == null)
                 .Include(x => x.DescriptionRoom)
                 .Where(lp =>
                     lp.Name.Contains(k)
@@ -129,6 +131,7 @@ namespace HotelManagement.Repositories
         {
             var types = _context.RoomTypes
                 .AsNoTracking()
+                .Where(lp => lp.SoftDelete == null)
                 .Include(x => x.DescriptionRoom)
                 .Where(lp => lp.Id == roomTypeId)
                 .OrderBy(lp => lp.Id)
@@ -140,6 +143,7 @@ namespace HotelManagement.Repositories
         {
             var types = _context.RoomTypes
                 .AsNoTracking()
+                .Where(lp => lp.SoftDelete == null)
                 .Include(x => x.DescriptionRoom)
                 .Where(lp => lp.UnitPrice >= minPrice && lp.UnitPrice <= maxPrice)
                 .OrderBy(lp => lp.Id)
@@ -165,7 +169,7 @@ namespace HotelManagement.Repositories
 
         public RoomType? GetByName(string typeName)
         {
-            return _context.RoomTypes.FirstOrDefault(lp => lp.Name == typeName);
+            return _context.RoomTypes.FirstOrDefault(lp => lp.SoftDelete == null && lp.Name == typeName);
         }
 
         public RoomType? GetByCode(string code)
@@ -174,14 +178,14 @@ namespace HotelManagement.Repositories
                 return null;
 
             var c = code.Trim();
-            return _context.RoomTypes.FirstOrDefault(lp => lp.Code == c);
+            return _context.RoomTypes.FirstOrDefault(lp => lp.SoftDelete == null && lp.Code == c);
         }
 
         public RoomType? GetById(int roomTypeId)
         {
             return _context.RoomTypes
                 .Include(x => x.DescriptionRoom)
-                .FirstOrDefault(x => x.Id == roomTypeId);
+                .FirstOrDefault(x => x.Id == roomTypeId && x.SoftDelete == null);
         }
     }
 }

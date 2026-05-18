@@ -39,4 +39,7 @@ public interface IDashboardRepository
 
     /// <summary>Ghi một khoản thanh toán thành công và đóng hóa đơn.</summary>
     void RecordManualBillPayment(int billId, string method);
+
+    /// <summary>Ghi nhận khoản thu không gắn hóa đơn (tiền mặt / CK).</summary>
+    void RecordStandalonePayment(decimal amount, string method);
 }
