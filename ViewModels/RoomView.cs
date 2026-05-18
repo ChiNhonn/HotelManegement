@@ -22,5 +22,7 @@
 
         public int? IdFloor { get; set; }
         public int? IdRoomType { get; set; }
+
+        public string OperationalDisplay => HotelManagement.Helpers.RoomStatusMap.OperationalUiLabel(StatusDb);
     }
 }

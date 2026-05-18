@@ -25,8 +25,8 @@ public sealed partial class BulkCreateRoomsDialog : Form
     {
         var types = _roomTypeService.GetAll();
         cboRoomType.DataSource = types.ToList();
-        cboRoomType.DisplayMember = nameof(RoomType.Name);
-        cboRoomType.ValueMember = nameof(RoomType.Id);
+        cboRoomType.DisplayMember = nameof(Models.RoomType.Name);
+        cboRoomType.ValueMember = nameof(Models.RoomType.Id);
         if (cboRoomType.Items.Count > 0)
             cboRoomType.SelectedIndex = 0;
 

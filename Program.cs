@@ -39,25 +39,33 @@ internal static class Program
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
         services.AddScoped<IFloorRepository, FloorRepository>();
-
+        services.AddScoped<IBillRepository, BillRepository>();
+        services.AddScoped<IBillService, BillService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IRoomTypeService, RoomTypeService>();
         services.AddScoped<IFloorService, FloorService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IBookingService, BookingService>();
+        services.AddScoped<IBranchRepository, BranchRepository>();
+        services.AddScoped<IBranchService, BranchService>();
 
         services.AddTransient<usBookRoom>();
-
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
         services.AddTransient<RegisterForm>();
         services.AddTransient<usRoom>();
+        services.AddTransient<usBill>();
         services.AddTransient<usMainForm>();
-        services.AddTransient<BulkCreateRoomsDialog>();
-        services.AddTransient<AddRoomDialogForm>();
-        services.AddTransient<AddRoomTypeDiaLogForm>();
+        services.AddTransient<ForgetPasswordForm>();
+        services.AddTransient<DoiMKForm>();
 
+        services.AddTransient<BulkCreateRoomsDialog>();
+        services.AddTransient<RoomEditDialogForm>();
+        services.AddTransient<RoomTypeEditDialogForm>();
+        services.AddTransient<FloorEditDialogForm>();
+        services.AddTransient<BillDetailDialogForm>();
+        services.AddTransient<BranchEditDiaLogForm>();
         var rootProvider = services.BuildServiceProvider();
         _rootScope = rootProvider.CreateScope();
         ServiceProvider = _rootScope.ServiceProvider;

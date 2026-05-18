@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using HotelManagement.Helpers;
 using HotelManagement.Models;
 using HotelManagement.Repositories;
@@ -11,7 +14,7 @@ public class FloorService : IFloorService
 
     public FloorService(IFloorRepository repo)
     {
-        _repo = repo;
+        _repo = repo ?? throw new ArgumentNullException(nameof(repo));
     }
 
     public List<FloorView> GetAllGridRows() => _repo.GetAllGridRows();
@@ -22,25 +25,23 @@ public class FloorService : IFloorService
 
     public Floor? GetById(int id) => _repo.GetById(id);
 
-    private void Validate(Floor floor, int? excludeFloorId)
-    {
-        if (string.IsNullOrWhiteSpace(floor.Name))
-            throw new InvalidOperationException("Nhập tên tầng.");
+    public int CountActiveRoomsOnFloor(int floorId) => _repo.CountActiveRoomsOnFloor(floorId);
 
-        if (floor.IdBranch is null or <= 0)
-            throw new InvalidOperationException("Chọn chi nhánh.");
+    public void Delete(int floorId) => _repo.Delete(floorId);
 
-        var name = floor.Name.Trim();
-        if (_repo.ExistsNameForBranch(name, floor.IdBranch, excludeFloorId))
-            throw new InvalidOperationException("Đã có tầng cùng tên trong chi nhánh này.");
-    }
+    public void SetFloorOperationalStatus(int floorId, FloorOperationalMode mode) =>
+        _repo.SetOperationalStatus(floorId, mode);
 
     public void Add(Floor floor)
     {
+        // 1. Tự động ép định dạng tên tầng trước khi kiểm tra hợp lệ
+        floor.Name = NormalizeFloorName(floor.Name);
+
         Validate(floor, null);
-        floor.Name = floor.Name.Trim();
+
         if (string.IsNullOrWhiteSpace(floor.Status))
             floor.Status = FloorStatusMap.ToDatabase(FloorOperationalMode.Open);
+
         _repo.Add(floor);
     }
 
@@ -49,15 +50,44 @@ public class FloorService : IFloorService
         if (floor.Id <= 0)
             throw new InvalidOperationException("Mã tầng không hợp lệ.");
 
+        // 1. Tự động ép định dạng tên tầng trước khi kiểm tra hợp lệ
+        floor.Name = NormalizeFloorName(floor.Name);
+
         Validate(floor, floor.Id);
-        floor.Name = floor.Name.Trim();
         _repo.Update(floor);
     }
 
-    public void Delete(int floorId) => _repo.Delete(floorId);
+    private void Validate(Floor floor, int? excludeFloorId)
+    {
+        if (string.IsNullOrWhiteSpace(floor.Name))
+            throw new InvalidOperationException("Vui lòng nhập tên tầng.");
 
-    public int CountActiveRoomsOnFloor(int floorId) => _repo.CountActiveRoomsOnFloor(floorId);
+        if (floor.IdBranch is null or <= 0)
+            throw new InvalidOperationException("Vui lòng chọn chi nhánh hợp lệ.");
 
-    public void SetFloorOperationalStatus(int floorId, FloorOperationalMode mode) =>
-        _repo.SetOperationalStatus(floorId, mode);
+        if (_repo.ExistsNameForBranch(floor.Name, floor.IdBranch, excludeFloorId))
+            throw new InvalidOperationException($"Tên «{floor.Name}» đã tồn tại trong hệ thống của chi nhánh này.");
+    }
+
+    private string NormalizeFloorName(string? input)
+    {
+        if (string.IsNullOrWhiteSpace(input)) return "";
+
+        string remainder = input.Trim();
+
+        if (remainder.StartsWith("tầng", StringComparison.OrdinalIgnoreCase) ||
+            remainder.StartsWith("tang", StringComparison.OrdinalIgnoreCase))
+        {
+            remainder = remainder.Substring(4).Trim();
+        }
+
+        if (string.IsNullOrWhiteSpace(remainder)) return "Tầng";
+
+        if (char.IsLetter(remainder[0]))
+        {
+            remainder = char.ToUpper(remainder[0]) + remainder.Substring(1);
+        }
+
+        return $"Tầng {remainder}";
+    }
 }

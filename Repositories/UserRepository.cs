@@ -70,5 +70,38 @@ namespace HotelManagement.Repositories
                 return false;
             }
         }
+
+        public void UpdatePassword(string email, string newPassword)
+        {
+            var normalizedEmail = email.Trim().ToLower();
+
+            // Tìm User dựa vào Email nằm trong bảng UserProfiles liên kết qua IdUser
+            var user = _context.Users.FirstOrDefault(u =>
+                u.SoftDelete == null &&
+                _context.UserProfiles.Any(p => p.Email.ToLower() == normalizedEmail && p.IdUser == u.Id)
+            );
+
+            if (user == null)
+                throw new Exception("Không tìm thấy tài khoản tương ứng với Email này.");
+
+            // Mã hóa mật khẩu mới trước khi lưu (Sử dụng đúng PasswordHelper của bạn)
+            user.Password = PasswordHelper.HashPassword(newPassword);
+            user.UpdateAt = DateTime.Now;
+
+            // Lưu thay đổi vào DB
+            _context.SaveChanges();
+        }
+        public bool CheckEmailExists(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            var normalizedEmail = email.Trim().ToLower();
+
+            return _context.UserProfiles.Any(p =>
+                p.Email.ToLower() == normalizedEmail &&
+                _context.Users.Any(u => u.Id == p.IdUser && u.SoftDelete == null)
+            );
+        }
     }
 }

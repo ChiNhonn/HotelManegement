@@ -37,4 +37,9 @@ public partial class UsKpiTile : UserControl
         get => lblIcon.Text;
         set => lblIcon.Text = value ?? "";
     }
+
+    private void lblValue_Click(object sender, EventArgs e)
+    {
+
+    }
 }

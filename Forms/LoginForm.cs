@@ -68,9 +68,9 @@ public partial class LoginForm : Form
 
     private void linkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-        var forgetForm = new ForgetPasswordForm();
+        var forgetForm = Program.ServiceProvider.GetRequiredService<ForgetPasswordForm>();
         forgetForm.Show();
-        Hide();
+        this.Hide();
     }
 
     private void LoginForm_Load(object sender, EventArgs e)

@@ -111,7 +111,7 @@ namespace HotelManagement.Forms
             btnBookings.Image = CreateNavGlyph('\uE787');
             btnServices.Image = CreateNavGlyph('\uE8A7');
             btnFinance.Image = CreateNavGlyph('\uE8CB');
-            btnInvoices.Image = CreateNavGlyph('\uE9F3');
+            btnBill.Image = CreateNavGlyph('\uE9F3');
             btnCustomers.Image = CreateNavGlyph('\uE716');
             btnRolesStaff.Image = CreateNavGlyph('\uEA18');
             btnSignOut.Image = CreateNavGlyph('\uF3B1');
@@ -210,7 +210,7 @@ namespace HotelManagement.Forms
             int y = SidebarHeaderBottom + 6;
             var navOrder = new[]
             {
-                btnDashboard, btnRooms, btnBookings, btnServices, btnFinance, btnInvoices, btnCustomers, btnRolesStaff
+                btnDashboard, btnRooms, btnBookings, btnServices, btnFinance, btnBill, btnCustomers, btnRolesStaff
             };
 
             foreach (var b in navOrder)
@@ -284,12 +284,6 @@ namespace HotelManagement.Forms
             chuyentrang(new usStatistics());
         }
 
-        private void btnInvoices_Click(object sender, EventArgs e)
-        {
-            SetActiveNav(btnInvoices);
-            chuyentrang(new UsModuleStub("Quản lý hóa đơn"));
-        }
-
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             SetActiveNav(btnDashboard);
@@ -299,7 +293,7 @@ namespace HotelManagement.Forms
         private void btnRolesStaff_Click(object sender, EventArgs e)
         {
             SetActiveNav(btnRolesStaff);
-            chuyentrang(new UsModuleStub("Quản lý Phân quyền & Nhân sự"));
+            //chuyentrang(new usInvoice("Quản lý Phân quyền & Nhân sự"));
         }
 
         private void btnSignOut_Click(object sender, EventArgs e)
@@ -309,6 +303,12 @@ namespace HotelManagement.Forms
             Hide();
             login.Show();
             Close();
+        }
+
+        private void btnBill_Click(object sender, EventArgs e)
+        {
+            SetActiveNav(btnBill);
+            chuyentrang(Program.ServiceProvider.GetRequiredService<usBill>());
         }
     }
 }
