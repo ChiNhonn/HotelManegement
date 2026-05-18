@@ -54,6 +54,9 @@ internal static class Program
                     maxRetryDelay: TimeSpan.FromSeconds(8),
                     errorNumbersToAdd: null);
                 sql.CommandTimeout(180);
+                // Tránh sinh OPENJSON / CTE phức tạp — đảm bảo chạy được trên SQL Server cũ
+                // (Express 2014/2016/2017 hoặc DB có compat level thấp). Mặc định EF Core 8 = 160.
+                sql.UseCompatibilityLevel(120);
             }));
         services.AddScoped<IMyDbContext>(sp => sp.GetRequiredService<HotelDbContext>());
 

@@ -18,7 +18,8 @@ public class HotelDbContext : DbContext, IMyDbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(DatabaseConnection.ResolveConnectionString());
+            optionsBuilder.UseSqlServer(DatabaseConnection.ResolveConnectionString(),
+                sql => sql.UseCompatibilityLevel(120));
         }
     }
 
