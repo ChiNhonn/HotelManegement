@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HotelManagement.Helpers;
 using HotelManagement.Interfaces;
 using HotelManagement.Models;
 using HotelManagement.ViewModels;
@@ -32,7 +33,7 @@ public class DashboardService : IDashboardService
         };
     }
 
-    public IReadOnlyList<DashboardBookingPendingItem> GetPendingBookingsAwaitingConfirmation()
+    public IReadOnlyList<DashboardBookingPendingItem> GetPendingBookingsAwaitingConfirmation(int take = 5)
     {
         var cutoff = DateTime.Today.AddDays(-90);
 
@@ -41,23 +42,30 @@ public class DashboardService : IDashboardService
             .ToList();
 
         var mapped = orders.Select(MapPendingBooking).ToList();
-        return mapped
+        var sorted = mapped
             .OrderByDescending(x => x.PaidOnline)
             .ThenByDescending(x => x.CreatedAt)
-            .ToList();
+            .AsEnumerable();
+
+        if (take > 0) sorted = sorted.Take(take);
+        return sorted.ToList();
     }
 
-    public IReadOnlyList<DashboardReminderItem> GetFrontDeskReminders()
+    public IReadOnlyList<DashboardReminderItem> GetFrontDeskReminders(int take = 5)
     {
         var now = DateTime.Now;
         var list = new List<DashboardReminderItem>();
         list.AddRange(CollectOverdueCheckouts(now));
         list.AddRange(CollectHousekeepingReminders());
+        list.AddRange(CollectOpenModuleServiceOrders(now));
         list.AddRange(CollectPendingServiceReminders(now));
-        return list
+        var sorted = list
             .OrderByDescending(r => r.At ?? DateTime.MinValue)
             .ThenBy(r => r.Category, StringComparer.OrdinalIgnoreCase)
-            .ToList();
+            .AsEnumerable();
+
+        if (take > 0) sorted = sorted.Take(take);
+        return sorted.ToList();
     }
 
     public IReadOnlyList<DashboardRecentTransactionItem> GetRecentTransactions(int take = 10)
@@ -76,6 +84,12 @@ public class DashboardService : IDashboardService
             .ToList();
     }
 
+    public IReadOnlyList<DashboardBillPickRow> GetBillsForManualPaymentPick(int take = 80) =>
+        _repo.LoadBillsForManualPaymentPick(take);
+
+    public void RecordManualBillPayment(int billId, string method) =>
+        _repo.RecordManualBillPayment(billId, method);
+
     public IReadOnlyList<DashboardRecentTransactionItem> GetRecentStaffPayouts(int take = 15) =>
         _repo.LoadRecentStaffPayouts(take)
             .Select(p => new DashboardRecentTransactionItem
@@ -90,7 +104,7 @@ public class DashboardService : IDashboardService
     public void RecordStaffPayout(string userName, decimal amount, string? note = null)
     {
         if (string.IsNullOrWhiteSpace(userName))
-            throw new ArgumentException("Cần nhập username.", nameof(userName));
+            throw new ArgumentException("Cần nhập tiêu đề.", nameof(userName));
         if (amount <= 0)
             throw new ArgumentOutOfRangeException(nameof(amount), "Số tiền phải lớn hơn 0.");
 
@@ -177,7 +191,8 @@ public class DashboardService : IDashboardService
             {
                 Category = "Check-out",
                 Message = $"{guest}{roomBit}: đã quá giờ trả phòng (theo lịch {o.DateCheckOut:dd/MM/yyyy HH:mm}).",
-                At = o.DateCheckOut
+                At = o.DateCheckOut,
+                DedupeKey = $"overdue_order:{o.Id}"
             };
         }
     }
@@ -194,7 +209,36 @@ public class DashboardService : IDashboardService
             {
                 Category = "Dọn phòng",
                 Message = $"Phòng {r.Name}: cần dọn / kiểm tra (trạng thái DB: {r.Status}).",
-                At = r.UpdateAt ?? r.CreateAt
+                At = r.UpdateAt ?? r.CreateAt,
+                DedupeKey = $"hk_room:{r.Id}"
+            };
+        }
+    }
+
+    /// <summary>Yêu cầu từ module Dịch vụ (ghi nhận lúc đặt — chưa cần ghi vào BillDetail).</summary>
+    private IEnumerable<DashboardReminderItem> CollectOpenModuleServiceOrders(DateTime now)
+    {
+        foreach (var line in _repo.LoadOpenServiceOrdersForReminders())
+        {
+            var o = line.Order;
+            if (o == null) continue;
+            if (IsCancelled(o.Status)) continue;
+            if (!GuestStillInHotel(o, now)) continue;
+
+            var room = line.Room?.Name?.Trim();
+            if (string.IsNullOrEmpty(room))
+                room = PrimaryRoomName(o);
+
+            var guest = o.Customer?.FullName?.Trim() ?? "Khách";
+            var statusLbl = ServiceOrderStatus.ToDisplay(line.Status);
+            var roomBit = string.IsNullOrEmpty(room) ? "" : $"Phòng {room}: ";
+
+            yield return new DashboardReminderItem
+            {
+                Category = "Yêu cầu dịch vụ",
+                Message = $"{roomBit}{guest} — {line.ItemName} ×{line.Quantity} ({statusLbl}).",
+                At = line.CreateAt,
+                DedupeKey = $"svc_open:{line.Id}"
             };
         }
     }
@@ -219,7 +263,8 @@ public class DashboardService : IDashboardService
             {
                 Category = "Dịch vụ",
                 Message = $"{roomBit}{guest}: {svc} (hóa đơn / dịch vụ chưa xử lý xong).",
-                At = bd.Bill.CreateAt
+                At = bd.Bill.CreateAt,
+                DedupeKey = $"bill_svc:{bd.Id}"
             };
         }
     }

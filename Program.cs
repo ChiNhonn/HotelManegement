@@ -46,8 +46,10 @@ internal static class Program
         services.AddScoped<IFloorService, FloorService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IBookingService, BookingService>();
+        services.AddScoped<IServiceModuleService, ServiceModuleService>();
 
         services.AddTransient<usBookRoom>();
+        services.AddTransient<usService>();
 
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
@@ -75,7 +77,9 @@ internal static class Program
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
                 db.Database.Migrate();
+                ServiceModuleDatabaseEnsurer.EnsureSchema(db);
                 DemoHotelRoomsSeed.EnsureSeed(db);
+                DemoDashboardDataSeed.EnsureSeed(db);
             }
         }
         catch (Exception ex)

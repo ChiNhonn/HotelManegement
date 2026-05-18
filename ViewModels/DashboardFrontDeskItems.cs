@@ -28,6 +28,9 @@ public sealed class DashboardReminderItem
     public string Category { get; init; } = "";
     public string Message { get; init; } = "";
     public DateTime? At { get; init; }
+
+    /// <summary>Khóa ổn định (đơn phòng / dòng bill / service order…) để đánh dấu đã đọc trên dashboard.</summary>
+    public string DedupeKey { get; init; } = "";
 }
 
 /// <summary>Giao dịch thanh toán gần đây (dashboard).</summary>
@@ -37,4 +40,12 @@ public sealed class DashboardRecentTransactionItem
     public decimal Amount { get; init; }
     public string StatusLabel { get; init; } = "Thành công";
     public DateTime OccurredAt { get; init; }
+}
+
+/// <summary>Hóa đơn có thể ghi nhận thanh toán tay (dashboard).</summary>
+public sealed class DashboardBillPickRow
+{
+    public int BillId { get; init; }
+    public string Display { get; init; } = "";
+    public decimal TotalAmount { get; init; }
 }

@@ -28,7 +28,7 @@ internal sealed partial class AddStaffPayoutDialog : Form
 
         if (string.IsNullOrWhiteSpace(PayoutUserName))
         {
-            MessageBox.Show("Please enter a username.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show("Vui lòng nhập tiêu đề.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             e.Cancel = true;
             _txtUser.Focus();
             return;

@@ -252,6 +252,23 @@ namespace HotelManagement.Forms
             uc.BringToFront();
         }
 
+        /// <summary>Gỡ và dispose một UserControl phụ (trang xem chi tiết / xem tất cả).</summary>
+        public void RemovePage(UserControl uc)
+        {
+            if (uc == null) return;
+            if (panelContainer.Controls.Contains(uc))
+                panelContainer.Controls.Remove(uc);
+            uc.Dispose();
+        }
+
+        public void NavigateToServiceOperations()
+        {
+            SetActiveNav(btnServices);
+            var page = Program.ServiceProvider.GetRequiredService<usService>();
+            page.SelectOperationsTab();
+            chuyentrang(page);
+        }
+
         private void btnRooms_Click(object sender, EventArgs e)
         {
             SetActiveNav(btnRooms);
@@ -273,7 +290,7 @@ namespace HotelManagement.Forms
         private void btnServices_Click(object sender, EventArgs e)
         {
             SetActiveNav(btnServices);
-            chuyentrang(new usService());
+            chuyentrang(Program.ServiceProvider.GetRequiredService<usService>());
         }
 
         private void btnFinance_Click(object sender, EventArgs e)

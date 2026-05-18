@@ -26,6 +26,16 @@ public sealed class RoundedCardPanel : Panel
 
     public Color BorderColor { get; set; } = Color.FromArgb(226, 232, 240);
 
+    /// <summary>Khi true (mặc định) sẽ vẽ shadow nhẹ phía dưới — dùng cho dashboard.
+    /// Đặt false để có phong cách flat (chỉ viền 1px) — dùng cho các trang phụ.</summary>
+    public bool DrawShadow { get; set; } = true;
+
+    /// <summary>Khi false: không đặt Region bo góc — control con không bị WinForms clip theo đường cong (tránh cắt đáy khối dock).</summary>
+    public bool ClipChildrenToRoundedBounds { get; set; } = true;
+
+    /// <summary>Khi false: chỉ tô nền bo góc, không vẽ đường viền (tránh khung đậm quanh card).</summary>
+    public bool DrawCardBorder { get; set; } = true;
+
     public RoundedCardPanel()
     {
         SetStyle(
@@ -53,6 +63,13 @@ public sealed class RoundedCardPanel : Panel
     /// <summary>Bo cắt con theo hình chữ nhật bo góc — tránh góc vuông/viền lạ của control con.</summary>
     private void UpdateClipRegion()
     {
+        if (!ClipChildrenToRoundedBounds)
+        {
+            Region?.Dispose();
+            Region = null;
+            return;
+        }
+
         if (!IsHandleCreated || Width <= 1 || Height <= 1)
             return;
 
@@ -76,28 +93,46 @@ public sealed class RoundedCardPanel : Panel
         // Nền vẽ tay trong OnPaint (bo góc + bóng).
     }
 
+    /// <summary>Lề vẽ nội dung bo góc. Khi không clip con + không viền card, tô full bleed để không còn vành tối (WinForms để trống OnPaintBackground).</summary>
+    private int PaintInset => ClipChildrenToRoundedBounds || DrawCardBorder ? 6 : 0;
+
     protected override void OnPaint(PaintEventArgs e)
     {
         var g = e.Graphics;
+        // Bắt buộc tô full client — nếu không, vùng ngoài path bo góc (lề ~6px) có thể thành màu đen khi UserPaint.
+        using (var full = new SolidBrush(CardBackColor))
+            g.FillRectangle(full, ClientRectangle);
+
         g.SmoothingMode = SmoothingMode.AntiAlias;
         var bounds = ClientRectangle;
-        bounds.Inflate(-6, -6);
+        var inset = PaintInset;
+        if (inset != 0)
+            bounds.Inflate(-inset, -inset);
+        if (bounds.Width < 4 || bounds.Height < 4)
+            return;
+
         var r = Math.Min(_radius, bounds.Height / 2);
 
-        for (var i = 3; i >= 1; i--)
+        if (DrawShadow)
         {
-            var shadowRect = new Rectangle(bounds.X, bounds.Y + i, bounds.Width, bounds.Height);
-            using var path = CreateRoundRectPath(shadowRect, r + 1);
-            using var sh = new SolidBrush(Color.FromArgb(8 + i * 4, 95, 115, 140));
-            g.FillPath(sh, path);
+            for (var i = 3; i >= 1; i--)
+            {
+                var shadowRect = new Rectangle(bounds.X, bounds.Y + i, bounds.Width, bounds.Height);
+                using var path = CreateRoundRectPath(shadowRect, r + 1);
+                using var sh = new SolidBrush(Color.FromArgb(8 + i * 4, 95, 115, 140));
+                g.FillPath(sh, path);
+            }
         }
 
         using (var path = CreateRoundRectPath(bounds, r))
         {
             using var fill = new SolidBrush(CardBackColor);
             g.FillPath(fill, path);
-            using var pen = new Pen(BorderColor, 1f);
-            g.DrawPath(pen, path);
+            if (DrawCardBorder)
+            {
+                using var pen = new Pen(BorderColor, 1f);
+                g.DrawPath(pen, path);
+            }
         }
     }
 

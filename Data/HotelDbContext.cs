@@ -40,6 +40,10 @@ public class HotelDbContext : DbContext, IMyDbContext
     public DbSet<BillDetail> BillDetails { get; set; } = null!;
     public DbSet<Service> Services { get; set; } = null!;
     public DbSet<ServiceCategory> ServiceCategories { get; set; } = null!;
+    public DbSet<ServicePackage> ServicePackages { get; set; } = null!;
+    public DbSet<ServicePackageItem> ServicePackageItems { get; set; } = null!;
+    public DbSet<ServicePriceRule> ServicePriceRules { get; set; } = null!;
+    public DbSet<ServiceOrder> ServiceOrders { get; set; } = null!;
     public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
     public DbSet<StaffPayout> StaffPayouts { get; set; } = null!;
 
