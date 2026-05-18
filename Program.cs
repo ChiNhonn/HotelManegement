@@ -25,14 +25,32 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
 
+        string connectionString;
+        try
+        {
+            connectionString = DatabaseConnection.ResolveConnectionString();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                ex.Message,
+                "Lỗi database",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            return;
+        }
+
         var services = new ServiceCollection();
         services.AddDbContext<HotelDbContext>(options =>
-            options.UseSqlServer(
-                @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
-<<<<<<< HEAD
+            options.UseSqlServer(connectionString, sql =>
+            {
+                sql.EnableRetryOnFailure(
+                    maxRetryCount: 3,
+                    maxRetryDelay: TimeSpan.FromSeconds(8),
+                    errorNumbersToAdd: null);
+                sql.CommandTimeout(180);
+            }));
 
-=======
->>>>>>> FixLoi
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -50,18 +68,16 @@ internal static class Program
         services.AddScoped<IFloorService, FloorService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IBookingService, BookingService>();
-<<<<<<< HEAD
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBranchService, BranchService>();
 
         services.AddTransient<usBookRoom>();
-=======
+
         services.AddScoped<IServiceModuleService, ServiceModuleService>();
 
         services.AddTransient<usBookRoom>();
         services.AddTransient<usService>();
 
->>>>>>> FixLoi
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
         services.AddTransient<RegisterForm>();
@@ -94,17 +110,13 @@ internal static class Program
             using (var migrateScope = rootProvider.CreateScope())
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
-<<<<<<< HEAD
+                db.Database.SetCommandTimeout(180);
                 DatabaseMigrationHelper.Migrate(db);
                 FloorSchemaPatcher.EnsureFloorStatusColumn(db);
-                DemoHotelRoomsSeed.EnsureSeed(db);
-                AuthSeed.EnsureDefaultAdmin(db);
-=======
-                db.Database.Migrate();
                 ServiceModuleDatabaseEnsurer.EnsureSchema(db);
+                AuthSeed.EnsureDefaultAdmin(db);
                 DemoHotelRoomsSeed.EnsureSeed(db);
                 DemoDashboardDataSeed.EnsureSeed(db);
->>>>>>> FixLoi
             }
         }
         catch (Exception ex)

@@ -18,8 +18,7 @@ public class HotelDbContext : DbContext, IMyDbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(
-                "Server=.\\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(DatabaseConnection.ResolveConnectionString());
         }
     }
 

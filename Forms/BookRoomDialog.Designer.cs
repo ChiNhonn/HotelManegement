@@ -19,9 +19,8 @@ partial class BookRoomDialog
     private void InitializeComponent()
     {
         root = new TableLayoutPanel();
-        lblCapRoom = new Label();
+        label1 = new Label();
         lblRoom = new Label();
-        lblCapType = new Label();
         lblType = new Label();
         lblCapRate = new Label();
         lblRate = new Label();
@@ -48,6 +47,8 @@ partial class BookRoomDialog
         flowButtons = new FlowLayoutPanel();
         btnOk = new Button();
         btnCancel = new Button();
+        lblCapType = new Label();
+        lblCapRoom = new Label();
         root.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numAdults).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numChildren).BeginInit();
@@ -59,9 +60,8 @@ partial class BookRoomDialog
         root.ColumnCount = 2;
         root.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 148F));
         root.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-        root.Controls.Add(lblCapRoom, 0, 0);
+        root.Controls.Add(label1, 0, 14);
         root.Controls.Add(lblRoom, 1, 0);
-        root.Controls.Add(lblCapType, 0, 1);
         root.Controls.Add(lblType, 1, 1);
         root.Controls.Add(lblCapRate, 0, 2);
         root.Controls.Add(lblRate, 1, 2);
@@ -86,11 +86,13 @@ partial class BookRoomDialog
         root.Controls.Add(lblCapNote, 0, 12);
         root.Controls.Add(txtNote, 1, 12);
         root.Controls.Add(flowButtons, 0, 13);
+        root.Controls.Add(lblCapType, 0, 0);
+        root.Controls.Add(lblCapRoom, 0, 1);
         root.Dock = DockStyle.Fill;
         root.Location = new Point(0, 0);
         root.Name = "root";
         root.Padding = new Padding(18, 14, 18, 12);
-        root.RowCount = 14;
+        root.RowCount = 15;
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
@@ -105,15 +107,16 @@ partial class BookRoomDialog
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 84F));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
         root.Size = new Size(460, 560);
         root.TabIndex = 0;
         // 
-        // lblCapRoom
+        // label1
         // 
-        lblCapRoom.Location = new Point(21, 14);
-        lblCapRoom.Name = "lblCapRoom";
-        lblCapRoom.Size = new Size(100, 23);
-        lblCapRoom.TabIndex = 0;
+        label1.Location = new Point(21, 554);
+        label1.Name = "label1";
+        label1.Size = new Size(100, 20);
+        label1.TabIndex = 27;
         // 
         // lblRoom
         // 
@@ -122,13 +125,6 @@ partial class BookRoomDialog
         lblRoom.Size = new Size(100, 23);
         lblRoom.TabIndex = 1;
         lblRoom.Text = "101";
-        // 
-        // lblCapType
-        // 
-        lblCapType.Location = new Point(21, 48);
-        lblCapType.Name = "lblCapType";
-        lblCapType.Size = new Size(100, 23);
-        lblCapType.TabIndex = 2;
         // 
         // lblType
         // 
@@ -144,6 +140,7 @@ partial class BookRoomDialog
         lblCapRate.Name = "lblCapRate";
         lblCapRate.Size = new Size(100, 23);
         lblCapRate.TabIndex = 4;
+        lblCapRate.Text = "Giá";
         // 
         // lblRate
         // 
@@ -159,6 +156,7 @@ partial class BookRoomDialog
         lblCapCheckIn.Name = "lblCapCheckIn";
         lblCapCheckIn.Size = new Size(100, 23);
         lblCapCheckIn.TabIndex = 6;
+        lblCapCheckIn.Text = "Ngày đặt";
         // 
         // dtpIn
         // 
@@ -175,6 +173,7 @@ partial class BookRoomDialog
         lblCapCheckOut.Name = "lblCapCheckOut";
         lblCapCheckOut.Size = new Size(100, 23);
         lblCapCheckOut.TabIndex = 8;
+        lblCapCheckOut.Text = "Ngày trả";
         // 
         // dtpOut
         // 
@@ -191,6 +190,7 @@ partial class BookRoomDialog
         lblCapName.Name = "lblCapName";
         lblCapName.Size = new Size(100, 23);
         lblCapName.TabIndex = 10;
+        lblCapName.Text = "Tên";
         // 
         // txtName
         // 
@@ -206,6 +206,7 @@ partial class BookRoomDialog
         lblCapCccd.Name = "lblCapCccd";
         lblCapCccd.Size = new Size(100, 23);
         lblCapCccd.TabIndex = 12;
+        lblCapCccd.Text = "Số CCCD";
         // 
         // txtCccd
         // 
@@ -221,6 +222,7 @@ partial class BookRoomDialog
         lblCapPhone.Name = "lblCapPhone";
         lblCapPhone.Size = new Size(100, 23);
         lblCapPhone.TabIndex = 14;
+        lblCapPhone.Text = "Số điện thoại";
         // 
         // txtPhone
         // 
@@ -236,6 +238,7 @@ partial class BookRoomDialog
         lblCapAdults.Name = "lblCapAdults";
         lblCapAdults.Size = new Size(100, 23);
         lblCapAdults.TabIndex = 16;
+        lblCapAdults.Text = "Người lớn";
         // 
         // numAdults
         // 
@@ -254,6 +257,7 @@ partial class BookRoomDialog
         lblCapChildren.Name = "lblCapChildren";
         lblCapChildren.Size = new Size(100, 23);
         lblCapChildren.TabIndex = 18;
+        lblCapChildren.Text = "Trẻ em";
         // 
         // numChildren
         // 
@@ -270,6 +274,7 @@ partial class BookRoomDialog
         lblCapNights.Name = "lblCapNights";
         lblCapNights.Size = new Size(100, 23);
         lblCapNights.TabIndex = 20;
+        lblCapNights.Text = "Số đêm";
         // 
         // lblNights
         // 
@@ -285,6 +290,7 @@ partial class BookRoomDialog
         lblCapTotal.Name = "lblCapTotal";
         lblCapTotal.Size = new Size(100, 23);
         lblCapTotal.TabIndex = 22;
+        lblCapTotal.Text = "Tổng giá tiền";
         // 
         // lblTotal
         // 
@@ -300,6 +306,7 @@ partial class BookRoomDialog
         lblCapNote.Name = "lblCapNote";
         lblCapNote.Size = new Size(100, 23);
         lblCapNote.TabIndex = 24;
+        lblCapNote.Text = "Ghi chú";
         // 
         // txtNote
         // 
@@ -349,6 +356,22 @@ partial class BookRoomDialog
         btnCancel.TabIndex = 1;
         btnCancel.Text = "Hủy";
         btnCancel.UseVisualStyleBackColor = true;
+        // 
+        // lblCapType
+        // 
+        lblCapType.Location = new Point(21, 14);
+        lblCapType.Name = "lblCapType";
+        lblCapType.Size = new Size(100, 23);
+        lblCapType.TabIndex = 2;
+        lblCapType.Text = "Tầng";
+        // 
+        // lblCapRoom
+        // 
+        lblCapRoom.Location = new Point(21, 48);
+        lblCapRoom.Name = "lblCapRoom";
+        lblCapRoom.Size = new Size(100, 23);
+        lblCapRoom.TabIndex = 0;
+        lblCapRoom.Text = "Loại Tàng";
         // 
         // BookRoomDialog
         // 
@@ -423,4 +446,5 @@ partial class BookRoomDialog
     private FlowLayoutPanel flowButtons;
     private Button btnOk;
     private Button btnCancel;
+    private Label label1;
 }
