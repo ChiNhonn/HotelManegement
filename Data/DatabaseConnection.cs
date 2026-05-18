@@ -9,9 +9,11 @@ public static class DatabaseConnection
 {
     private const string DatabaseName = "HotelManagement";
 
+    /// <summary>Các máy chủ thử khi không có biến môi trường — gồm cả &lt;Tên máy&gt;\SQLEXPRESS (khớp SSMS).</summary>
     private static readonly string[] CandidateServers =
     [
         @".\SQLEXPRESS",
+        $@"{Environment.MachineName}\SQLEXPRESS",
         @"localhost\SQLEXPRESS",
         @"(local)\SQLEXPRESS",
         @"(localdb)\MSSQLLocalDB",
