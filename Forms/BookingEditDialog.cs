@@ -32,13 +32,22 @@ public partial class BookingEditDialog : Form
         lblRoom.Text = d.RoomName;
         lblType.Text = string.IsNullOrWhiteSpace(d.RoomTypeName) ? "—" : d.RoomTypeName!;
         lblRate.Text = $"{d.NightlyPrice.ToString("N0", En)} VND / đêm (cố định)";
-        dtpIn.Value = d.CheckIn.Date;
-        dtpOut.Value = d.CheckOut?.Date ?? d.CheckIn.Date.AddDays(Math.Max(1, d.Nights));
+
+        var checkIn = d.CheckIn.Date;
+        var nights = Math.Max(1, d.Nights);
+        var checkOut = d.CheckOut?.Date ?? checkIn.AddDays(nights);
+        if (checkOut <= checkIn)
+            checkOut = checkIn.AddDays(nights);
+
+        dtpIn.Value = checkIn;
+        dtpOut.MinDate = checkIn;
+        dtpOut.Value = checkOut;
+
         txtName.Text = d.GuestName;
         txtCccd.Text = d.CitizenId;
         txtPhone.Text = d.Phone;
-        numAdults.Value = Math.Max(1, d.Adults);
-        numChildren.Value = Math.Max(0, d.Children);
+        numAdults.Value = Math.Clamp(Math.Max(1, d.Adults), (int)numAdults.Minimum, (int)numAdults.Maximum);
+        numChildren.Value = Math.Clamp(Math.Max(0, d.Children), (int)numChildren.Minimum, (int)numChildren.Maximum);
         txtNote.Text = d.UserNote ?? "";
 
         WireRuntimeEvents();
@@ -47,7 +56,13 @@ public partial class BookingEditDialog : Form
 
     private void WireRuntimeEvents()
     {
-        dtpIn.ValueChanged += (_, _) => RecalcTotals();
+        dtpIn.ValueChanged += (_, _) =>
+        {
+            dtpOut.MinDate = dtpIn.Value.Date;
+            if (dtpOut.Value.Date < dtpOut.MinDate)
+                dtpOut.Value = dtpOut.MinDate;
+            RecalcTotals();
+        };
         dtpOut.ValueChanged += (_, _) => RecalcTotals();
         btnOk.Click += BtnOk_Click;
         Shown += (_, _) => txtName.Focus();

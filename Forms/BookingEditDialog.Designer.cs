@@ -49,10 +49,13 @@ partial class BookingEditDialog
         btnOk = new Button();
         btnCancel = new Button();
         root.SuspendLayout();
-        flowButtons.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numAdults).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numChildren).BeginInit();
+        flowButtons.SuspendLayout();
         SuspendLayout();
+        // 
+        // root
+        // 
         root.ColumnCount = 2;
         root.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 158F));
         root.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -84,67 +87,281 @@ partial class BookingEditDialog
         root.Controls.Add(txtNote, 1, 12);
         root.Controls.Add(flowButtons, 0, 13);
         root.Dock = DockStyle.Fill;
+        root.Location = new Point(0, 0);
         root.Name = "root";
         root.Padding = new Padding(18, 14, 18, 12);
         root.RowCount = 14;
-        for (var i = 0; i < 12; i++)
-            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 84F));
         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
-        root.SetColumnSpan(flowButtons, 2);
-        StyleCaption(lblCapRoom, "Phòng (cố định)");
-        StyleCaption(lblCapType, "Hạng phòng (cố định)");
-        StyleCaption(lblCapRate, "Giá / đêm");
-        StyleCaption(lblCapCheckIn, "Nhận phòng");
-        StyleCaption(lblCapCheckOut, "Trả phòng");
-        StyleCaption(lblCapName, "Họ tên");
-        StyleCaption(lblCapCccd, "CCCD");
-        StyleCaption(lblCapPhone, "SĐT");
-        StyleCaption(lblCapAdults, "Người lớn");
-        StyleCaption(lblCapChildren, "Trẻ em");
-        StyleCaption(lblCapNights, "Số đêm");
-        StyleCaption(lblCapTotal, "Tổng dự kiến");
-        StyleCaption(lblCapNote, "Ghi chú");
-        StyleValue(lblRoom, true);
-        StyleValue(lblType);
-        StyleValue(lblRate);
-        StyleValue(lblNights);
-        StyleValue(lblTotal, true);
+        root.Size = new Size(460, 560);
+        root.TabIndex = 0;
+        // 
+        // lblCapRoom
+        // 
+        lblCapRoom.Location = new Point(21, 14);
+        lblCapRoom.Name = "lblCapRoom";
+        lblCapRoom.Size = new Size(100, 23);
+        lblCapRoom.TabIndex = 0;
+        lblCapRoom.Text = "Tầng";
+        // 
+        // lblRoom
+        // 
+        lblRoom.Location = new Point(179, 14);
+        lblRoom.Name = "lblRoom";
+        lblRoom.Size = new Size(100, 23);
+        lblRoom.TabIndex = 1;
+        // 
+        // lblCapType
+        // 
+        lblCapType.Location = new Point(21, 48);
+        lblCapType.Name = "lblCapType";
+        lblCapType.Size = new Size(100, 23);
+        lblCapType.TabIndex = 2;
+        lblCapType.Text = "Loại tầng";
+        // 
+        // lblType
+        // 
+        lblType.Location = new Point(179, 48);
+        lblType.Name = "lblType";
+        lblType.Size = new Size(100, 23);
+        lblType.TabIndex = 3;
+        // 
+        // lblCapRate
+        // 
+        lblCapRate.Location = new Point(21, 82);
+        lblCapRate.Name = "lblCapRate";
+        lblCapRate.Size = new Size(100, 23);
+        lblCapRate.TabIndex = 4;
+        lblCapRate.Text = "GIá";
+        // 
+        // lblRate
+        // 
+        lblRate.Location = new Point(179, 82);
+        lblRate.Name = "lblRate";
+        lblRate.Size = new Size(100, 23);
+        lblRate.TabIndex = 5;
+        // 
+        // lblCapCheckIn
+        // 
+        lblCapCheckIn.Location = new Point(21, 116);
+        lblCapCheckIn.Name = "lblCapCheckIn";
+        lblCapCheckIn.Size = new Size(100, 23);
+        lblCapCheckIn.TabIndex = 6;
+        lblCapCheckIn.Text = "Ngày nhận";
+        // 
+        // dtpIn
+        // 
         dtpIn.Dock = DockStyle.Fill;
         dtpIn.Format = DateTimePickerFormat.Short;
+        dtpIn.Location = new Point(179, 119);
+        dtpIn.Name = "dtpIn";
+        dtpIn.Size = new Size(260, 25);
+        dtpIn.TabIndex = 7;
+        // 
+        // lblCapCheckOut
+        // 
+        lblCapCheckOut.Location = new Point(21, 150);
+        lblCapCheckOut.Name = "lblCapCheckOut";
+        lblCapCheckOut.Size = new Size(100, 23);
+        lblCapCheckOut.TabIndex = 8;
+        lblCapCheckOut.Text = "Ngày trả";
+        // 
+        // dtpOut
+        // 
         dtpOut.Dock = DockStyle.Fill;
         dtpOut.Format = DateTimePickerFormat.Short;
+        dtpOut.Location = new Point(179, 153);
+        dtpOut.Name = "dtpOut";
+        dtpOut.Size = new Size(260, 25);
+        dtpOut.TabIndex = 9;
+        // 
+        // lblCapName
+        // 
+        lblCapName.Location = new Point(21, 184);
+        lblCapName.Name = "lblCapName";
+        lblCapName.Size = new Size(100, 23);
+        lblCapName.TabIndex = 10;
+        lblCapName.Text = "Tên";
+        // 
+        // txtName
+        // 
         txtName.Dock = DockStyle.Fill;
+        txtName.Location = new Point(179, 187);
+        txtName.Name = "txtName";
+        txtName.Size = new Size(260, 25);
+        txtName.TabIndex = 11;
+        // 
+        // lblCapCccd
+        // 
+        lblCapCccd.Location = new Point(21, 218);
+        lblCapCccd.Name = "lblCapCccd";
+        lblCapCccd.Size = new Size(100, 23);
+        lblCapCccd.TabIndex = 12;
+        lblCapCccd.Text = "Số CCCD";
+        // 
+        // txtCccd
+        // 
         txtCccd.Dock = DockStyle.Fill;
+        txtCccd.Location = new Point(179, 221);
+        txtCccd.Name = "txtCccd";
+        txtCccd.Size = new Size(260, 25);
+        txtCccd.TabIndex = 13;
+        // 
+        // lblCapPhone
+        // 
+        lblCapPhone.Location = new Point(21, 252);
+        lblCapPhone.Name = "lblCapPhone";
+        lblCapPhone.Size = new Size(100, 23);
+        lblCapPhone.TabIndex = 14;
+        lblCapPhone.Text = "Số điện thoại";
+        // 
+        // txtPhone
+        // 
         txtPhone.Dock = DockStyle.Fill;
+        txtPhone.Location = new Point(179, 255);
+        txtPhone.Name = "txtPhone";
+        txtPhone.Size = new Size(260, 25);
+        txtPhone.TabIndex = 15;
+        // 
+        // lblCapAdults
+        // 
+        lblCapAdults.Location = new Point(21, 286);
+        lblCapAdults.Name = "lblCapAdults";
+        lblCapAdults.Size = new Size(100, 23);
+        lblCapAdults.TabIndex = 16;
+        lblCapAdults.Text = "Người lớn";
+        // 
+        // numAdults
+        // 
         numAdults.Dock = DockStyle.Fill;
+        numAdults.Location = new Point(179, 289);
         numAdults.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
         numAdults.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+        numAdults.Name = "numAdults";
+        numAdults.Size = new Size(260, 25);
+        numAdults.TabIndex = 17;
         numAdults.Value = new decimal(new int[] { 1, 0, 0, 0 });
+        // 
+        // lblCapChildren
+        // 
+        lblCapChildren.Location = new Point(21, 320);
+        lblCapChildren.Name = "lblCapChildren";
+        lblCapChildren.Size = new Size(100, 23);
+        lblCapChildren.TabIndex = 18;
+        lblCapChildren.Text = "Trẻ em";
+        // 
+        // numChildren
+        // 
         numChildren.Dock = DockStyle.Fill;
+        numChildren.Location = new Point(179, 323);
         numChildren.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
+        numChildren.Name = "numChildren";
+        numChildren.Size = new Size(260, 25);
+        numChildren.TabIndex = 19;
+        // 
+        // lblCapNights
+        // 
+        lblCapNights.Location = new Point(21, 354);
+        lblCapNights.Name = "lblCapNights";
+        lblCapNights.Size = new Size(100, 23);
+        lblCapNights.TabIndex = 20;
+        lblCapNights.Text = "Số đêm";
+        // 
+        // lblNights
+        // 
+        lblNights.Location = new Point(179, 354);
+        lblNights.Name = "lblNights";
+        lblNights.Size = new Size(100, 23);
+        lblNights.TabIndex = 21;
+        // 
+        // lblCapTotal
+        // 
+        lblCapTotal.Location = new Point(21, 388);
+        lblCapTotal.Name = "lblCapTotal";
+        lblCapTotal.Size = new Size(100, 23);
+        lblCapTotal.TabIndex = 22;
+        lblCapTotal.Text = "Tổng giá tiền";
+        // 
+        // lblTotal
+        // 
+        lblTotal.Location = new Point(179, 388);
+        lblTotal.Name = "lblTotal";
+        lblTotal.Size = new Size(100, 23);
+        lblTotal.TabIndex = 23;
+        // 
+        // lblCapNote
+        // 
+        lblCapNote.Location = new Point(21, 422);
+        lblCapNote.Name = "lblCapNote";
+        lblCapNote.Size = new Size(100, 23);
+        lblCapNote.TabIndex = 24;
+        lblCapNote.Text = " Ghi chú";
+        // 
+        // txtNote
+        // 
         txtNote.Dock = DockStyle.Fill;
+        txtNote.Location = new Point(179, 425);
         txtNote.MinimumSize = new Size(0, 72);
         txtNote.Multiline = true;
+        txtNote.Name = "txtNote";
         txtNote.ScrollBars = ScrollBars.Vertical;
+        txtNote.Size = new Size(260, 78);
+        txtNote.TabIndex = 25;
+        // 
+        // flowButtons
+        // 
+        root.SetColumnSpan(flowButtons, 2);
         flowButtons.Controls.Add(btnOk);
         flowButtons.Controls.Add(btnCancel);
         flowButtons.Dock = DockStyle.Fill;
         flowButtons.FlowDirection = FlowDirection.RightToLeft;
+        flowButtons.Location = new Point(21, 509);
+        flowButtons.Name = "flowButtons";
         flowButtons.Padding = new Padding(0, 8, 0, 0);
+        flowButtons.Size = new Size(418, 42);
+        flowButtons.TabIndex = 26;
         flowButtons.WrapContents = false;
+        // 
+        // btnOk
+        // 
         btnOk.AutoSize = true;
+        btnOk.Location = new Point(343, 8);
         btnOk.Margin = new Padding(8, 0, 0, 0);
+        btnOk.Name = "btnOk";
         btnOk.Padding = new Padding(14, 6, 14, 6);
+        btnOk.Size = new Size(75, 41);
+        btnOk.TabIndex = 0;
         btnOk.Text = "Lưu";
         btnOk.UseVisualStyleBackColor = true;
+        // 
+        // btnCancel
+        // 
         btnCancel.AutoSize = true;
         btnCancel.DialogResult = DialogResult.Cancel;
+        btnCancel.Location = new Point(257, 11);
+        btnCancel.Name = "btnCancel";
         btnCancel.Padding = new Padding(12, 6, 12, 6);
+        btnCancel.Size = new Size(75, 41);
+        btnCancel.TabIndex = 1;
         btnCancel.Text = "Hủy";
         btnCancel.UseVisualStyleBackColor = true;
+        // 
+        // BookingEditDialog
+        // 
         AcceptButton = btnOk;
-        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleDimensions = new SizeF(7F, 17F);
         AutoScaleMode = AutoScaleMode.Font;
         CancelButton = btnCancel;
         ClientSize = new Size(460, 560);
@@ -157,10 +374,11 @@ partial class BookingEditDialog
         StartPosition = FormStartPosition.CenterParent;
         Text = "Sửa đặt phòng";
         root.ResumeLayout(false);
-        flowButtons.ResumeLayout(false);
-        flowButtons.PerformLayout();
+        root.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)numAdults).EndInit();
         ((System.ComponentModel.ISupportInitialize)numChildren).EndInit();
+        flowButtons.ResumeLayout(false);
+        flowButtons.PerformLayout();
         ResumeLayout(false);
     }
 
