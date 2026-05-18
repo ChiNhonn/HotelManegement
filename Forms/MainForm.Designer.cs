@@ -55,6 +55,7 @@
             pnlTopMainForm.Name = "pnlTopMainForm";
             pnlTopMainForm.Size = new Size(1422, 125);
             pnlTopMainForm.TabIndex = 1;
+            pnlTopMainForm.Paint += pnlTopMainForm_Paint;
             // 
             // panel1
             // 
