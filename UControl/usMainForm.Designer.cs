@@ -403,13 +403,12 @@
             flowQuickActions.Margin = new Padding(0);
             flowQuickActions.Name = "flowQuickActions";
             flowQuickActions.Padding = new Padding(0, 3, 0, 3);
-            flowQuickActions.Size = new Size(349, 84);
+            flowQuickActions.Size = new Size(349, 116);
             flowQuickActions.TabIndex = 0;
             flowQuickActions.WrapContents = false;
             // 
             // lblQuickManualPaymentHeading
             // 
-            lblQuickManualPaymentHeading.AutoSize = false;
             lblQuickManualPaymentHeading.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             lblQuickManualPaymentHeading.ForeColor = Color.FromArgb(71, 85, 105);
             lblQuickManualPaymentHeading.Location = new Point(3, 3);
@@ -423,7 +422,7 @@
             // btnAddRecentPayment
             // 
             btnAddRecentPayment.FlatStyle = FlatStyle.Flat;
-            btnAddRecentPayment.Location = new Point(3, 7);
+            btnAddRecentPayment.Location = new Point(3, 39);
             btnAddRecentPayment.Margin = new Padding(3, 4, 3, 4);
             btnAddRecentPayment.Name = "btnAddRecentPayment";
             btnAddRecentPayment.Size = new Size(86, 31);
@@ -435,7 +434,7 @@
             // 
             btnAddPayout.Cursor = Cursors.Hand;
             btnAddPayout.FlatStyle = FlatStyle.Flat;
-            btnAddPayout.Location = new Point(3, 46);
+            btnAddPayout.Location = new Point(3, 78);
             btnAddPayout.Margin = new Padding(3, 4, 3, 4);
             btnAddPayout.Name = "btnAddPayout";
             btnAddPayout.Size = new Size(86, 31);
