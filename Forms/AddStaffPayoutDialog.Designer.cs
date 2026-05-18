@@ -34,7 +34,7 @@ partial class AddStaffPayoutDialog
         _lblUser.Name = "_lblUser";
         _lblUser.Size = new Size(384, 22);
         _lblUser.TabIndex = 0;
-        _lblUser.Text = "Username";
+        _lblUser.Text = "Tiêu đề";
         //
         // _txtUser
         //
@@ -51,7 +51,7 @@ partial class AddStaffPayoutDialog
         _lblAmt.Name = "_lblAmt";
         _lblAmt.Size = new Size(384, 22);
         _lblAmt.TabIndex = 2;
-        _lblAmt.Text = "Amount (VND)";
+        _lblAmt.Text = "Số tiền (VNĐ)";
         //
         // _numAmount
         //
@@ -77,7 +77,7 @@ partial class AddStaffPayoutDialog
         _btnOk.Name = "_btnOk";
         _btnOk.Size = new Size(120, 34);
         _btnOk.TabIndex = 4;
-        _btnOk.Text = "Save";
+        _btnOk.Text = "Lưu";
         _btnOk.UseVisualStyleBackColor = false;
         _btnOk.DialogResult = DialogResult.OK;
         //
@@ -88,7 +88,7 @@ partial class AddStaffPayoutDialog
         _btnCancel.Name = "_btnCancel";
         _btnCancel.Size = new Size(96, 34);
         _btnCancel.TabIndex = 5;
-        _btnCancel.Text = "Cancel";
+        _btnCancel.Text = "Hủy";
         _btnCancel.UseVisualStyleBackColor = true;
         //
         // AddStaffPayoutDialog
@@ -111,7 +111,7 @@ partial class AddStaffPayoutDialog
         MinimizeBox = false;
         Name = "AddStaffPayoutDialog";
         StartPosition = FormStartPosition.CenterParent;
-        Text = "Add staff payout";
+        Text = "Ghi nhận chi trả";
         Shown += AddStaffPayoutDialog_Shown;
         ((System.ComponentModel.ISupportInitialize)_numAmount).EndInit();
         ResumeLayout(false);

@@ -8,10 +8,10 @@ public interface IDashboardService
     DashboardTodayMetrics GetTodayMetrics();
 
     /// <summary>Đặt phòng chờ xác nhận (website / thanh toán online vừa thành công…).</summary>
-    IReadOnlyList<DashboardBookingPendingItem> GetPendingBookingsAwaitingConfirmation();
+    IReadOnlyList<DashboardBookingPendingItem> GetPendingBookingsAwaitingConfirmation(int take = 5);
 
     /// <summary>Dọn phòng, dịch vụ chưa xử lý, quá giờ trả phòng (theo dữ liệu hiện có).</summary>
-    IReadOnlyList<DashboardReminderItem> GetFrontDeskReminders();
+    IReadOnlyList<DashboardReminderItem> GetFrontDeskReminders(int take = 5);
 
     /// <summary>Sơ đồ trạng thái phòng tổng quan (tỷ lệ + từng phòng).</summary>
     DashboardMiniRoomStatus GetMiniRoomStatus();
@@ -21,6 +21,12 @@ public interface IDashboardService
 
     /// <summary>Các khoản thanh toán thành công gần nhất (theo thời điểm <c>Payment</c>).</summary>
     IReadOnlyList<DashboardRecentTransactionItem> GetRecentTransactions(int take = 10);
+
+    /// <summary>Hóa đơn chờ thu để chọn khi «Thêm giao dịch».</summary>
+    IReadOnlyList<DashboardBillPickRow> GetBillsForManualPaymentPick(int take = 80);
+
+    /// <summary>Ghi nhận thanh toán (tiền mặt / chuyển khoản) cho một hóa đơn.</summary>
+    void RecordManualBillPayment(int billId, string method);
 
     /// <summary>Chi trả đã ghi nhận từ dashboard (bảng <c>StaffPayouts</c>).</summary>
     IReadOnlyList<DashboardRecentTransactionItem> GetRecentStaffPayouts(int take = 15);

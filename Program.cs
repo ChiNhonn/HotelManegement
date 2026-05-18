@@ -29,7 +29,10 @@ internal static class Program
         services.AddDbContext<HotelDbContext>(options =>
             options.UseSqlServer(
                 @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
+<<<<<<< HEAD
 
+=======
+>>>>>>> FixLoi
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -47,10 +50,18 @@ internal static class Program
         services.AddScoped<IFloorService, FloorService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IBookingService, BookingService>();
+<<<<<<< HEAD
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBranchService, BranchService>();
 
         services.AddTransient<usBookRoom>();
+=======
+        services.AddScoped<IServiceModuleService, ServiceModuleService>();
+
+        services.AddTransient<usBookRoom>();
+        services.AddTransient<usService>();
+
+>>>>>>> FixLoi
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
         services.AddTransient<RegisterForm>();
@@ -72,6 +83,7 @@ internal static class Program
 
         Application.ApplicationExit += (_, _) =>
         {
+            BankTransferInboundWebhookHost.Stop();
             _rootScope?.Dispose();
             _rootScope = null;
             (rootProvider as IDisposable)?.Dispose();
@@ -82,10 +94,17 @@ internal static class Program
             using (var migrateScope = rootProvider.CreateScope())
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
+<<<<<<< HEAD
                 DatabaseMigrationHelper.Migrate(db);
                 FloorSchemaPatcher.EnsureFloorStatusColumn(db);
                 DemoHotelRoomsSeed.EnsureSeed(db);
                 AuthSeed.EnsureDefaultAdmin(db);
+=======
+                db.Database.Migrate();
+                ServiceModuleDatabaseEnsurer.EnsureSchema(db);
+                DemoHotelRoomsSeed.EnsureSeed(db);
+                DemoDashboardDataSeed.EnsureSeed(db);
+>>>>>>> FixLoi
             }
         }
         catch (Exception ex)
@@ -96,6 +115,15 @@ internal static class Program
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
             return;
+        }
+
+        try
+        {
+            BankTransferInboundWebhookHost.TryStart(rootProvider.GetRequiredService<IServiceScopeFactory>());
+        }
+        catch
+        {
+            // không chặn khởi động
         }
 
         Application.Run(ServiceProvider.GetRequiredService<LoginForm>());

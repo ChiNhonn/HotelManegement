@@ -12,11 +12,17 @@ namespace HotelManagement.Models
         [Key]
         public int Id { get; set; }
         [Required, MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
+
+        [MaxLength(300)]
+        public string? Description { get; set; }
+
+        public int SortOrder { get; set; }
+
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; } = null;
         public DateTime? SoftDelete { get; set; } = null;
 
-        public virtual ICollection<Service> Services { get; set; }
+        public virtual ICollection<Service> Services { get; set; } = new List<Service>();
     }
 }

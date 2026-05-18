@@ -206,6 +206,7 @@ public sealed class ServiceCategoryConfiguration : IEntityTypeConfiguration<Serv
         b.ToTable("ServiceCategories");
 
         b.Property(x => x.Name).HasMaxLength(100).IsRequired();
+        b.Property(x => x.Description).HasMaxLength(300);
 
         b.HasMany(c => c.Services)
             .WithOne(s => s.ServiceCategory)
@@ -220,8 +221,89 @@ public sealed class ServiceConfiguration : IEntityTypeConfiguration<Service>
         b.ToTable("Services");
 
         b.Property(x => x.Name).HasMaxLength(100).IsRequired();
+        b.Property(x => x.Description).HasMaxLength(500);
+        b.Property(x => x.ImagePath).HasMaxLength(500);
+        b.Property(x => x.Unit).HasMaxLength(50).HasDefaultValue("lần");
         b.Property(x => x.UnitPrice).HasColumnType("decimal(18,2)");
 
+        b.HasIndex(x => x.SoftDelete);
+        b.HasIndex(x => x.IsHidden);
+    }
+}
+
+public sealed class ServicePackageConfiguration : IEntityTypeConfiguration<ServicePackage>
+{
+    public void Configure(EntityTypeBuilder<ServicePackage> b)
+    {
+        b.ToTable("ServicePackages");
+        b.Property(x => x.Name).HasMaxLength(120).IsRequired();
+        b.Property(x => x.Description).HasMaxLength(500);
+        b.Property(x => x.ImagePath).HasMaxLength(500);
+        b.Property(x => x.PackagePrice).HasColumnType("decimal(18,2)");
+        b.HasIndex(x => x.SoftDelete);
+    }
+}
+
+public sealed class ServicePackageItemConfiguration : IEntityTypeConfiguration<ServicePackageItem>
+{
+    public void Configure(EntityTypeBuilder<ServicePackageItem> b)
+    {
+        b.ToTable("ServicePackageItems");
+        b.HasOne(x => x.ServicePackage)
+            .WithMany(p => p.Items)
+            .HasForeignKey(x => x.IdServicePackage)
+            .OnDelete(DeleteBehavior.Cascade);
+        b.HasOne(x => x.Service)
+            .WithMany(s => s.PackageItems)
+            .HasForeignKey(x => x.IdService)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
+public sealed class ServicePriceRuleConfiguration : IEntityTypeConfiguration<ServicePriceRule>
+{
+    public void Configure(EntityTypeBuilder<ServicePriceRule> b)
+    {
+        b.ToTable("ServicePriceRules");
+        b.Property(x => x.RuleName).HasMaxLength(80).IsRequired();
+        b.Property(x => x.RuleType).HasMaxLength(30).IsRequired();
+        b.Property(x => x.Price).HasColumnType("decimal(18,2)");
+        b.HasOne(x => x.Service)
+            .WithMany(s => s.PriceRules)
+            .HasForeignKey(x => x.IdService)
+            .OnDelete(DeleteBehavior.Cascade);
+        b.HasIndex(x => x.SoftDelete);
+    }
+}
+
+public sealed class ServiceOrderConfiguration : IEntityTypeConfiguration<ServiceOrder>
+{
+    public void Configure(EntityTypeBuilder<ServiceOrder> b)
+    {
+        b.ToTable("ServiceOrders");
+        b.Property(x => x.ItemName).HasMaxLength(150).IsRequired();
+        b.Property(x => x.Status).HasMaxLength(30).IsRequired();
+        b.Property(x => x.ChargeMode).HasMaxLength(20).IsRequired();
+        b.Property(x => x.UnitPrice).HasColumnType("decimal(18,2)");
+        b.Property(x => x.LineTotal).HasColumnType("decimal(18,2)");
+        b.Property(x => x.CancellationFee).HasColumnType("decimal(18,2)");
+        b.Property(x => x.Notes).HasMaxLength(500);
+        b.Property(x => x.CancelReason).HasMaxLength(500);
+        b.HasIndex(x => x.Status);
+        b.HasIndex(x => x.CreateAt);
+        b.HasIndex(x => x.SoftDelete);
+    }
+}
+
+public sealed class BankTransferInboundConfiguration : IEntityTypeConfiguration<BankTransferInbound>
+{
+    public void Configure(EntityTypeBuilder<BankTransferInbound> b)
+    {
+        b.ToTable("BankTransferInbounds");
+        b.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+        b.Property(x => x.RawContent).HasMaxLength(500).IsRequired();
+        b.HasIndex(x => x.ReceivedAt);
+        b.HasIndex(x => x.MatchedServiceOrderId);
         b.HasIndex(x => x.SoftDelete);
     }
 }
