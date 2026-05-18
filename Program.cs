@@ -37,6 +37,7 @@ internal static class Program
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IRoomTypeService, RoomTypeService>();
+        services.AddScoped<ICustomerServices, CustomerServices>();
 
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
@@ -45,6 +46,7 @@ internal static class Program
         services.AddTransient<AddRoomDialogForm>();
         services.AddTransient<AddRoomTypeDiaLogForm>();
         services.AddTransient<CustomerForm>();
+        services.AddTransient<InfoCustomerForm>();
 
         ServiceProvider = services.BuildServiceProvider();
         var main = ServiceProvider.GetRequiredService<CustomerForm>();

@@ -127,6 +127,7 @@
             btnExport.TabIndex = 3;
             btnExport.Text = "Export";
             btnExport.UseVisualStyleBackColor = false;
+            btnExport.Click += btnExport_Click;
             // 
             // btnAddCustomer
             // 
@@ -365,6 +366,8 @@
             txtFind.Name = "txtFind";
             txtFind.Size = new Size(380, 27);
             txtFind.TabIndex = 2;
+            txtFind.TextAlignChanged += txtFind_TextAlignChanged;
+            txtFind.TextChanged += txtFind_TextChanged;
             // 
             // numShow
             // 
@@ -373,6 +376,7 @@
             numShow.Name = "numShow";
             numShow.Size = new Size(150, 27);
             numShow.TabIndex = 3;
+            numShow.ValueChanged += numShow_ValueChanged;
             // 
             // cboSapXep
             // 
@@ -381,6 +385,7 @@
             cboSapXep.Name = "cboSapXep";
             cboSapXep.Size = new Size(151, 28);
             cboSapXep.TabIndex = 4;
+            cboSapXep.SelectedIndexChanged += cboSapXep_SelectedIndexChanged;
             // 
             // cboFilter
             // 
@@ -389,6 +394,7 @@
             cboFilter.Name = "cboFilter";
             cboFilter.Size = new Size(151, 28);
             cboFilter.TabIndex = 5;
+            cboFilter.SelectedIndexChanged += cboFilter_SelectedIndexChanged;
             // 
             // dgvCustomer
             // 

@@ -14,9 +14,11 @@ namespace HotelManagement.Forms
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        private readonly IServiceProvider _serviceProvider;
+        public MainForm(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            _serviceProvider = serviceProvider;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -42,7 +44,9 @@ namespace HotelManagement.Forms
 
         private void btnKhach_Click(object sender, EventArgs e)
         {
-            chuyentrang(new usCustomer());
+            var customerForm = _serviceProvider.GetRequiredService<CustomerForm>();
+
+            chuyentrangForm(customerForm);
         }
 
         private void btnDatPhong_Click(object sender, EventArgs e)
@@ -71,6 +75,20 @@ namespace HotelManagement.Forms
             this.Hide();
             login.Show();
             this.Close();
+        }
+
+        public void chuyentrangForm(Form childForm)
+        {
+            panelContainer.Controls.Clear();
+
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+
+            panelContainer.Controls.Add(childForm);
+            panelContainer.Tag = childForm; 
+            childForm.BringToFront();
+            childForm.Show();
         }
     }
 }
