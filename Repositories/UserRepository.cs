@@ -3,6 +3,7 @@ using HotelManagement.Helpers;
 using HotelManagement.Models;
 using HotelManagement.Interfaces;
 using Microsoft.EntityFrameworkCore;
+
 namespace HotelManagement.Repositories
 {
     public class UserRepository : IUserRepository
@@ -48,27 +49,36 @@ namespace HotelManagement.Repositories
 
         public bool Register(Userr user, UserProfile profile)
         {
-            using var transaction = _context.Database.BeginTransaction();
+            // Tạo Execution Strategy để hỗ trợ Transaction khi bật EnableRetryOnFailure
+            var strategy = _context.Database.CreateExecutionStrategy();
 
-            try
+            return strategy.Execute(() =>
             {
-                _context.Users.Add(user);
-                _context.SaveChanges();
+                using var transaction = _context.Database.BeginTransaction();
 
-                profile.IdUser = user.Id;
+                try
+                {
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
 
-                _context.UserProfiles.Add(profile);
-                _context.SaveChanges();
+                    profile.IdUser = user.Id;
 
-                transaction.Commit();
+                    _context.UserProfiles.Add(profile);
+                    _context.SaveChanges();
 
-                return true;
-            }
-            catch
-            {
-                transaction.Rollback();
-                return false;
-            }
+                    transaction.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    // Hoàn tác dữ liệu nếu có lỗi
+                    transaction.Rollback();
+
+                    // Ném lỗi chi tiết của SQL Server lên trên thay vì nuốt lỗi
+                    throw new Exception(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                }
+            });
         }
 
         public void UpdatePassword(string email, string newPassword)
@@ -84,13 +94,14 @@ namespace HotelManagement.Repositories
             if (user == null)
                 throw new Exception("Không tìm thấy tài khoản tương ứng với Email này.");
 
-            // Mã hóa mật khẩu mới trước khi lưu (Sử dụng đúng PasswordHelper của bạn)
+            // Mã hóa mật khẩu mới trước khi lưu
             user.Password = PasswordHelper.HashPassword(newPassword);
             user.UpdateAt = DateTime.Now;
 
             // Lưu thay đổi vào DB
             _context.SaveChanges();
         }
+
         public bool CheckEmailExists(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
