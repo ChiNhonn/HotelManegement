@@ -150,12 +150,22 @@ public sealed class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         b.ToTable("Customers");
 
+        b.Property(x => x.No).HasMaxLength(20);
         b.Property(x => x.FullName).HasMaxLength(100).IsRequired();
-        b.Property(x => x.CitizenId).HasMaxLength(20).IsRequired();
-        b.Property(x => x.Phone).HasMaxLength(20).IsRequired();
+        b.Property(x => x.CitizenId).HasMaxLength(20);
+        b.Property(x => x.Phone).HasMaxLength(20);
         b.Property(x => x.Email).HasMaxLength(100);
+        b.Property(x => x.Xa).HasMaxLength(100);
+        b.Property(x => x.Huyen).HasMaxLength(100);
+        b.Property(x => x.Tinh).HasMaxLength(100);
+        b.Property(x => x.Country).HasMaxLength(100);
+        b.Property(x => x.Status).HasMaxLength(100);
 
-        b.HasIndex(x => x.CitizenId).IsUnique();
+        // Cho phép khách chỉ nhập qua CRM (không có CCCD); booking vẫn gán CCCD khi cần.
+        b.HasIndex(x => x.CitizenId)
+            .IsUnique()
+            .HasFilter("[CitizenId] IS NOT NULL");
+
         b.HasIndex(x => x.Phone);
         b.HasIndex(x => x.SoftDelete);
     }

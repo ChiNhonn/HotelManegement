@@ -280,7 +280,8 @@ namespace HotelManagement.Forms
         private void btnCustomers_Click(object sender, EventArgs e)
         {
             SetActiveNav(btnCustomers);
-            chuyentrang(new usCustomer());
+            var customerForm = Program.ServiceProvider.GetRequiredService<CustomerForm>();
+            chuyentrangForm(customerForm);
         }
 
         private void btnBookings_Click(object sender, EventArgs e)
@@ -326,6 +327,20 @@ namespace HotelManagement.Forms
         {
             SetActiveNav(btnBill);
             chuyentrang(Program.ServiceProvider.GetRequiredService<usBill>());
+        }
+
+        public void chuyentrangForm(Form childForm)
+        {
+            panelContainer.Controls.Clear();
+
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+
+            panelContainer.Controls.Add(childForm);
+            panelContainer.Tag = childForm; 
+            childForm.BringToFront();
+            childForm.Show();
         }
     }
 }

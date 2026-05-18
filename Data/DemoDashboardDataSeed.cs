@@ -321,10 +321,16 @@ public static class DemoDashboardDataSeed
             {
                 c = new Customer
                 {
+                    No = cccd,
                     FullName = fullName,
                     CitizenId = cccd,
                     Phone = phone,
                     Email = email,
+                    BirthDay = DateTime.Today.AddYears(-28),
+                    Gender = 1,
+                    Country = "Việt Nam",
+                    Status = "",
+                    Vip = 0,
                     CreateAt = DateTime.Now
                 };
                 db.Customers.Add(c);

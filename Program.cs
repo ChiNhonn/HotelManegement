@@ -23,12 +23,16 @@ internal static class Program
     [STAThread]
     static void Main()
     {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.SetHighDpiMode(HighDpiMode.SystemAware);
         ApplicationConfiguration.Initialize();
 
         var services = new ServiceCollection();
         services.AddDbContext<HotelDbContext>(options =>
             options.UseSqlServer(
                 @"Server=.\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
+        services.AddScoped<IMyDbContext>(sp => sp.GetRequiredService<HotelDbContext>());
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -50,6 +54,7 @@ internal static class Program
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IServiceModuleService, ServiceModuleService>();
+        services.AddScoped<ICustomerServices, CustomerServices>();
 
         services.AddTransient<usBookRoom>();
         services.AddTransient<usService>();
@@ -62,6 +67,8 @@ internal static class Program
         services.AddTransient<usMainForm>();
         services.AddTransient<ForgetPasswordForm>();
         services.AddTransient<DoiMKForm>();
+        services.AddTransient<CustomerForm>();
+        services.AddTransient<InfoCustomerForm>();
 
         services.AddTransient<BulkCreateRoomsDialog>();
         services.AddTransient<RoomEditDialogForm>();
