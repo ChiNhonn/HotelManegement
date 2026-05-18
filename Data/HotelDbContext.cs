@@ -14,11 +14,16 @@ public class HotelDbContext : DbContext, IMyDbContext
     {
     }
 
+    /// <summary>Chuỗi kết nối SQL Server cố định — chỉnh tại đây khi đổi instance/máy.</summary>
+    public const string ConnectionString =
+        "Server=.\\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;";
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(DatabaseConnection.ResolveConnectionString(),
+            // Giữ UseCompatibilityLevel(120) để tránh lỗi « Incorrect syntax near 'WITH' » trên SQL Server cũ.
+            optionsBuilder.UseSqlServer(ConnectionString,
                 sql => sql.UseCompatibilityLevel(120));
         }
     }
