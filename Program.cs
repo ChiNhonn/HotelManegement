@@ -31,7 +31,7 @@ internal static class Program
         var services = new ServiceCollection();
         services.AddDbContext<HotelDbContext>(options =>
             options.UseSqlServer(
-                @"Server=.\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
+                @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
         services.AddScoped<IMyDbContext>(sp => sp.GetRequiredService<HotelDbContext>());
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
