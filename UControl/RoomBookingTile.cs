@@ -9,26 +9,14 @@ using HotelManagement.ViewModels;
 
 namespace HotelManagement.CustomControls;
 
-/// <summary>Ô phòng: Đặt / Hủy nhanh, hoặc Trả — Xem — Sửa khi có khách theo đơn.</summary>
-public sealed class RoomBookingTile : UserControl
+/// <summary>Ô phòng: layout trong <c>RoomBookingTile.Designer.cs</c> (kéo thả Designer).</summary>
+public partial class RoomBookingTile : UserControl
 {
-    private readonly IRoomService _rooms;
-    private readonly IBookingService _booking;
-    private readonly Func<DateTime> _viewDate;
-    private readonly Action _onChanged;
-    private readonly Action<string>? _applySearchHint;
-
-    private readonly Label _lblNum = new();
-    private readonly Panel _actionArea = new();
-    private readonly Button _btn = new();
-    private readonly TableLayoutPanel _guestGrid = new();
-    private readonly Button _btnCheckout = new();
-    private readonly Button _btnView = new();
-    private readonly Button _btnEdit = new();
-
-    private readonly Panel _cleaningPanel = new();
-    private readonly Label _lblCleaningHead = new();
-    private readonly Button _btnCleaningDone = new();
+    private IRoomService? _rooms;
+    private IBookingService? _booking;
+    private Func<DateTime>? _viewDate;
+    private Action? _onChanged;
+    private Action<string>? _applySearchHint;
 
     private DashboardMiniRoomCell _cell = null!;
 
@@ -37,12 +25,19 @@ public sealed class RoomBookingTile : UserControl
     private static readonly Color CleaningYellow = Color.FromArgb(234, 179, 8);
     private static readonly Color MaintenanceGray = Color.FromArgb(100, 116, 139);
 
+    /// <summary>Constructor cho Visual Studio Designer (kéo thả).</summary>
+    public RoomBookingTile()
+    {
+        InitializeComponent();
+    }
+
     public RoomBookingTile(
         IRoomService rooms,
         IBookingService booking,
         Func<DateTime> viewDate,
         Action onChanged,
         Action<string>? applySearchHint = null)
+        : this()
     {
         _rooms = rooms ?? throw new ArgumentNullException(nameof(rooms));
         _booking = booking ?? throw new ArgumentNullException(nameof(booking));
@@ -50,114 +45,25 @@ public sealed class RoomBookingTile : UserControl
         _onChanged = onChanged ?? throw new ArgumentNullException(nameof(onChanged));
         _applySearchHint = applySearchHint;
 
-        Dock = DockStyle.Fill;
-        Margin = new Padding(5);
-        Padding = new Padding(10, 10, 10, 8);
-
-        var layout = new TableLayoutPanel
-        {
-            Dock = DockStyle.Fill,
-            RowCount = 2,
-            ColumnCount = 1,
-            Margin = new Padding(0)
-        };
-        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 26F));
-        layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-        _lblNum.Dock = DockStyle.Fill;
-        _lblNum.TextAlign = ContentAlignment.TopCenter;
-        _lblNum.Font = new Font("Segoe UI", 11.5F, FontStyle.Bold, GraphicsUnit.Point);
-        _lblNum.Margin = new Padding(0, 0, 0, 4);
-
-        _actionArea.Dock = DockStyle.Fill;
-        _actionArea.Margin = new Padding(0, 2, 0, 0);
-
-        _btn.Dock = DockStyle.Fill;
-        _btn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-        _btn.FlatStyle = FlatStyle.Flat;
-        _btn.Cursor = Cursors.Hand;
-        _btn.Margin = new Padding(0);
-        _actionArea.Controls.Add(_btn);
-
-        _guestGrid.Dock = DockStyle.Fill;
-        _guestGrid.Margin = new Padding(0);
-        _guestGrid.RowCount = 3;
-        _guestGrid.ColumnCount = 1;
-        _guestGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
-        _guestGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
-        _guestGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
-        _guestGrid.Visible = false;
-
-        void StyleGuestButton(Button b, string text)
-        {
-            b.Text = text;
-            b.Dock = DockStyle.Fill;
-            b.Margin = new Padding(0, 0, 0, 4);
-            b.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold, GraphicsUnit.Point);
-            b.FlatStyle = FlatStyle.Flat;
-            b.Cursor = Cursors.Hand;
-            b.BackColor = Color.FromArgb(254, 242, 242);
-            b.ForeColor = Color.FromArgb(127, 29, 29);
-            b.FlatAppearance.BorderColor = Color.FromArgb(252, 200, 200);
-        }
-
-        StyleGuestButton(_btnCheckout, "Trả");
-        StyleGuestButton(_btnView, "Xem");
-        StyleGuestButton(_btnEdit, "Sửa");
-        _guestGrid.Controls.Add(_btnCheckout, 0, 0);
-        _guestGrid.Controls.Add(_btnView, 0, 1);
-        _guestGrid.Controls.Add(_btnEdit, 0, 2);
-        _actionArea.Controls.Add(_guestGrid);
-
-        _cleaningPanel.Dock = DockStyle.Fill;
-        _cleaningPanel.Margin = new Padding(0);
-        _cleaningPanel.Visible = false;
-        var cleanLayout = new TableLayoutPanel
-        {
-            Dock = DockStyle.Fill,
-            RowCount = 2,
-            ColumnCount = 1,
-            Margin = new Padding(0)
-        };
-        cleanLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
-        cleanLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-        _lblCleaningHead.Dock = DockStyle.Fill;
-        _lblCleaningHead.Text = "Đang dọn";
-        _lblCleaningHead.TextAlign = ContentAlignment.MiddleCenter;
-        _lblCleaningHead.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-        _lblCleaningHead.ForeColor = Color.FromArgb(120, 90, 0);
-
-        _btnCleaningDone.Dock = DockStyle.Fill;
-        _btnCleaningDone.Text = "Đã dọn xong";
-        _btnCleaningDone.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold, GraphicsUnit.Point);
-        _btnCleaningDone.FlatStyle = FlatStyle.Flat;
-        _btnCleaningDone.Cursor = Cursors.Hand;
-        _btnCleaningDone.Margin = new Padding(0, 4, 0, 0);
-        _btnCleaningDone.BackColor = Color.FromArgb(255, 237, 150);
-        _btnCleaningDone.ForeColor = Color.FromArgb(30, 41, 59);
-        _btnCleaningDone.FlatAppearance.BorderColor = Color.FromArgb(180, 150, 30);
-        _btnCleaningDone.Click += (_, _) => RunCleaningDone();
-
-        cleanLayout.Controls.Add(_lblCleaningHead, 0, 0);
-        cleanLayout.Controls.Add(_btnCleaningDone, 0, 1);
-        _cleaningPanel.Controls.Add(cleanLayout);
-        _actionArea.Controls.Add(_cleaningPanel);
-
-        _btn.Click += Btn_Click;
-        _btnCheckout.Click += (_, _) => RunGuestCheckout();
-        _btnView.Click += (_, _) => RunGuestView();
-        _btnEdit.Click += (_, _) => RunGuestEdit();
-
-        layout.Controls.Add(_lblNum, 0, 0);
-        layout.Controls.Add(_actionArea, 0, 1);
-        Controls.Add(layout);
+        WireRuntimeEvents();
     }
+
+    private void WireRuntimeEvents()
+    {
+        btnPrimary.Click += Btn_Click;
+        btnCheckout.Click += (_, _) => RunGuestCheckout();
+        btnView.Click += (_, _) => RunGuestView();
+        btnEdit.Click += (_, _) => RunGuestEdit();
+        btnCleaningDone.Click += (_, _) => RunCleaningDone();
+    }
+
+    private bool IsRuntimeReady =>
+        _rooms != null && _booking != null && _viewDate != null && _onChanged != null;
 
     public void Bind(DashboardMiniRoomCell cell)
     {
         _cell = cell;
-        _lblNum.Text = cell.Name;
+        lblNum.Text = cell.Name;
         ApplyVisuals();
     }
 
@@ -170,20 +76,21 @@ public sealed class RoomBookingTile : UserControl
 
     private void ApplyActionMode(bool guestActions)
     {
-        _guestGrid.Visible = guestActions;
-        _btn.Visible = !guestActions;
+        tblGuest.Visible = guestActions;
+        btnPrimary.Visible = !guestActions;
         if (guestActions)
-            _btn.SendToBack();
+            tblGuest.BringToFront();
         else
-            _guestGrid.SendToBack();
+            btnPrimary.BringToFront();
     }
 
     private void RunCleaningDone()
     {
+        if (!IsRuntimeReady) return;
         try
         {
-            _rooms.ReleaseRoomAfterHousekeeping(_cell.RoomId);
-            _onChanged();
+            _rooms!.ReleaseRoomAfterHousekeeping(_cell.RoomId);
+            _onChanged!();
         }
         catch (Exception ex)
         {
@@ -194,59 +101,61 @@ public sealed class RoomBookingTile : UserControl
 
     private void ApplyVisuals()
     {
-        _btn.FlatAppearance.BorderSize = 1;
+        btnPrimary.FlatAppearance.BorderSize = 1;
 
         if (_cell.Kind == RoomPhysicalStatusKind.Maintenance)
         {
-            _cleaningPanel.Visible = false;
+            pnlCleaning.Visible = false;
             ApplyActionMode(ShowGuestActions());
             BackColor = MaintenanceGray;
-            _lblNum.ForeColor = Color.White;
-            _btn.Text = "Bảo trì";
-            _btn.Enabled = false;
-            _btn.BackColor = Color.FromArgb(148, 163, 184);
-            _btn.ForeColor = Color.White;
-            _btn.FlatAppearance.BorderColor = Color.FromArgb(200, 200, 200);
+            lblNum.ForeColor = Color.White;
+            btnPrimary.Text = "Bảo trì";
+            btnPrimary.Enabled = false;
+            btnPrimary.BackColor = Color.FromArgb(148, 163, 184);
+            btnPrimary.ForeColor = Color.White;
+            btnPrimary.FlatAppearance.BorderColor = Color.FromArgb(200, 200, 200);
             return;
         }
 
         if (_cell.Kind == RoomPhysicalStatusKind.Cleaning)
         {
             ApplyActionMode(false);
-            _guestGrid.Visible = false;
-            _btn.Visible = false;
-            _cleaningPanel.Visible = true;
-            _cleaningPanel.BringToFront();
+            tblGuest.Visible = false;
+            btnPrimary.Visible = false;
+            pnlCleaning.Visible = true;
+            pnlCleaning.BringToFront();
 
             BackColor = CleaningYellow;
-            _lblNum.ForeColor = Color.FromArgb(30, 41, 59);
+            lblNum.ForeColor = Color.FromArgb(30, 41, 59);
             return;
         }
 
-        _cleaningPanel.Visible = false;
+        pnlCleaning.Visible = false;
 
         ApplyActionMode(ShowGuestActions());
 
         if (_cell.Kind == RoomPhysicalStatusKind.Vacant && !IsQuickBookedHold())
         {
             BackColor = VacantGreen;
-            _lblNum.ForeColor = Color.White;
-            _btn.Text = "Đặt phòng";
-            _btn.Enabled = true;
-            _btn.BackColor = Color.White;
-            _btn.ForeColor = Color.FromArgb(15, 23, 42);
-            _btn.FlatAppearance.BorderColor = Color.FromArgb(220, 230, 220);
-            _btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(240, 253, 244);
+            lblNum.ForeColor = Color.White;
+            btnPrimary.Text = "Đặt phòng";
+            btnPrimary.Enabled = true;
+            btnPrimary.Visible = true;
+            btnPrimary.BackColor = Color.White;
+            btnPrimary.ForeColor = Color.FromArgb(15, 23, 42);
+            btnPrimary.FlatAppearance.BorderColor = Color.FromArgb(220, 230, 220);
+            btnPrimary.FlatAppearance.MouseOverBackColor = Color.FromArgb(240, 253, 244);
+            btnPrimary.BringToFront();
             return;
         }
 
         if (HasStayingGuest())
         {
             BackColor = BookedRed;
-            _lblNum.ForeColor = Color.White;
+            lblNum.ForeColor = Color.White;
             if (ShowGuestActions())
             {
-                foreach (Control c in _guestGrid.Controls)
+                foreach (Control c in tblGuest.Controls)
                 {
                     if (c is Button gb)
                     {
@@ -256,31 +165,32 @@ public sealed class RoomBookingTile : UserControl
                     }
                 }
 
+                tblGuest.BringToFront();
                 return;
             }
 
-            _btn.Text = "Có khách (đơn)";
-            _btn.Enabled = false;
-            _btn.BackColor = Color.FromArgb(185, 28, 28);
-            _btn.ForeColor = Color.White;
-            _btn.FlatAppearance.BorderColor = Color.FromArgb(240, 180, 180);
+            btnPrimary.Text = "Có khách (đơn)";
+            btnPrimary.Enabled = false;
+            btnPrimary.BackColor = Color.FromArgb(185, 28, 28);
+            btnPrimary.ForeColor = Color.White;
+            btnPrimary.FlatAppearance.BorderColor = Color.FromArgb(240, 180, 180);
             return;
         }
 
         BackColor = BookedRed;
-        _lblNum.ForeColor = Color.White;
-        _btn.Text = "Hủy phòng";
-        _btn.Enabled = IsQuickBookedHold();
-        _btn.BackColor = Color.White;
-        _btn.ForeColor = Color.FromArgb(127, 29, 29);
-        _btn.FlatAppearance.BorderColor = Color.FromArgb(252, 200, 200);
-        _btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(254, 226, 226);
+        lblNum.ForeColor = Color.White;
+        btnPrimary.Text = "Hủy phòng";
+        btnPrimary.Enabled = IsQuickBookedHold();
+        btnPrimary.BackColor = Color.White;
+        btnPrimary.ForeColor = Color.FromArgb(127, 29, 29);
+        btnPrimary.FlatAppearance.BorderColor = Color.FromArgb(252, 200, 200);
+        btnPrimary.FlatAppearance.MouseOverBackColor = Color.FromArgb(254, 226, 226);
 
-        if (!_btn.Enabled)
+        if (!btnPrimary.Enabled)
         {
-            _btn.Text = "Đang sử dụng";
-            _btn.BackColor = Color.FromArgb(185, 28, 28);
-            _btn.ForeColor = Color.White;
+            btnPrimary.Text = "Đang sử dụng";
+            btnPrimary.BackColor = Color.FromArgb(185, 28, 28);
+            btnPrimary.ForeColor = Color.White;
         }
     }
 
@@ -288,11 +198,12 @@ public sealed class RoomBookingTile : UserControl
 
     private void RunGuestCheckout()
     {
+        if (!IsRuntimeReady) return;
         var id = _cell.ActiveOrderId;
         if (id is null or <= 0) return;
         try
         {
-            var d = _booking.GetBookingDetails(id.Value, _cell.RoomId);
+            var d = _booking!.GetBookingDetails(id.Value, _cell.RoomId);
             if (!d.CheckOut.HasValue)
             {
                 MessageBox.Show("Đơn chưa có ngày trả dự kiến.", "The Sea", MessageBoxButtons.OK,
@@ -305,7 +216,7 @@ public sealed class RoomBookingTile : UserControl
             if ((owner != null ? dlg.ShowDialog(owner) : dlg.ShowDialog()) != DialogResult.OK)
                 return;
             _booking.CheckoutEarly(id.Value, dlg.SelectedDate);
-            _onChanged();
+            _onChanged!();
         }
         catch (Exception ex)
         {
@@ -316,11 +227,12 @@ public sealed class RoomBookingTile : UserControl
 
     private void RunGuestView()
     {
+        if (!IsRuntimeReady) return;
         var id = _cell.ActiveOrderId;
         if (id is null or <= 0) return;
         try
         {
-            var d = _booking.GetBookingDetails(id.Value, _cell.RoomId);
+            var d = _booking!.GetBookingDetails(id.Value, _cell.RoomId);
             var owner = OwnerForm();
             Action<string> hint = _applySearchHint ?? (_ => { });
             using var dlg = new BookingViewDialog(d, hint);
@@ -338,15 +250,16 @@ public sealed class RoomBookingTile : UserControl
 
     private void RunGuestEdit()
     {
+        if (!IsRuntimeReady) return;
         var id = _cell.ActiveOrderId;
         if (id is null or <= 0) return;
         try
         {
-            var d = _booking.GetBookingDetails(id.Value, _cell.RoomId);
+            var d = _booking!.GetBookingDetails(id.Value, _cell.RoomId);
             using var dlg = new BookingEditDialog(_booking, d);
             var owner = OwnerForm();
             if ((owner != null ? dlg.ShowDialog(owner) : dlg.ShowDialog()) == DialogResult.OK)
-                _onChanged();
+                _onChanged!();
         }
         catch (Exception ex)
         {
@@ -357,26 +270,27 @@ public sealed class RoomBookingTile : UserControl
 
     private void Btn_Click(object? sender, EventArgs e)
     {
+        if (!IsRuntimeReady) return;
         try
         {
-            if (string.Equals(_btn.Text, "Đặt phòng", StringComparison.Ordinal))
+            if (string.Equals(btnPrimary.Text, "Đặt phòng", StringComparison.Ordinal))
             {
                 if (_cell.Kind != RoomPhysicalStatusKind.Vacant)
                     return;
                 using var dlg = new BookRoomDialog(
-                    _booking,
+                    _booking!,
                     _cell.RoomId,
                     _cell.Name,
                     _cell.RoomTypeName,
                     _cell.NightlyPrice,
-                    _viewDate());
+                    _viewDate!());
                 var owner = OwnerForm();
                 if ((owner != null ? dlg.ShowDialog(owner) : dlg.ShowDialog()) == DialogResult.OK)
-                    _onChanged();
+                    _onChanged!();
                 return;
             }
 
-            var room = _rooms.GetById(_cell.RoomId);
+            var room = _rooms!.GetById(_cell.RoomId);
             if (room == null)
             {
                 MessageBox.Show("Không tìm thấy phòng trong hệ thống.", "The Sea", MessageBoxButtons.OK,
@@ -384,7 +298,7 @@ public sealed class RoomBookingTile : UserControl
                 return;
             }
 
-            if (string.Equals(_btn.Text, "Hủy phòng", StringComparison.Ordinal))
+            if (string.Equals(btnPrimary.Text, "Hủy phòng", StringComparison.Ordinal))
             {
                 if (!IsQuickBookedHold())
                     return;
@@ -392,7 +306,7 @@ public sealed class RoomBookingTile : UserControl
                 _rooms.Update(room);
             }
 
-            _onChanged();
+            _onChanged!();
         }
         catch (Exception ex)
         {

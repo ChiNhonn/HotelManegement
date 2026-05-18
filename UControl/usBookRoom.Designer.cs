@@ -1,4 +1,4 @@
-﻿namespace HotelManagement.CustomControls
+namespace HotelManagement.CustomControls
 {
     partial class usBookRoom
     {
@@ -34,7 +34,7 @@
             cardRoomMap = new RoundedCardPanel();
             tblMapOuter = new TableLayoutPanel();
             lblMapTitle = new Label();
-            scrollRoomTiles = new Panel();
+            scrollRoomTiles = new DoubleBufferedPanel();
             tblRoomTiles = new TableLayoutPanel();
             lblMapLegend = new Label();
             pnlTop.SuspendLayout();
@@ -53,7 +53,7 @@
             pnlTop.Location = new Point(0, 0);
             pnlTop.Margin = new Padding(3, 2, 3, 2);
             pnlTop.Name = "pnlTop";
-            pnlTop.Size = new Size(1085, 81);
+            pnlTop.Size = new Size(1085, 88);
             pnlTop.TabIndex = 0;
             // 
             // tblHeader
@@ -69,7 +69,7 @@
             tblHeader.RowCount = 2;
             tblHeader.RowStyles.Add(new RowStyle(SizeType.Absolute, 33F));
             tblHeader.RowStyles.Add(new RowStyle());
-            tblHeader.Size = new Size(1085, 81);
+            tblHeader.Size = new Size(1085, 88);
             tblHeader.TabIndex = 0;
             // 
             // lblTitle
@@ -107,7 +107,7 @@
             flowToolbar.Margin = new Padding(16, 0, 16, 8);
             flowToolbar.Name = "flowToolbar";
             flowToolbar.Padding = new Padding(0, 2, 0, 3);
-            flowToolbar.Size = new Size(1053, 62);
+            flowToolbar.Size = new Size(1053, 65);
             flowToolbar.TabIndex = 1;
             // 
             // lblViewDate
@@ -116,7 +116,7 @@
             lblViewDate.AutoSize = true;
             lblViewDate.Font = new Font("Segoe UI", 9.5F);
             lblViewDate.ForeColor = Color.FromArgb(71, 85, 105);
-            lblViewDate.Location = new Point(3, 10);
+            lblViewDate.Location = new Point(3, 11);
             lblViewDate.Margin = new Padding(3, 6, 5, 2);
             lblViewDate.Name = "lblViewDate";
             lblViewDate.Size = new Size(42, 17);
@@ -129,7 +129,7 @@
             dtpViewDate.CalendarFont = new Font("Segoe UI", 9.5F);
             dtpViewDate.Font = new Font("Segoe UI", 9.5F);
             dtpViewDate.Format = DateTimePickerFormat.Short;
-            dtpViewDate.Location = new Point(53, 4);
+            dtpViewDate.Location = new Point(53, 6);
             dtpViewDate.Margin = new Padding(3, 2, 9, 2);
             dtpViewDate.Name = "dtpViewDate";
             dtpViewDate.Size = new Size(104, 24);
@@ -142,10 +142,10 @@
             btnPrevWeek.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);
             btnPrevWeek.FlatStyle = FlatStyle.Flat;
             btnPrevWeek.Font = new Font("Segoe UI", 9F);
-            btnPrevWeek.Location = new Point(169, 6);
+            btnPrevWeek.Location = new Point(169, 4);
             btnPrevWeek.Margin = new Padding(3, 2, 4, 2);
             btnPrevWeek.Name = "btnPrevWeek";
-            btnPrevWeek.Size = new Size(80, 21);
+            btnPrevWeek.Size = new Size(96, 28);
             btnPrevWeek.TabIndex = 2;
             btnPrevWeek.Text = "◀ Tuần trước";
             btnPrevWeek.UseVisualStyleBackColor = true;
@@ -158,10 +158,10 @@
             btnToday.FlatStyle = FlatStyle.Flat;
             btnToday.Font = new Font("Segoe UI", 9F);
             btnToday.ForeColor = Color.FromArgb(59, 130, 246);
-            btnToday.Location = new Point(256, 6);
+            btnToday.Location = new Point(272, 4);
             btnToday.Margin = new Padding(3, 2, 4, 2);
             btnToday.Name = "btnToday";
-            btnToday.Size = new Size(65, 21);
+            btnToday.Size = new Size(78, 28);
             btnToday.TabIndex = 3;
             btnToday.Text = "Hôm nay";
             btnToday.UseVisualStyleBackColor = true;
@@ -173,10 +173,10 @@
             btnNextWeek.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);
             btnNextWeek.FlatStyle = FlatStyle.Flat;
             btnNextWeek.Font = new Font("Segoe UI", 9F);
-            btnNextWeek.Location = new Point(328, 6);
+            btnNextWeek.Location = new Point(357, 4);
             btnNextWeek.Margin = new Padding(3, 2, 14, 2);
             btnNextWeek.Name = "btnNextWeek";
-            btnNextWeek.Size = new Size(77, 21);
+            btnNextWeek.Size = new Size(92, 28);
             btnNextWeek.TabIndex = 4;
             btnNextWeek.Text = "Tuần sau ▶";
             btnNextWeek.UseVisualStyleBackColor = true;
@@ -187,7 +187,7 @@
             lblStatus.AutoSize = true;
             lblStatus.Font = new Font("Segoe UI", 9.5F);
             lblStatus.ForeColor = Color.FromArgb(71, 85, 105);
-            lblStatus.Location = new Point(422, 10);
+            lblStatus.Location = new Point(466, 11);
             lblStatus.Margin = new Padding(3, 6, 5, 2);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(69, 17);
@@ -200,7 +200,7 @@
             cmbStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStatusFilter.Font = new Font("Segoe UI", 9.5F);
             cmbStatusFilter.FormattingEnabled = true;
-            cmbStatusFilter.Location = new Point(499, 4);
+            cmbStatusFilter.Location = new Point(543, 5);
             cmbStatusFilter.Margin = new Padding(3, 2, 12, 2);
             cmbStatusFilter.Name = "cmbStatusFilter";
             cmbStatusFilter.Size = new Size(165, 25);
@@ -212,7 +212,7 @@
             lblRoomType.AutoSize = true;
             lblRoomType.Font = new Font("Segoe UI", 9.5F);
             lblRoomType.ForeColor = Color.FromArgb(71, 85, 105);
-            lblRoomType.Location = new Point(679, 10);
+            lblRoomType.Location = new Point(723, 11);
             lblRoomType.Margin = new Padding(3, 6, 5, 2);
             lblRoomType.Name = "lblRoomType";
             lblRoomType.Size = new Size(84, 17);
@@ -225,7 +225,7 @@
             cmbRoomType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRoomType.Font = new Font("Segoe UI", 9.5F);
             cmbRoomType.FormattingEnabled = true;
-            cmbRoomType.Location = new Point(771, 4);
+            cmbRoomType.Location = new Point(815, 5);
             cmbRoomType.Margin = new Padding(3, 2, 12, 2);
             cmbRoomType.Name = "cmbRoomType";
             cmbRoomType.Size = new Size(158, 25);
@@ -237,7 +237,7 @@
             lblSearch.AutoSize = true;
             lblSearch.Font = new Font("Segoe UI", 9.5F);
             lblSearch.ForeColor = Color.FromArgb(71, 85, 105);
-            lblSearch.Location = new Point(944, 10);
+            lblSearch.Location = new Point(3, 41);
             lblSearch.Margin = new Padding(3, 6, 5, 2);
             lblSearch.Name = "lblSearch";
             lblSearch.Size = new Size(71, 17);
@@ -248,7 +248,7 @@
             // 
             txtSearch.Anchor = AnchorStyles.Left;
             txtSearch.Font = new Font("Segoe UI", 9.5F);
-            txtSearch.Location = new Point(3, 33);
+            txtSearch.Location = new Point(82, 36);
             txtSearch.Margin = new Padding(3, 2, 3, 2);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(246, 24);
@@ -261,12 +261,12 @@
             cardRoomMap.CardBackColor = Color.White;
             cardRoomMap.Controls.Add(tblMapOuter);
             cardRoomMap.Dock = DockStyle.Fill;
-            cardRoomMap.Location = new Point(0, 81);
+            cardRoomMap.Location = new Point(0, 88);
             cardRoomMap.Margin = new Padding(16, 4, 16, 9);
             cardRoomMap.Name = "cardRoomMap";
             cardRoomMap.Padding = new Padding(10, 6, 10, 8);
             cardRoomMap.Radius = 12;
-            cardRoomMap.Size = new Size(1085, 354);
+            cardRoomMap.Size = new Size(1085, 347);
             cardRoomMap.TabIndex = 1;
             // 
             // tblMapOuter
@@ -284,7 +284,7 @@
             tblMapOuter.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
             tblMapOuter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tblMapOuter.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tblMapOuter.Size = new Size(1065, 340);
+            tblMapOuter.Size = new Size(1065, 333);
             tblMapOuter.TabIndex = 0;
             // 
             // lblMapTitle
@@ -304,43 +304,28 @@
             // scrollRoomTiles
             // 
             scrollRoomTiles.AutoScroll = true;
-            scrollRoomTiles.BackColor = Color.White;
+            scrollRoomTiles.AutoScrollMargin = new Size(12, 12);
+            scrollRoomTiles.BackColor = Color.FromArgb(248, 250, 252);
             scrollRoomTiles.Controls.Add(tblRoomTiles);
             scrollRoomTiles.Dock = DockStyle.Fill;
             scrollRoomTiles.Location = new Point(0, 24);
             scrollRoomTiles.Margin = new Padding(0, 0, 0, 4);
             scrollRoomTiles.Name = "scrollRoomTiles";
-            scrollRoomTiles.Padding = new Padding(28);
-            scrollRoomTiles.Size = new Size(1065, 292);
+            scrollRoomTiles.Padding = new Padding(16, 12, 16, 16);
+            scrollRoomTiles.Size = new Size(1065, 285);
             scrollRoomTiles.TabIndex = 1;
             // 
             // tblRoomTiles
             // 
-            tblRoomTiles.AutoSize = true;
-            tblRoomTiles.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tblRoomTiles.BackColor = Color.White;
-            tblRoomTiles.ColumnCount = 11;
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.Dock = DockStyle.Top;
-            tblRoomTiles.Location = new Point(28, 28);
+            tblRoomTiles.BackColor = Color.FromArgb(248, 250, 252);
+            tblRoomTiles.ColumnCount = 1;
+            tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 96F));
+            tblRoomTiles.Location = new Point(16, 12);
             tblRoomTiles.Margin = new Padding(0);
-            tblRoomTiles.MinimumSize = new Size(788, 195);
             tblRoomTiles.Name = "tblRoomTiles";
-            tblRoomTiles.RowCount = 3;
-            tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tblRoomTiles.Size = new Size(1009, 195);
+            tblRoomTiles.RowCount = 1;
+            tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 124F));
+            tblRoomTiles.Size = new Size(147, 145);
             tblRoomTiles.TabIndex = 0;
             // 
             // lblMapLegend
@@ -349,7 +334,7 @@
             lblMapLegend.Dock = DockStyle.Fill;
             lblMapLegend.Font = new Font("Segoe UI", 9F);
             lblMapLegend.ForeColor = Color.FromArgb(100, 116, 139);
-            lblMapLegend.Location = new Point(3, 320);
+            lblMapLegend.Location = new Point(3, 313);
             lblMapLegend.Name = "lblMapLegend";
             lblMapLegend.Size = new Size(1059, 20);
             lblMapLegend.TabIndex = 2;
@@ -376,7 +361,6 @@
             tblMapOuter.ResumeLayout(false);
             tblMapOuter.PerformLayout();
             scrollRoomTiles.ResumeLayout(false);
-            scrollRoomTiles.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -398,7 +382,7 @@
         private RoundedCardPanel cardRoomMap;
         private TableLayoutPanel tblMapOuter;
         private Label lblMapTitle;
-        private Panel scrollRoomTiles;
+        private DoubleBufferedPanel scrollRoomTiles;
         private TableLayoutPanel tblRoomTiles;
         private Label lblMapLegend;
     }

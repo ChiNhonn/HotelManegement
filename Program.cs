@@ -28,7 +28,7 @@ internal static class Program
         var services = new ServiceCollection();
         services.AddDbContext<HotelDbContext>(options =>
             options.UseSqlServer(
-                @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
+                @"Server=.\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -82,7 +82,7 @@ internal static class Program
             using (var migrateScope = rootProvider.CreateScope())
             {
                 var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
-                db.Database.Migrate();
+                DatabaseMigrationHelper.Migrate(db);
                 FloorSchemaPatcher.EnsureFloorStatusColumn(db);
                 DemoHotelRoomsSeed.EnsureSeed(db);
                 AuthSeed.EnsureDefaultAdmin(db);

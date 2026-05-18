@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -185,12 +185,18 @@ public partial class usBookRoom : UserControl
         }
     }
 
-    /// <summary>Dựng lưới WinForms từ DB — mỗi hàng một tầng, cột đầu là nhãn tầng.</summary>
+    private const float TileRowHeight = 148F;
+    private const float TileColumnWidth = 110F;
+
+    /// <summary>Gắn dữ liệu lên lưới Designer (<see cref="tblRoomTiles"/>); ô phòng tạo lúc runtime.</summary>
     private void RebuildInteractiveTiles(DashboardMiniRoomStatus filtered)
     {
         var layout = _bookingMap.BuildTileGridLayout(filtered);
         var labels = filtered.FloorRowLabels;
         var totalCols = layout.ColumnCount + (layout.HasFloorLabelColumn ? 1 : 0);
+        var contentPad = scrollRoomTiles.Padding;
+        var contentW = layout.MinimumWidth + contentPad.Horizontal;
+        var contentH = layout.MinimumHeight + contentPad.Vertical;
 
         scrollRoomTiles.SuspendLayout();
         tblRoomTiles.SuspendLayout();
@@ -200,16 +206,39 @@ public partial class usBookRoom : UserControl
             tblRoomTiles.RowStyles.Clear();
             tblRoomTiles.ColumnStyles.Clear();
 
+            if (layout.CellsInGrid.Count == 0)
+            {
+                tblRoomTiles.RowCount = 1;
+                tblRoomTiles.ColumnCount = 1;
+                tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+                tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+                tblRoomTiles.Controls.Add(new Label
+                {
+                    Text = "Không có phòng phù hợp bộ lọc.",
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Font = new Font("Segoe UI", 10F),
+                    ForeColor = Color.FromArgb(100, 116, 139),
+                    Margin = Padding.Empty
+                }, 0, 0);
+                tblRoomTiles.Size = new Size(Math.Max(320, scrollRoomTiles.ClientSize.Width - contentPad.Horizontal), 72);
+                tblRoomTiles.MinimumSize = tblRoomTiles.Size;
+                scrollRoomTiles.AutoScrollMinSize = new Size(
+                    tblRoomTiles.Width + contentPad.Horizontal,
+                    tblRoomTiles.Height + contentPad.Vertical);
+                return;
+            }
+
             tblRoomTiles.RowCount = layout.RowCount;
             tblRoomTiles.ColumnCount = totalCols;
 
             for (var r = 0; r < layout.RowCount; r++)
-                tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
+                tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, TileRowHeight));
 
             if (layout.HasFloorLabelColumn)
                 tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, layout.FloorLabelColumnWidth));
             for (var c = 0; c < layout.ColumnCount; c++)
-                tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 86F));
+                tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, TileColumnWidth));
 
             for (var r = 0; r < layout.RowCount; r++)
             {
@@ -221,10 +250,11 @@ public partial class usBookRoom : UserControl
                     Text = floorLabel,
                     Dock = DockStyle.Fill,
                     TextAlign = ContentAlignment.MiddleLeft,
-                    Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(51, 65, 85),
-                    Margin = new Padding(4, 2, 4, 2),
-                    Padding = new Padding(6, 0, 0, 0)
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(30, 41, 59),
+                    BackColor = Color.FromArgb(248, 250, 252),
+                    Margin = new Padding(0, 0, 8, 10),
+                    Padding = new Padding(10, 0, 4, 0)
                 };
                 tblRoomTiles.Controls.Add(lbl, 0, r);
             }
@@ -243,7 +273,10 @@ public partial class usBookRoom : UserControl
                 tblRoomTiles.Controls.Add(tile, cell.GridCol + colOffset, cell.GridRow);
             }
 
-            tblRoomTiles.MinimumSize = new Size(layout.MinimumWidth, layout.MinimumHeight);
+            tblRoomTiles.Size = new Size(layout.MinimumWidth, layout.MinimumHeight);
+            tblRoomTiles.MinimumSize = tblRoomTiles.Size;
+            scrollRoomTiles.AutoScrollMinSize = new Size(contentW, contentH);
+            scrollRoomTiles.AutoScrollPosition = Point.Empty;
         }
         finally
         {

@@ -11,8 +11,8 @@ public sealed partial class CheckoutEarlyDialog : Form
     {
         InitializeComponent();
 
-        lblHead.Text = $"Check out {roomLabel} (may be before scheduled exit).";
-        lblRange.Text = $"From {checkIn:dd/MM/yyyy} to {scheduledCheckout:dd/MM/yyyy}";
+        lblHead.Text = $"Trả phòng {roomLabel} (có thể trước ngày trả dự kiến).";
+        lblRange.Text = $"Từ {checkIn:dd/MM/yyyy} đến {scheduledCheckout:dd/MM/yyyy}";
 
         _dtp.MinDate = checkIn.Date;
         _dtp.MaxDate = scheduledCheckout.Date;

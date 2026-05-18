@@ -94,7 +94,7 @@ partial class CheckoutEarlyDialog
         lblPickDate.Name = "lblPickDate";
         lblPickDate.Size = new Size(112, 28);
         lblPickDate.TabIndex = 0;
-        lblPickDate.Text = "Actual checkout";
+        lblPickDate.Text = "Ngày trả thực tế";
         lblPickDate.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // _dtp
@@ -141,7 +141,7 @@ partial class CheckoutEarlyDialog
         cancel.Padding = new Padding(12, 6, 12, 6);
         cancel.Size = new Size(95, 45);
         cancel.TabIndex = 1;
-        cancel.Text = "Cancel";
+        cancel.Text = "Hủy";
         cancel.UseVisualStyleBackColor = true;
         // 
         // CheckoutEarlyDialog
@@ -158,7 +158,7 @@ partial class CheckoutEarlyDialog
         MinimizeBox = false;
         Name = "CheckoutEarlyDialog";
         StartPosition = FormStartPosition.CenterParent;
-        Text = "Check out";
+        Text = "Trả phòng";
         root.ResumeLayout(false);
         rowPick.ResumeLayout(false);
         flow.ResumeLayout(false);

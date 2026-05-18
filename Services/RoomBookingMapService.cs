@@ -152,10 +152,12 @@ public sealed class RoomBookingMapService : IRoomBookingMapService
         }
 
         var list = q.ToList();
+        var (compactRooms, rowLabels) = CompactFloorRows(list, full.FloorRowLabels);
+
         return new DashboardMiniRoomStatus
         {
-            Rooms = list,
-            FloorRowLabels = full.FloorRowLabels,
+            Rooms = compactRooms,
+            FloorRowLabels = rowLabels,
             VacantCount = list.Count(c => c.Kind == RoomPhysicalStatusKind.Vacant),
             OccupiedCount = list.Count(c => c.Kind == RoomPhysicalStatusKind.Occupied),
             CleaningCount = list.Count(c => c.Kind == RoomPhysicalStatusKind.Cleaning),
@@ -183,9 +185,9 @@ public sealed class RoomBookingMapService : IRoomBookingMapService
     {
         ArgumentNullException.ThrowIfNull(filtered);
 
-        const int labelColW = 88;
-        const int cellW = 86;
-        const int cellH = 118;
+        const int labelColW = 108;
+        const int cellW = 110;
+        const int cellH = 148;
         const int minTotalW = 880;
         const int minTotalH = 120;
 
@@ -211,5 +213,53 @@ public sealed class RoomBookingMapService : IRoomBookingMapService
             MinimumHeight = Math.Max(minTotalH, rowCount * cellH),
             CellsInGrid = cellsInGrid
         };
+    }
+
+    /// <summary>Sau lọc: gom phòng còn lại theo tầng, bỏ hàng trống (tránh lặp nhãn tầng trên UI).</summary>
+    private static (List<DashboardMiniRoomCell> Rooms, List<string> RowLabels) CompactFloorRows(
+        List<DashboardMiniRoomCell> rooms,
+        IReadOnlyList<string> floorRowLabels)
+    {
+        if (rooms.Count == 0)
+            return (rooms, new List<string>());
+
+        var byRow = rooms
+            .GroupBy(r => r.GridRow)
+            .OrderBy(g => g.Key)
+            .ToList();
+
+        var compact = new List<DashboardMiniRoomCell>(rooms.Count);
+        var labels = new List<string>(byRow.Count);
+
+        for (var newRow = 0; newRow < byRow.Count; newRow++)
+        {
+            var group = byRow[newRow];
+            var oldRow = group.Key;
+            labels.Add(oldRow >= 0 && oldRow < floorRowLabels.Count
+                ? floorRowLabels[oldRow]
+                : $"Tầng {oldRow + 1}");
+
+            var ordered = group.OrderBy(c => c.GridCol).ToList();
+            for (var col = 0; col < ordered.Count; col++)
+            {
+                var c = ordered[col];
+                compact.Add(new DashboardMiniRoomCell
+                {
+                    RoomId = c.RoomId,
+                    Name = c.Name,
+                    RawStatus = c.RawStatus,
+                    Kind = c.Kind,
+                    GuestName = c.GuestName,
+                    ActiveOrderId = c.ActiveOrderId,
+                    IdRoomType = c.IdRoomType,
+                    RoomTypeName = c.RoomTypeName,
+                    NightlyPrice = c.NightlyPrice,
+                    GridRow = newRow,
+                    GridCol = col
+                });
+            }
+        }
+
+        return (compact, labels);
     }
 }
