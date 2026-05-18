@@ -11,6 +11,7 @@ namespace HotelManagement.Forms
 {
     public partial class MainForm : Form
     {
+<<<<<<< HEAD
         private static readonly Color SidebarGradTop = Color.FromArgb(55, 125, 230);
         private static readonly Color SidebarGradBottom = Color.FromArgb(10, 14, 28);
 
@@ -90,6 +91,13 @@ namespace HotelManagement.Forms
             }
 
             return bmp;
+=======
+        private readonly IServiceProvider _serviceProvider;
+        public MainForm(IServiceProvider serviceProvider)
+        {
+            InitializeComponent();
+            _serviceProvider = serviceProvider;
+>>>>>>> quan-ly-khach
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -265,6 +273,7 @@ namespace HotelManagement.Forms
 
         public void NavigateToServiceOperations()
         {
+<<<<<<< HEAD
             SetActiveNav(btnServices);
             var page = Program.ServiceProvider.GetRequiredService<usService>();
             page.SelectOperationsTab();
@@ -281,6 +290,11 @@ namespace HotelManagement.Forms
         {
             SetActiveNav(btnCustomers);
             chuyentrang(new usCustomer());
+=======
+            var customerForm = _serviceProvider.GetRequiredService<CustomerForm>();
+
+            chuyentrangForm(customerForm);
+>>>>>>> quan-ly-khach
         }
 
         private void btnBookings_Click(object sender, EventArgs e)
@@ -326,6 +340,20 @@ namespace HotelManagement.Forms
         {
             SetActiveNav(btnBill);
             chuyentrang(Program.ServiceProvider.GetRequiredService<usBill>());
+        }
+
+        public void chuyentrangForm(Form childForm)
+        {
+            panelContainer.Controls.Clear();
+
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+
+            panelContainer.Controls.Add(childForm);
+            panelContainer.Tag = childForm; 
+            childForm.BringToFront();
+            childForm.Show();
         }
     }
 }

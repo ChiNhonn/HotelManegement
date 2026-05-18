@@ -13,9 +13,8 @@ namespace HotelManagement;
 
 internal static class Program
 {
-    public static IServiceProvider ServiceProvider { get; private set; } = null!;
+    public static IServiceProvider ServiceProvider ;
 
-    private static IServiceScope? _rootScope;
 
     /// <summary>
     ///  The main entry point for the application.
@@ -23,12 +22,13 @@ internal static class Program
     [STAThread]
     static void Main()
     {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.SetHighDpiMode(HighDpiMode.SystemAware);
         ApplicationConfiguration.Initialize();
 
         var services = new ServiceCollection();
-        services.AddDbContext<HotelDbContext>(options =>
-            options.UseSqlServer(
-                @"Server=.\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;"));
+        services.AddDbContext<IMyDbContext,HotelDbContext>();
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -45,6 +45,7 @@ internal static class Program
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IRoomTypeService, RoomTypeService>();
+<<<<<<< HEAD
         services.AddScoped<IFloorService, FloorService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IBookingService, BookingService>();
@@ -53,11 +54,15 @@ internal static class Program
 
         services.AddTransient<usBookRoom>();
         services.AddTransient<usService>();
+=======
+        services.AddScoped<ICustomerServices, CustomerServices>();
+>>>>>>> quan-ly-khach
 
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
         services.AddTransient<RegisterForm>();
         services.AddTransient<usRoom>();
+<<<<<<< HEAD
         services.AddTransient<usBill>();
         services.AddTransient<usMainForm>();
         services.AddTransient<ForgetPasswordForm>();
@@ -69,11 +74,17 @@ internal static class Program
         services.AddTransient<FloorEditDialogForm>();
         services.AddTransient<BillDetailDialogForm>();
         services.AddTransient<BranchEditDiaLogForm>();
+=======
+        services.AddTransient<AddRoomDialogForm>();
+        services.AddTransient<AddRoomTypeDiaLogForm>();
+        services.AddTransient<CustomerForm>();
+        services.AddTransient<InfoCustomerForm>();
+>>>>>>> quan-ly-khach
 
-        var rootProvider = services.BuildServiceProvider();
-        _rootScope = rootProvider.CreateScope();
-        ServiceProvider = _rootScope.ServiceProvider;
+        ServiceProvider = services.BuildServiceProvider();
+        var main = ServiceProvider.GetRequiredService<CustomerForm>();
 
+<<<<<<< HEAD
         Application.ApplicationExit += (_, _) =>
         {
             BankTransferInboundWebhookHost.Stop();
@@ -115,5 +126,8 @@ internal static class Program
         }
 
         Application.Run(ServiceProvider.GetRequiredService<LoginForm>());
+=======
+        Application.Run(main);
+>>>>>>> quan-ly-khach
     }
 }
