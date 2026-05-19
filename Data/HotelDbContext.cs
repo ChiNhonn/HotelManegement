@@ -14,17 +14,11 @@ public class HotelDbContext : DbContext, IMyDbContext
     {
     }
 
-    /// <summary>Chuỗi kết nối SQL Server cố định — chỉnh tại đây khi đổi instance/máy.</summary>
-    public const string ConnectionString =
-        "Server=.\\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;";
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
-            // Giữ UseCompatibilityLevel(120) để tránh lỗi « Incorrect syntax near 'WITH' » trên SQL Server cũ.
-            optionsBuilder.UseSqlServer(ConnectionString,
-                sql => sql.UseCompatibilityLevel(120));
+            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS01;Database=HotelManagementV2;Trusted_Connection=True;TrustServerCertificate=True;");
         }
     }
 
@@ -53,8 +47,4 @@ public class HotelDbContext : DbContext, IMyDbContext
     public DbSet<StaffPayout> StaffPayouts { get; set; } = null!;
     public DbSet<BankTransferInbound> BankTransferInbounds { get; set; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(HotelDbContext).Assembly);
-    }
 }

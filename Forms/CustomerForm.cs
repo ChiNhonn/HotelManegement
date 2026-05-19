@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.InkML;
 using HotelManagement.Interfaces;
 using HotelManagement.Models;
 using HotelManagement.Services;
@@ -38,21 +39,32 @@ namespace HotelManagement.Forms
         private async void CustomerForm_Load(object sender, EventArgs e)
         {
             cboFilter.Items.Clear();
-            cboFilter.Items.Add("Tất cả trạng thái"); // Sẽ tương ứng với Index 0
-            cboFilter.Items.Add("Đang ở");            // Sẽ tương ứng với Index 1
-            cboFilter.Items.Add("Đã đi");             // Sẽ tương ứng với Index 2
+            cboFilter.Items.Add("Tất cả trạng thái");
+            cboFilter.Items.Add("Đang ở");
+            cboFilter.Items.Add("Đã đi");
 
             cboFilter.DropDownStyle = ComboBoxStyle.DropDownList;
-
             cboFilter.SelectedIndex = 0;
 
             cboSapXep.Items.Clear();
-            cboSapXep.Items.Add("Mặc định"); // Tương ứng Index 0
-            cboSapXep.Items.Add("Cũ nhất");       // Tương ứng Index 1
-            cboSapXep.Items.Add("Mới nhất");      // Tương ứng Index 2
+            cboSapXep.Items.Add("Mặc định");
+            cboSapXep.Items.Add("Cũ nhất");
+            cboSapXep.Items.Add("Mới nhất");
 
             cboSapXep.DropDownStyle = ComboBoxStyle.DropDownList;
             cboSapXep.SelectedIndex = 0;
+
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<IMyDbContext>();
+                int totalCustomers = await context.Customers.CountAsync(c => c.SoftDelete == null);
+
+                // Tạm gỡ sự kiện ValueChanged để tránh load data 2 lần liên tục
+                numShow.ValueChanged -= numShow_ValueChanged;
+                numShow.Maximum = totalCustomers > 0 ? totalCustomers : 100;
+                numShow.Value = totalCustomers > 0 ? totalCustomers : 1;
+                numShow.ValueChanged += numShow_ValueChanged;
+            }
 
             await LoadData();
         }
@@ -69,7 +81,12 @@ namespace HotelManagement.Forms
             using (var scope = _serviceProvider.CreateScope())
             {
                 var customerServices = scope.ServiceProvider.GetRequiredService<ICustomerServices>();
-                var infoCustomerForm = new InfoCustomerForm(isEdit, isAdd);
+                var context = scope.ServiceProvider.GetRequiredService<IMyDbContext>();
+
+                var existingCCCDs = await context.Customers.Select(c => c.CCCD).ToListAsync();
+
+                var infoCustomerForm = new InfoCustomerForm(isEdit, isAdd, customer: null);
+                infoCustomerForm.ExistingCCCDs = existingCCCDs;
                 DialogResult result = infoCustomerForm.ShowDialog();
                 if (result == DialogResult.OK)
                 {
@@ -85,7 +102,6 @@ namespace HotelManagement.Forms
                         return;
                     }
                 }
-
                 else
                 {
                     MessageBox.Show("Người dùng đã hủy thao tác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -104,13 +120,11 @@ namespace HotelManagement.Forms
             dgvCustomer.ScrollBars = ScrollBars.Both;
             dgvCustomer.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // 1. Cấu hình các thuộc tính chung cho Grid
             dgvCustomer.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCustomer.ReadOnly = true;
             dgvCustomer.AllowUserToAddRows = false;
             dgvCustomer.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
 
-            // 2. TẠO CÁC CỘT DỮ LIỆU BẰNG CODE
 
             // Cột Id (Ẩn)
             var colId = new DataGridViewTextBoxColumn();
@@ -191,6 +205,12 @@ namespace HotelManagement.Forms
             colVip.HeaderText = "VIP";
             dgvCustomer.Columns.Add(colVip);
 
+            var colCreatedDate = new DataGridViewTextBoxColumn();
+            colCreatedDate.Name = "CreatedDate";
+            colCreatedDate.DataPropertyName = "CreatedDate";
+            colCreatedDate.HeaderText = "Ngày tạo";
+            dgvCustomer.Columns.Add(colCreatedDate);
+
 
             // 3. THÊM CÁC CỘT NÚT BẤM THAO TÁC
             DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
@@ -227,7 +247,13 @@ namespace HotelManagement.Forms
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var customerServices = scope.ServiceProvider.GetRequiredService<ICustomerServices>();
+                    var context = scope.ServiceProvider.GetRequiredService<IMyDbContext>();
+
+                    var existingCCCDs = await context.Customers.Select(c => c.CCCD).ToListAsync();
+
                     var infoCustomerForm = new InfoCustomerForm(isEdit, isAdd, selectedCustomer);
+                    infoCustomerForm.ExistingCCCDs = existingCCCDs; 
+
                     DialogResult result = infoCustomerForm.ShowDialog();
                     if (result == DialogResult.OK)
                     {
@@ -301,9 +327,17 @@ namespace HotelManagement.Forms
 
                     var query = context.Customers.Where(c => c.SoftDelete == null).AsQueryable();
 
-                    string keyword = txtFind.Text.Trim(); 
+                    string keyword = txtFind.Text.Trim();
                     if (!string.IsNullOrEmpty(keyword))
-                    {query = query.Where(c => c.FullName.Contains(keyword));
+                    {
+                        query = query.Where(c =>
+                            c.FullName.Contains(keyword) ||
+                            c.CCCD.Contains(keyword) ||
+                            c.Xa.Contains(keyword) ||
+                            c.Huyen.Contains(keyword) ||
+                            c.Tinh.Contains(keyword) ||
+                            c.Country.Contains(keyword)
+                        );
                     }
 
                     if (cboFilter.SelectedIndex == 1)

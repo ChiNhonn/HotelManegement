@@ -10,38 +10,28 @@ public partial class Customer
 
     /// <summary>Mã số khách (form quản lý khách).</summary>
     [MaxLength(20)]
-    public string? No { get; set; }
+    public string CCCD { get; set; }
 
     [MaxLength(100)]
-    public string FullName { get; set; } = "";
-
-    /// <summary>CCCD — dùng cho đặt phòng / tra cứu.</summary>
-    [MaxLength(20)]
-    public string? CitizenId { get; set; }
-
-    [MaxLength(20)]
-    public string? Phone { get; set; }
-
-    [MaxLength(100)]
-    public string? Email { get; set; }
+    public string FullName { get; set; }
 
     public DateTime BirthDay { get; set; }
     public int Gender { get; set; } // 1: nam, 0: nữ
 
     [MaxLength(100)]
-    public string Xa { get; set; } = "";
+    public string Xa { get; set; }
 
     [MaxLength(100)]
-    public string Huyen { get; set; } = "";
+    public string Huyen { get; set; }
 
     [MaxLength(100)]
-    public string Tinh { get; set; } = "";
+    public string Tinh { get; set; }
 
     [MaxLength(100)]
-    public string Country { get; set; } = "";
+    public string Country { get; set; } 
 
     [MaxLength(100)]
-    public string Status { get; set; } = "";
+    public string Status { get; set; } 
 
     public int Vip { get; set; } // 2: siêu vip, 1: vip, 0: thường
 
