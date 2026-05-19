@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagement.ViewModels
 {
-    internal class CccdModel
+    public class CccdModel
     {
             public string Id { get; set; } = "";
             public string FullName { get; set; } = "";

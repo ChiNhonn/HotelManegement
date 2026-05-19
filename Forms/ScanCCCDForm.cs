@@ -1,6 +1,6 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
-using HotelManagement.ViewModels; 
+using HotelManagement.ViewModels;
 using System;
 using System.Drawing;
 using System.IO;
@@ -13,11 +13,13 @@ namespace HotelManagement.Forms
 {
     public partial class ScanCCCDForm : Form
     {
-        internal CccdModel ExtractData { get; private set; } = null;
+        public CccdModel ExtractData { get; private set; } = null;
 
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSource;
         private const string FPT_API_KEY = "6yf8SPaxet7jlBhH7A0S98vOKr2iHaBl";
+
+        private bool isProcessing = false;
 
         public ScanCCCDForm()
         {
@@ -44,47 +46,66 @@ namespace HotelManagement.Forms
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            if (picCamera.IsDisposed) return;
+            if (picCamera.IsDisposed || isProcessing) return;
+
             Bitmap bit = (Bitmap)eventArgs.Frame.Clone();
-            picCamera.Image = bit;
+
+            picCamera.Invoke(new Action(() => {
+                Image oldImage = picCamera.Image;
+                picCamera.Image = bit;
+                if (oldImage != null)
+                {
+                    oldImage.Dispose();
+                }
+            }));
         }
 
         private async void btnExtract_Click_1(object sender, EventArgs e)
         {
-            if (picCamera.Image == null) return;
-
+            if (picCamera.Image == null || isProcessing) return;
             Button currentButton = (Button)sender;
 
             try
             {
+                isProcessing = true;
                 currentButton.Enabled = false;
                 currentButton.Text = "AI đang xử lý...";
 
-                Bitmap bitmap = new Bitmap(picCamera.Image);
                 byte[] imageBytes;
-                using (MemoryStream ms = new MemoryStream())
+                using (Bitmap bitmap = new Bitmap(picCamera.Image))
                 {
-                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    imageBytes = ms.ToArray();
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        imageBytes = ms.ToArray();
+                    }
                 }
 
-                StopCamera();
-
+                // Gọi API FPT AI
                 string jsonResult = await CallFptAiOcr(imageBytes);
 
+                // Phân tích dữ liệu JSON trả về
                 ExtractData = ParseJsonToModel(jsonResult);
 
                 if (ExtractData != null)
                 {
+                    StopCamera();
                     this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    this.Close(); // Đóng form và trả kết quả về InfoCustomerForm
+                }
+                else
+                {
+                    // 🌟 SỬA LỖI 2: Nếu không lấy được data, phải giải phóng nút bấm để người dùng quét lại
+                    MessageBox.Show("Không tìm thấy dữ liệu CCCD hợp lệ. Vui lòng căn chỉnh thẻ rõ nét trước camera và thử lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    isProcessing = false;
+                    currentButton.Enabled = true;
+                    currentButton.Text = "Xác nhận quét";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi nhận diện: " + ex.Message, "Thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                ScanCCCDForm_Load(null, null);
+                isProcessing = false;
                 currentButton.Enabled = true;
                 currentButton.Text = "Xác nhận quét";
             }
@@ -94,7 +115,11 @@ namespace HotelManagement.Forms
         {
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("api-key", FPT_API_KEY);
+                client.Timeout = TimeSpan.FromSeconds(25);
+
+                // 🌟 SỬA LỖI 1: Đổi "scancccd" thành "api_key" theo đúng quy định của FPT
+                client.DefaultRequestHeaders.Add("api_key", FPT_API_KEY);
+
                 using (var content = new MultipartFormDataContent())
                 {
                     var byteContent = new ByteArrayContent(imageBytes);
@@ -116,7 +141,8 @@ namespace HotelManagement.Forms
 
                 if (root.TryGetProperty("errorCode", out JsonElement errCode) && errCode.GetInt32() != 0)
                 {
-                    throw new Exception("AI không đọc được hình ảnh. Hãy giữ chắc tay và chụp lại rõ nét hơn!");
+                    string errMsg = root.TryGetProperty("errorMessage", out JsonElement msg) ? msg.GetString() : "Lỗi không xác định";
+                    throw new Exception($"FPT AI phản hồi lỗi: {errMsg}");
                 }
 
                 if (root.TryGetProperty("data", out JsonElement dataArray) && dataArray.GetArrayLength() > 0)
@@ -128,29 +154,13 @@ namespace HotelManagement.Forms
                     if (cccdData.TryGetProperty("name", out JsonElement nameElem)) model.FullName = nameElem.GetString() ?? "";
                     if (cccdData.TryGetProperty("dob", out JsonElement dobElem)) model.BirthDay = dobElem.GetString() ?? "";
                     if (cccdData.TryGetProperty("sex", out JsonElement sexElem)) model.Gender = sexElem.GetString() ?? "";
-
                     if (cccdData.TryGetProperty("precinct", out JsonElement xaElem)) model.Xa = xaElem.GetString() ?? "";
                     if (cccdData.TryGetProperty("district", out JsonElement huyenElem)) model.Huyen = huyenElem.GetString() ?? "";
                     if (cccdData.TryGetProperty("province", out JsonElement tinhElem)) model.Tinh = tinhElem.GetString() ?? "";
 
-                    if (string.IsNullOrEmpty(model.Xa) && cccdData.TryGetProperty("address", out JsonElement addrElem))
-                    {
-                        string fullAddress = addrElem.GetString() ?? "";
-                        if (!string.IsNullOrEmpty(fullAddress))
-                        {
-                            string[] addressParts = fullAddress.Split(',');
-                            if (addressParts.Length >= 3)
-                            {
-                                model.Xa = addressParts[addressParts.Length - 3].Trim();
-                                model.Huyen = addressParts[addressParts.Length - 2].Trim();
-                                model.Tinh = addressParts[addressParts.Length - 1].Trim();
-                            }
-                            else
-                            {
-                                model.Tinh = fullAddress;
-                            }
-                        }
-                    }
+                    // Thêm mặc định tránh lỗi null ở Form cha
+                    model.Country = "Việt Nam";
+
                     return model;
                 }
             }
@@ -159,20 +169,28 @@ namespace HotelManagement.Forms
 
         private void StopCamera()
         {
-            if (videoSource != null)
+            // 🌟 SỬA LỖI 3: Đưa việc tắt camera vào try-catch để nuốt lỗi hủy luồng (Thread Abort) trên .NET Core
+            try
             {
-                if (videoSource.IsRunning)
+                if (videoSource != null)
                 {
-                    videoSource.Stop(); 
+                    videoSource.NewFrame -= VideoSource_NewFrame;
+                    if (videoSource.IsRunning)
+                    {
+                        videoSource.SignalToStop();
+                    }
+                    videoSource = null;
                 }
-                videoSource.NewFrame -= VideoSource_NewFrame;
-                videoSource = null;
+            }
+            catch
+            {
+                // Bỏ qua lỗi xung đột luồng của AForge để Form đóng lại bình thường
             }
         }
 
         private void ScanCCCDForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            StopCamera(); 
+            StopCamera();
         }
     }
 }
