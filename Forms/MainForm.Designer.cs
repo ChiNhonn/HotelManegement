@@ -55,6 +55,7 @@
             panelContainer.Name = "panelContainer";
             panelContainer.Size = new Size(1113, 851);
             panelContainer.TabIndex = 1;
+            panelContainer.Paint += panelContainer_Paint;
             // 
             // pnlChoice
             // 

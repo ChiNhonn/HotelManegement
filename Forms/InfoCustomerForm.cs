@@ -15,6 +15,7 @@ namespace HotelManagement.Forms
 
     public partial class InfoCustomerForm : Form
     {
+        public List<string> ExistingCCCDs { get; set; } = new List<string>();
         public Customer Customer { get; private set; }
         private int _customerId = 0;
         /// <summary>Bản gốc khi mở form sửa — giữ CCCD/SĐT/email và metadata không có trên UI.</summary>
@@ -37,7 +38,7 @@ namespace HotelManagement.Forms
             {
                 _loadedForEdit = customer;
                 _customerId = customer.Id;
-                txtNo.Text = customer.No ?? "";
+                txtNo.Text = customer.CCCD;
                 txtFullName.Text = customer.FullName;
                 dtpBirthDay.Value = customer.BirthDay;
                 if (customer.Gender == 1)
@@ -52,6 +53,8 @@ namespace HotelManagement.Forms
                 txtHuyen.Text = customer.Huyen;
                 txtTinh.Text = customer.Tinh;
                 txtCountry.Text = customer.Country;
+                numVip.Value = customer.Vip;
+                txtStatus.Text = customer.Status;
             }
         }
 
@@ -116,25 +119,30 @@ namespace HotelManagement.Forms
         // Xử lý Validate khi bấm nút Thêm
         private void btnThem_Click_1(object sender, EventArgs e)
         {
-            // 1. KIỂM TRA ĐIỀN ĐẦY ĐỦ THÔNG TIN
             if (string.IsNullOrWhiteSpace(txtNo.Text) ||
                 string.IsNullOrWhiteSpace(txtFullName.Text) ||
                 string.IsNullOrWhiteSpace(txtXa.Text) ||
                 string.IsNullOrWhiteSpace(txtHuyen.Text) ||
                 string.IsNullOrWhiteSpace(txtTinh.Text) ||
                 string.IsNullOrWhiteSpace(txtCountry.Text) ||
+                numVip.Value <= 0 ||
+                string.IsNullOrWhiteSpace(txtStatus.Text) ||
                 (!rbNam.Checked && !rbNu.Checked))
             {
                 MessageBox.Show("Vui lòng điền đầy đủ tất cả thông tin khách hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. KIỂM TRA ĐỘ TUỔI (Phải >= 18 tuổi)
+            if (ExistingCCCDs != null && ExistingCCCDs.Contains(txtNo.Text.Trim()))
+            {
+                MessageBox.Show("Số CCCD này đã tồn tại trong hệ thống. Vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             DateTime ngaySinh = dtpBirthDay.Value;
             DateTime homNay = DateTime.Today;
             int tuoi = homNay.Year - ngaySinh.Year;
 
-            // Trừ đi 1 tuổi nếu chưa tới ngày sinh nhật trong năm nay
             if (ngaySinh.Date > homNay.AddYears(-tuoi))
             {
                 tuoi--;
@@ -148,7 +156,7 @@ namespace HotelManagement.Forms
 
             Customer = new Customer
             {
-                No = txtNo.Text.Trim(),
+                CCCD = txtNo.Text.Trim(),
                 FullName = txtFullName.Text.Trim(),
                 BirthDay = dtpBirthDay.Value,
                 Gender = rbNam.Checked ? 1 : 0,
@@ -156,7 +164,8 @@ namespace HotelManagement.Forms
                 Huyen = txtHuyen.Text.Trim(),
                 Tinh = txtTinh.Text.Trim(),
                 Country = txtCountry.Text.Trim(),
-                Status = "Đang ở",
+                Vip = (int)numVip.Value, 
+                Status = txtStatus.Text.Trim(), 
                 SoftDelete = null
             };
 
@@ -165,25 +174,32 @@ namespace HotelManagement.Forms
 
         private void btnSua_Click(object sender, EventArgs e)
         {
-            // 1. KIỂM TRA ĐIỀN ĐẦY ĐỦ THÔNG TIN
             if (string.IsNullOrWhiteSpace(txtNo.Text) ||
                 string.IsNullOrWhiteSpace(txtFullName.Text) ||
                 string.IsNullOrWhiteSpace(txtXa.Text) ||
                 string.IsNullOrWhiteSpace(txtHuyen.Text) ||
                 string.IsNullOrWhiteSpace(txtTinh.Text) ||
                 string.IsNullOrWhiteSpace(txtCountry.Text) ||
+                numVip.Value <= 0 ||
+                string.IsNullOrWhiteSpace(txtStatus.Text) ||
                 (!rbNam.Checked && !rbNu.Checked))
             {
                 MessageBox.Show("Vui lòng điền đầy đủ tất cả thông tin khách hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. KIỂM TRA ĐỘ TUỔI (Phải >= 18 tuổi)
+            if (ExistingCCCDs != null &&
+                txtNo.Text.Trim() != _loadedForEdit?.CCCD &&
+                ExistingCCCDs.Contains(txtNo.Text.Trim()))
+            {
+                MessageBox.Show("Số CCCD này đã thuộc về một khách hàng khác!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             DateTime ngaySinh = dtpBirthDay.Value;
             DateTime homNay = DateTime.Today;
             int tuoi = homNay.Year - ngaySinh.Year;
 
-            // Trừ đi 1 tuổi nếu chưa tới ngày sinh nhật trong năm nay
             if (ngaySinh.Date > homNay.AddYears(-tuoi))
             {
                 tuoi--;
@@ -198,7 +214,7 @@ namespace HotelManagement.Forms
             Customer = new Customer
             {
                 Id = _customerId,
-                No = txtNo.Text.Trim(),
+                CCCD = txtNo.Text.Trim(),
                 FullName = txtFullName.Text.Trim(),
                 BirthDay = dtpBirthDay.Value,
                 Gender = rbNam.Checked ? 1 : 0,
@@ -206,13 +222,9 @@ namespace HotelManagement.Forms
                 Huyen = txtHuyen.Text.Trim(),
                 Tinh = txtTinh.Text.Trim(),
                 Country = txtCountry.Text.Trim(),
-                Status = "Đang ở",
-                SoftDelete = null,
-                CitizenId = _loadedForEdit?.CitizenId,
-                Phone = _loadedForEdit?.Phone,
-                Email = _loadedForEdit?.Email,
-                CreateAt = _loadedForEdit?.CreateAt ?? DateTime.Now,
-                Vip = _loadedForEdit?.Vip ?? 0
+                Vip = (int)numVip.Value, 
+                Status = txtStatus.Text.Trim(),
+                UpdateAt = DateTime.Now
             };
             this.DialogResult = DialogResult.OK;
         }

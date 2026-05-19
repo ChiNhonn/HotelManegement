@@ -1,3 +1,5 @@
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Packaging;
 using HotelManagement.CustomControls;
 using HotelManagement.Data;
 using HotelManagement.Forms;
@@ -9,14 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
 
+
 namespace HotelManagement;
 
 internal static class Program
 {
     /// <summary>Root scoped provider — dùng khi form cần resolve thêm service (giữ pattern project cũ).</summary>
-    public static IServiceProvider ServiceProvider { get; private set; } = null!;
-
-    private static IServiceScope? _rootScope;
+    public static IServiceProvider ServiceProvider;
 
     /// <summary>
     ///  The main entry point for the application.
@@ -30,20 +31,9 @@ internal static class Program
         ApplicationConfiguration.Initialize();
 
         var services = new ServiceCollection();
-        // Chuỗi kết nối khai báo trong HotelDbContext.ConnectionString — chỉnh tập trung tại đó.
-        services.AddDbContext<HotelDbContext>(options =>
-            options.UseSqlServer(HotelDbContext.ConnectionString, sql =>
-            {
-                sql.EnableRetryOnFailure(
-                    maxRetryCount: 3,
-                    maxRetryDelay: TimeSpan.FromSeconds(8),
-                    errorNumbersToAdd: null);
-                sql.CommandTimeout(180);
-                // Tránh sinh OPENJSON / CTE phức tạp — đảm bảo chạy được trên SQL Server cũ
-                // (Express 2014/2016/2017 hoặc DB có compat level thấp). Mặc định EF Core 8 = 160.
-                sql.UseCompatibilityLevel(120);
-            }));
-        services.AddScoped<IMyDbContext>(sp => sp.GetRequiredService<HotelDbContext>());
+
+        services.AddDbContext<IMyDbContext,HotelDbContext>();
+            
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -89,71 +79,9 @@ internal static class Program
         services.AddTransient<BillDetailDialogForm>();
         services.AddTransient<BranchEditDiaLogForm>();
 
-        var rootProvider = services.BuildServiceProvider();
-        _rootScope = rootProvider.CreateScope();
-        ServiceProvider = _rootScope.ServiceProvider;
+        ServiceProvider = services.BuildServiceProvider();
+         var main = ServiceProvider.GetRequiredService<InfoCustomerForm>();
+        Application.Run(main);
 
-        Application.ApplicationExit += (_, _) =>
-        {
-            BankTransferInboundWebhookHost.Stop();
-            _rootScope?.Dispose();
-            _rootScope = null;
-            (rootProvider as IDisposable)?.Dispose();
-        };
-
-        try
-        {
-            using var migrateScope = rootProvider.CreateScope();
-            var db = migrateScope.ServiceProvider.GetRequiredService<HotelDbContext>();
-            db.Database.SetCommandTimeout(180);
-
-            DatabaseMigrationHelper.Migrate(db);
-            ServiceModuleDatabaseEnsurer.EnsureSchema(db);
-            FloorSchemaPatcher.EnsureFloorStatusColumn(db);
-
-            // Luôn chạy: khung chi nhánh / tầng / phòng chuẩn (idempotent).
-            DemoHotelRoomsSeed.EnsureSeed(db);
-
-            // CHỈ khi đặt HOTEL_RESET_CUSTOMERS=1 — xóa khách / đơn / bill… (nguy hiểm, không bật nhầm).
-            var resetCustomers = EnvFlag("HOTEL_RESET_CUSTOMERS");
-            if (resetCustomers)
-                DemoCustomerBookingReset.ClearAllCustomersOrdersAndBills(db);
-
-            // Seed dashboard demo (đơn giả, chi trả giả, dịch vụ demo…) — TẮT mặc định để không « làm bẩn » DB thật.
-            // Bật lại khi cần: HOTEL_DEMO_SEED=1
-            if (EnvFlag("HOTEL_DEMO_SEED"))
-                DemoDashboardDataSeed.EnsureSeed(db, skipDemoOrdersAndBills: resetCustomers);
-
-            // (Đã bỏ seed tài khoản admin mặc định — đăng ký người dùng qua RegisterForm.)
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                $"Không thể kết nối hoặc migrate database. Kiểm tra SQL Server và chuỗi kết nối.\n\n{ex.Message}",
-                "Lỗi database",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-            return;
-        }
-
-        try
-        {
-            BankTransferInboundWebhookHost.TryStart(rootProvider.GetRequiredService<IServiceScopeFactory>());
-        }
-        catch
-        {
-            // không chặn khởi động
-        }
-
-        // Mặc định: LoginForm. Giống project cũ (vào thẳng quản lý khách): HOTEL_START_CUSTOMER_FORM=1
-        Form startForm = EnvFlag("HOTEL_START_CUSTOMER_FORM")
-            ? ServiceProvider.GetRequiredService<CustomerForm>()
-            : ServiceProvider.GetRequiredService<LoginForm>();
-
-        Application.Run(startForm);
     }
-
-    private static bool EnvFlag(string name) =>
-        string.Equals(Environment.GetEnvironmentVariable(name), "1", StringComparison.OrdinalIgnoreCase)
-        || string.Equals(Environment.GetEnvironmentVariable(name), "true", StringComparison.OrdinalIgnoreCase);
 }

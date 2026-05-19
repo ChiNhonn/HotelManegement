@@ -324,9 +324,14 @@ namespace HotelManagement.Forms
             childForm.Dock = DockStyle.Fill;
 
             panelContainer.Controls.Add(childForm);
-            panelContainer.Tag = childForm; 
+            panelContainer.Tag = childForm;
             childForm.BringToFront();
             childForm.Show();
+        }
+
+        private void panelContainer_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
