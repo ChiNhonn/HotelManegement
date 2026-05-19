@@ -8,7 +8,7 @@ namespace HotelManagement.Data
     {
         /// <summary>Chuỗi kết nối SQL Server cố định — đổi instance/máy thì sửa duy nhất tại đây.</summary>
         public const string ConnectionString =
-            "Server=.\\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;";
+            "Server=.\\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public HotelDbContext()
         {

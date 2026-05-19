@@ -39,59 +39,59 @@ namespace HotelManagement.Forms
             // 
             // txtFullName
             // 
-            txtFullName.Location = new Point(300, 68);
-            txtFullName.Margin = new Padding(3, 2, 3, 2);
+            txtFullName.Location = new Point(343, 91);
             txtFullName.Name = "txtFullName";
             txtFullName.PlaceholderText = "Nguyễn Văn A";
-            txtFullName.Size = new Size(162, 23);
+            txtFullName.Size = new Size(185, 27);
             txtFullName.TabIndex = 0;
+            txtFullName.UseWaitCursor = true;
             // 
             // txtUsername
             // 
-            txtUsername.Location = new Point(300, 92);
-            txtUsername.Margin = new Padding(3, 2, 3, 2);
+            txtUsername.Location = new Point(343, 123);
             txtUsername.Name = "txtUsername";
             txtUsername.PlaceholderText = "Tên đăng nhập";
-            txtUsername.Size = new Size(162, 23);
+            txtUsername.Size = new Size(185, 27);
             txtUsername.TabIndex = 1;
+            txtUsername.UseWaitCursor = true;
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(300, 117);
-            txtPassword.Margin = new Padding(3, 2, 3, 2);
+            txtPassword.Location = new Point(343, 156);
             txtPassword.Name = "txtPassword";
             txtPassword.PlaceholderText = "Mật khẩu (tối thiểu 6 ký tự)";
-            txtPassword.Size = new Size(162, 23);
+            txtPassword.Size = new Size(185, 27);
             txtPassword.TabIndex = 2;
             txtPassword.UseSystemPasswordChar = true;
+            txtPassword.UseWaitCursor = true;
             // 
             // txtConfirmPassword
             // 
-            txtConfirmPassword.Location = new Point(300, 142);
-            txtConfirmPassword.Margin = new Padding(3, 2, 3, 2);
+            txtConfirmPassword.Location = new Point(343, 189);
             txtConfirmPassword.Name = "txtConfirmPassword";
             txtConfirmPassword.PlaceholderText = "Nhập lại mật khẩu";
-            txtConfirmPassword.Size = new Size(162, 23);
+            txtConfirmPassword.Size = new Size(185, 27);
             txtConfirmPassword.TabIndex = 3;
             txtConfirmPassword.UseSystemPasswordChar = true;
+            txtConfirmPassword.UseWaitCursor = true;
             // 
             // txtSDT
             // 
-            txtSDT.Location = new Point(300, 166);
-            txtSDT.Margin = new Padding(3, 2, 3, 2);
+            txtSDT.Location = new Point(343, 221);
             txtSDT.Name = "txtSDT";
             txtSDT.PlaceholderText = "0912345678";
-            txtSDT.Size = new Size(162, 23);
+            txtSDT.Size = new Size(185, 27);
             txtSDT.TabIndex = 4;
+            txtSDT.UseWaitCursor = true;
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(300, 191);
-            txtEmail.Margin = new Padding(3, 2, 3, 2);
+            txtEmail.Location = new Point(343, 255);
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "email@example.com";
-            txtEmail.Size = new Size(162, 23);
+            txtEmail.Size = new Size(185, 27);
             txtEmail.TabIndex = 5;
+            txtEmail.UseWaitCursor = true;
             // 
             // btnRegister
             // 
@@ -100,13 +100,13 @@ namespace HotelManagement.Forms
             btnRegister.FlatStyle = FlatStyle.Flat;
             btnRegister.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnRegister.ForeColor = Color.Black;
-            btnRegister.Location = new Point(316, 221);
-            btnRegister.Margin = new Padding(3, 2, 3, 2);
+            btnRegister.Location = new Point(361, 295);
             btnRegister.Name = "btnRegister";
-            btnRegister.Size = new Size(123, 32);
+            btnRegister.Size = new Size(141, 43);
             btnRegister.TabIndex = 6;
             btnRegister.Text = "Đăng ký";
             btnRegister.UseVisualStyleBackColor = false;
+            btnRegister.UseWaitCursor = true;
             btnRegister.Click += btnRegister_Click;
             // 
             // linkLogin
@@ -115,12 +115,13 @@ namespace HotelManagement.Forms
             linkLogin.BackColor = Color.Transparent;
             linkLogin.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             linkLogin.LinkColor = Color.Red;
-            linkLogin.Location = new Point(300, 255);
+            linkLogin.Location = new Point(343, 340);
             linkLogin.Name = "linkLogin";
-            linkLogin.Size = new Size(159, 15);
+            linkLogin.Size = new Size(204, 20);
             linkLogin.TabIndex = 7;
             linkLogin.TabStop = true;
             linkLogin.Text = "Đã có tài khoản? Đăng nhập";
+            linkLogin.UseWaitCursor = true;
             linkLogin.LinkClicked += linkLogin_LinkClicked;
             // 
             // lblFullName
@@ -128,75 +129,81 @@ namespace HotelManagement.Forms
             lblFullName.AutoSize = true;
             lblFullName.BackColor = Color.Transparent;
             lblFullName.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblFullName.Location = new Point(148, 73);
+            lblFullName.Location = new Point(169, 97);
             lblFullName.Name = "lblFullName";
-            lblFullName.Size = new Size(64, 15);
+            lblFullName.Size = new Size(80, 20);
             lblFullName.TabIndex = 8;
             lblFullName.Text = "Họ và tên:";
+            lblFullName.UseWaitCursor = true;
             // 
             // lblName
             // 
             lblName.AutoSize = true;
             lblName.BackColor = Color.Transparent;
             lblName.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblName.Location = new Point(148, 98);
+            lblName.Location = new Point(169, 131);
             lblName.Name = "lblName";
-            lblName.Size = new Size(91, 15);
+            lblName.Size = new Size(116, 20);
             lblName.TabIndex = 9;
             lblName.Text = "Tên đăng nhập:";
+            lblName.UseWaitCursor = true;
             // 
             // lblPassword
             // 
             lblPassword.AutoSize = true;
             lblPassword.BackColor = Color.Transparent;
             lblPassword.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblPassword.Location = new Point(148, 122);
+            lblPassword.Location = new Point(169, 163);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(62, 15);
+            lblPassword.Size = new Size(79, 20);
             lblPassword.TabIndex = 10;
             lblPassword.Text = "Mật khẩu:";
+            lblPassword.UseWaitCursor = true;
             // 
             // lblConfirmPassword
             // 
             lblConfirmPassword.AutoSize = true;
             lblConfirmPassword.BackColor = Color.Transparent;
             lblConfirmPassword.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblConfirmPassword.Location = new Point(148, 147);
+            lblConfirmPassword.Location = new Point(169, 196);
             lblConfirmPassword.Name = "lblConfirmPassword";
-            lblConfirmPassword.Size = new Size(115, 15);
+            lblConfirmPassword.Size = new Size(147, 20);
             lblConfirmPassword.TabIndex = 11;
             lblConfirmPassword.Text = "Xác nhận mật khẩu:";
+            lblConfirmPassword.UseWaitCursor = true;
             // 
             // lblSDT
             // 
             lblSDT.AutoSize = true;
             lblSDT.BackColor = Color.Transparent;
             lblSDT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblSDT.Location = new Point(148, 172);
+            lblSDT.Location = new Point(169, 229);
             lblSDT.Name = "lblSDT";
-            lblSDT.Size = new Size(83, 15);
+            lblSDT.Size = new Size(104, 20);
             lblSDT.TabIndex = 12;
             lblSDT.Text = "Số điện thoại:";
+            lblSDT.UseWaitCursor = true;
             // 
             // lblEmail
             // 
             lblEmail.AutoSize = true;
             lblEmail.BackColor = Color.Transparent;
             lblEmail.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblEmail.Location = new Point(148, 196);
+            lblEmail.Location = new Point(169, 261);
             lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(39, 15);
+            lblEmail.Size = new Size(51, 20);
             lblEmail.TabIndex = 13;
             lblEmail.Text = "Email:";
+            lblEmail.UseWaitCursor = true;
             // 
             // RegisterForm
             // 
             AcceptButton = btnRegister;
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(800, 451);
             Controls.Add(lblEmail);
             Controls.Add(lblSDT);
             Controls.Add(lblConfirmPassword);
@@ -211,9 +218,11 @@ namespace HotelManagement.Forms
             Controls.Add(txtPassword);
             Controls.Add(txtUsername);
             Controls.Add(txtFullName);
-            Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
             Name = "RegisterForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Đăng ký tài khoản";
+            UseWaitCursor = true;
             Load += RegisterForm_Load;
             ResumeLayout(false);
             PerformLayout();
