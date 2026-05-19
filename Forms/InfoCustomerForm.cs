@@ -18,7 +18,7 @@ namespace HotelManagement.Forms
         public List<string> ExistingCCCDs { get; set; } = new List<string>();
         public Customer Customer { get; private set; }
         private int _customerId = 0;
-        /// <summary>Bản gốc khi mở form sửa — giữ CCCD/SĐT/email và metadata không có trên UI.</summary>
+
         private Customer _loadedForEdit;
 
         public InfoCustomerForm(bool isEditMode, bool isAddMode, Customer customer = null)
