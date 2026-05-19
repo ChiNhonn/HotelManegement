@@ -17,11 +17,6 @@ public partial class usService : UserControl
 
     private RadioButton radOrderCtxRoom = null!;
     private RadioButton radOrderCtxWalkIn = null!;
-    private RadioButton radChargeFolio = null!;
-    private RadioButton radChargeImmediate = null!;
-    private FlowLayoutPanel flowPayNowMethods = null!;
-    private RadioButton radPayCash = null!;
-    private RadioButton radPayTransfer = null!;
 
     public usService(IServiceModuleService svc)
     {
@@ -218,78 +213,20 @@ public partial class usService : UserControl
             UseVisualStyleBackColor = true
         };
 
-        radChargeFolio = new RadioButton
-        {
-            Text = "Gộp vào hóa đơn phòng",
-            Font = radioFont,
-            Checked = true,
-            TabStop = true,
-            AutoSize = true,
-            ForeColor = bodyText,
-            FlatStyle = FlatStyle.Standard,
-            UseVisualStyleBackColor = true
-        };
-        radChargeImmediate = new RadioButton
-        {
-            Text = "Thanh toán ngay",
-            Font = radioFont,
-            TabStop = true,
-            AutoSize = true,
-            ForeColor = bodyText,
-            FlatStyle = FlatStyle.Standard,
-            UseVisualStyleBackColor = true
-        };
-
-        radPayCash = new RadioButton
-        {
-            Text = "Tiền mặt",
-            Font = radioFont,
-            Checked = true,
-            TabStop = true,
-            AutoSize = true,
-            ForeColor = bodyText,
-            FlatStyle = FlatStyle.Standard,
-            UseVisualStyleBackColor = true
-        };
-        radPayTransfer = new RadioButton
-        {
-            Text = "Chuyển khoản",
-            Font = radioFont,
-            TabStop = true,
-            AutoSize = true,
-            ForeColor = bodyText,
-            FlatStyle = FlatStyle.Standard,
-            UseVisualStyleBackColor = true
-        };
-
-        flowPayNowMethods = CreateRadioFlow(Color.White, radPayCash, radPayTransfer);
-
         var rowSrc = CreateChargeRow("Nguồn đặt", CreateRadioFlow(Color.White, radOrderCtxRoom, radOrderCtxWalkIn));
-        rowSrc.Margin = new Padding(0, 0, 0, 10);
-
-        var rowCharge = CreateChargeRow("Thanh toán", CreateRadioFlow(Color.White, radChargeFolio, radChargeImmediate));
-        rowCharge.Margin = new Padding(0, 0, 0, 10);
-
-        var rowMethod = CreateChargeRow("Tiền mặt / CK", flowPayNowMethods);
-        rowMethod.Margin = new Padding(0);
+        rowSrc.Margin = new Padding(0);
 
         var outerRows = new TableLayoutPanel
         {
             Dock = DockStyle.Fill,
             ColumnCount = 1,
-            RowCount = 3,
+            RowCount = 1,
             Margin = new Padding(0),
             Padding = new Padding(0),
             BackColor = Color.White
         };
-        // AutoSize rows 0–1 so bottom Margin on rows isn’t clipped by a fixed Absolute height.
         outerRows.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        outerRows.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        outerRows.RowStyles.Add(new RowStyle(SizeType.Absolute, 0));
-
         outerRows.Controls.Add(rowSrc, 0, 0);
-        outerRows.Controls.Add(rowCharge, 0, 1);
-        outerRows.Controls.Add(rowMethod, 0, 2);
 
         card.Controls.Add(outerRows);
 
@@ -308,33 +245,6 @@ public partial class usService : UserControl
         outer.Controls.Add(card, 0, 1);
 
         pnlChargeInner.Controls.Add(outer);
-
-        void SyncChargeEntryUi(object? s, EventArgs e)
-        {
-            var walkIn = radOrderCtxWalkIn.Checked;
-            radChargeFolio.Enabled = !walkIn;
-            if (walkIn)
-                radChargeImmediate.Checked = true;
-
-            var immediate = radChargeImmediate.Checked;
-
-            outerRows.RowStyles[2].SizeType = SizeType.Absolute;
-            outerRows.RowStyles[2].Height = immediate ? rowH : 0;
-            rowMethod.Visible = immediate;
-
-            if (immediate && !radPayCash.Checked && !radPayTransfer.Checked)
-                radPayCash.Checked = true;
-
-            outerRows.PerformLayout();
-            card.PerformLayout();
-            outer.PerformLayout();
-        }
-
-        radOrderCtxRoom.CheckedChanged += SyncChargeEntryUi;
-        radOrderCtxWalkIn.CheckedChanged += SyncChargeEntryUi;
-        radChargeFolio.CheckedChanged += SyncChargeEntryUi;
-        radChargeImmediate.CheckedChanged += SyncChargeEntryUi;
-        SyncChargeEntryUi(null, EventArgs.Empty);
     }
 
     /// <summary>Bảng theo phong cách "clean / flat":
@@ -661,15 +571,9 @@ public partial class usService : UserControl
             return;
         }
 
-        var charge = radChargeImmediate.Checked ? ServiceChargeMode.Immediate : ServiceChargeMode.Folio;
-        string? notes = null;
-        if (charge == ServiceChargeMode.Immediate)
-        {
-            var method = radPayCash.Checked ? "Tiền mặt" : "Chuyển khoản";
-            notes = radOrderCtxWalkIn.Checked
-                ? $"Quầy · thu ngay · {method}"
-                : $"Thu ngay · {method}";
-        }
+        // Đã bỏ tùy chọn « Thanh toán ngay » — mọi yêu cầu dịch vụ gộp vào hóa đơn phòng.
+        var charge = ServiceChargeMode.Folio;
+        string? notes = radOrderCtxWalkIn.Checked ? "Quầy · gộp HĐ phòng" : null;
 
         try
         {
