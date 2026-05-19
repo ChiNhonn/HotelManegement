@@ -32,8 +32,13 @@ internal static class Program
 
         var services = new ServiceCollection();
 
-        services.AddDbContext<IMyDbContext,HotelDbContext>();
-            
+        services.AddDbContext<IMyDbContext, HotelDbContext>(options =>
+            options.UseSqlServer(HotelDbContext.ConnectionString, sql =>
+            {
+                sql.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null);
+                sql.CommandTimeout(60);
+                sql.UseCompatibilityLevel(120);
+            }));
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -70,7 +75,7 @@ internal static class Program
         services.AddTransient<ForgetPasswordForm>();
         services.AddTransient<DoiMKForm>();
         services.AddTransient<CustomerForm>();
-        services.AddTransient<InfoCustomerForm>();
+        // InfoCustomerForm tạo bằng new(..., isEdit, isAdd) từ CustomerForm — không resolve qua DI.
 
         services.AddTransient<BulkCreateRoomsDialog>();
         services.AddTransient<RoomEditDialogForm>();
@@ -80,8 +85,7 @@ internal static class Program
         services.AddTransient<BranchEditDiaLogForm>();
 
         ServiceProvider = services.BuildServiceProvider();
-         var main = ServiceProvider.GetRequiredService<InfoCustomerForm>();
-        Application.Run(main);
+        Application.Run(ServiceProvider.GetRequiredService<LoginForm>());
 
     }
 }

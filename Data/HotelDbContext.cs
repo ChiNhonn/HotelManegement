@@ -6,6 +6,10 @@ namespace HotelManagement.Data;
 
 public class HotelDbContext : DbContext, IMyDbContext
 {
+    /// <summary>SQL Server trên máy hiện tại: instance SQLEXPRESS, DB HotelManagement.</summary>
+    public const string ConnectionString =
+        "Server=.\\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;";
+
     public HotelDbContext()
     {
     }
@@ -18,7 +22,7 @@ public class HotelDbContext : DbContext, IMyDbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS01;Database=HotelManagementV2;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(ConnectionString, sql => sql.UseCompatibilityLevel(120));
         }
     }
 
