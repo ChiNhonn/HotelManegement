@@ -35,13 +35,17 @@ namespace HotelManagement.Forms
             if (videoDevices.Count > 0)
             {
                 videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+
+                videoSource.DesiredFrameSize = new System.Drawing.Size(1280, 720);
+
                 videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
                 videoSource.Start();
             }
             else
             {
-                MessageBox.Show("Không tìm thấy Webcam kết nối với máy tính!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không tìm thấy Webcam!", "Lỗi");
             }
+        
         }
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -83,19 +87,18 @@ namespace HotelManagement.Forms
 
                 // Gọi API FPT AI
                 string jsonResult = await CallFptAiOcr(imageBytes);
+                //MessageBox.Show(jsonResult, "Log lỗi từ FPT");
 
-                // Phân tích dữ liệu JSON trả về
                 ExtractData = ParseJsonToModel(jsonResult);
 
                 if (ExtractData != null)
                 {
                     StopCamera();
                     this.DialogResult = DialogResult.OK;
-                    this.Close(); // Đóng form và trả kết quả về InfoCustomerForm
+                    this.Close(); 
                 }
                 else
                 {
-                    // 🌟 SỬA LỖI 2: Nếu không lấy được data, phải giải phóng nút bấm để người dùng quét lại
                     MessageBox.Show("Không tìm thấy dữ liệu CCCD hợp lệ. Vui lòng căn chỉnh thẻ rõ nét trước camera và thử lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     isProcessing = false;
                     currentButton.Enabled = true;
@@ -117,7 +120,6 @@ namespace HotelManagement.Forms
             {
                 client.Timeout = TimeSpan.FromSeconds(25);
 
-                // 🌟 SỬA LỖI 1: Đổi "scancccd" thành "api_key" theo đúng quy định của FPT
                 client.DefaultRequestHeaders.Add("api_key", FPT_API_KEY);
 
                 using (var content = new MultipartFormDataContent())
@@ -126,7 +128,7 @@ namespace HotelManagement.Forms
                     byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
                     content.Add(byteContent, "image", "cccd_capture.jpg");
 
-                    string url = "https://api.fpt.ai/vision/idr/v3";
+                    string url = "https://api.fpt.ai/vision/idr/vnm";
                     var response = await client.PostAsync(url, content);
                     return await response.Content.ReadAsStringAsync();
                 }
@@ -154,11 +156,15 @@ namespace HotelManagement.Forms
                     if (cccdData.TryGetProperty("name", out JsonElement nameElem)) model.FullName = nameElem.GetString() ?? "";
                     if (cccdData.TryGetProperty("dob", out JsonElement dobElem)) model.BirthDay = dobElem.GetString() ?? "";
                     if (cccdData.TryGetProperty("sex", out JsonElement sexElem)) model.Gender = sexElem.GetString() ?? "";
-                    if (cccdData.TryGetProperty("precinct", out JsonElement xaElem)) model.Xa = xaElem.GetString() ?? "";
-                    if (cccdData.TryGetProperty("district", out JsonElement huyenElem)) model.Huyen = huyenElem.GetString() ?? "";
-                    if (cccdData.TryGetProperty("province", out JsonElement tinhElem)) model.Tinh = tinhElem.GetString() ?? "";
 
-                    // Thêm mặc định tránh lỗi null ở Form cha
+                    // 2. Lấy thông tin địa chỉ (FPT bọc trong object address_entities)
+                    if (cccdData.TryGetProperty("address_entities", out JsonElement addressEntities))
+                    {
+                        if (addressEntities.TryGetProperty("ward", out JsonElement xaElem)) model.Xa = xaElem.GetString() ?? "";
+                        if (addressEntities.TryGetProperty("district", out JsonElement huyenElem)) model.Huyen = huyenElem.GetString() ?? "";
+                        if (addressEntities.TryGetProperty("province", out JsonElement tinhElem)) model.Tinh = tinhElem.GetString() ?? "";
+                    }
+
                     model.Country = "Việt Nam";
 
                     return model;
@@ -169,7 +175,6 @@ namespace HotelManagement.Forms
 
         private void StopCamera()
         {
-            // 🌟 SỬA LỖI 3: Đưa việc tắt camera vào try-catch để nuốt lỗi hủy luồng (Thread Abort) trên .NET Core
             try
             {
                 if (videoSource != null)
@@ -184,7 +189,6 @@ namespace HotelManagement.Forms
             }
             catch
             {
-                // Bỏ qua lỗi xung đột luồng của AForge để Form đóng lại bình thường
             }
         }
 

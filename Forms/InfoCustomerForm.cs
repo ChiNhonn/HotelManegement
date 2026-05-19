@@ -71,7 +71,6 @@ namespace HotelManagement.Forms
 
         private void SetupValidationEvents()
         {
-            // 1. Sự kiện tự động nhảy ô khi nhấn Enter
             txtNo.KeyDown += ChuyenO_KeyDown;
             txtFullName.KeyDown += ChuyenO_KeyDown;
             dtpBirthDay.KeyDown += ChuyenO_KeyDown;
@@ -80,10 +79,8 @@ namespace HotelManagement.Forms
             txtTinh.KeyDown += ChuyenO_KeyDown;
             txtCountry.KeyDown += ChuyenO_KeyDown;
 
-            // 2. Sự kiện viết hoa chữ cái đầu khi rời khỏi ô Họ Tên
             txtFullName.Leave += TxtFullName_Leave;
 
-            // 3. Sự kiện chỉ cho phép nhập số vào ô CCCD
             txtNo.KeyPress += TxtNo_KeyPress;
         }
 
@@ -116,7 +113,6 @@ namespace HotelManagement.Forms
             }
         }
 
-        // Xử lý Validate khi bấm nút Thêm
         private void btnThem_Click_1(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtNo.Text) ||
@@ -239,27 +235,45 @@ namespace HotelManagement.Forms
 
                     if (result != null)
                     {
+                        var textInfo = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
+
                         txtNo.Text = result.Id;
                         txtFullName.Text = result.FullName;
-                        dtpBirthDay.Value = DateTime.ParseExact(result.BirthDay, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                        if (result.Gender == "Nam")
+
+                        if (!string.IsNullOrWhiteSpace(result.BirthDay))
+                        {
+                            dtpBirthDay.Value = DateTime.ParseExact(result.BirthDay, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        }
+
+                        if (string.Equals(result.Gender, "Nam", StringComparison.OrdinalIgnoreCase))
                         {
                             rbNam.Checked = true;
+                            rbNu.Checked = false;
                         }
                         else
                         {
                             rbNu.Checked = true;
+                            rbNam.Checked = false;
                         }
-                        txtXa.Text = result.Xa;
-                        txtHuyen.Text = result.Huyen;
-                        txtTinh.Text = result.Tinh;
+
+                        txtXa.Text = !string.IsNullOrWhiteSpace(result.Xa)
+                            ? textInfo.ToTitleCase(result.Xa.ToLower().Trim())
+                            : "";
+
+                        txtHuyen.Text = !string.IsNullOrWhiteSpace(result.Huyen)
+                            ? textInfo.ToTitleCase(result.Huyen.ToLower().Trim())
+                            : "";
+
+                        txtTinh.Text = !string.IsNullOrWhiteSpace(result.Tinh)
+                            ? textInfo.ToTitleCase(result.Tinh.ToLower().Trim())
+                            : "";
+
                         txtCountry.Text = result.Country;
 
                         MessageBox.Show("Đã lấy thông tin CCCD thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+                    }
                 }
             }
-        }
     }
     }
 }
