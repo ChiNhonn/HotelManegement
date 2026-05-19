@@ -17,24 +17,40 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Forms\**" />
-	  <Compile Remove="Helpers\**" />
-	  <Compile Remove="Repositories\**" />
-	  <Compile Remove="Services\**" />
-	  <Compile Remove="UControl\**" />
-	  <Compile Remove="ViewModels\**" />
-	  <EmbeddedResource Remove="Forms\**" />
-	  <EmbeddedResource Remove="Helpers\**" />
-	  <EmbeddedResource Remove="Repositories\**" />
-	  <EmbeddedResource Remove="Services\**" />
-	  <EmbeddedResource Remove="UControl\**" />
-	  <EmbeddedResource Remove="ViewModels\**" />
-	  <None Remove="Forms\**" />
-	  <None Remove="Helpers\**" />
-	  <None Remove="Repositories\**" />
-	  <None Remove="Services\**" />
-	  <None Remove="UControl\**" />
-	  <None Remove="ViewModels\**" />
+	  <Compile Remove="Data\Configurations\**" />
+	  <Compile Remove="_bchk2\**" />
+	  <Compile Remove="_bchk3\**" />
+	  <Compile Remove="_bchk4\**" />
+	  <Compile Remove="_bchk5\**" />
+	  <Compile Remove="_bchk\**" />
+	  <Compile Remove="_build_verify\**" />
+	  <Compile Remove="_b\**" />
+	  <Compile Remove="_vb3\**" />
+	  <Compile Remove="_verify_build2\**" />
+	  <Compile Remove="_verify_build\**" />
+	  <EmbeddedResource Remove="Data\Configurations\**" />
+	  <EmbeddedResource Remove="_bchk2\**" />
+	  <EmbeddedResource Remove="_bchk3\**" />
+	  <EmbeddedResource Remove="_bchk4\**" />
+	  <EmbeddedResource Remove="_bchk5\**" />
+	  <EmbeddedResource Remove="_bchk\**" />
+	  <EmbeddedResource Remove="_build_verify\**" />
+	  <EmbeddedResource Remove="_b\**" />
+	  <EmbeddedResource Remove="_vb3\**" />
+	  <EmbeddedResource Remove="_verify_build2\**" />
+	  <EmbeddedResource Remove="_verify_build\**" />
+	  <None Remove="bin-ck\**" />
+	  <None Remove="Data\Configurations\**" />
+	  <None Remove="_bchk2\**" />
+	  <None Remove="_bchk3\**" />
+	  <None Remove="_bchk4\**" />
+	  <None Remove="_bchk5\**" />
+	  <None Remove="_bchk\**" />
+	  <None Remove="_build_verify\**" />
+	  <None Remove="_b\**" />
+	  <None Remove="_vb3\**" />
+	  <None Remove="_verify_build2\**" />
+	  <None Remove="_verify_build\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -46,6 +62,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AForge.Video" Version="2.2.5" />
+		<PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
 		<PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
 		<PackageReference Include="ClosedXML" Version="0.105.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">

@@ -33,7 +33,7 @@ internal static class Program
         var services = new ServiceCollection();
 
         services.AddDbContext<IMyDbContext,HotelDbContext>();
-            
+
 
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
@@ -80,7 +80,7 @@ internal static class Program
         services.AddTransient<BranchEditDiaLogForm>();
 
         ServiceProvider = services.BuildServiceProvider();
-         var main = ServiceProvider.GetRequiredService<InfoCustomerForm>();
+        var main = ServiceProvider.GetRequiredService<CustomerForm>();
         Application.Run(main);
 
     }

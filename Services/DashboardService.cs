@@ -196,7 +196,6 @@ public class DashboardService : IDashboardService
         {
             OrderId = o.Id,
             CustomerName = o.Customer?.FullName?.Trim() ?? $"(Khách #{o.IdCustomer})",
-            Phone = o.Customer?.Phone,
             BookedRoomsSummary = SummarizeBookedRooms(o),
             GuestCountText = FormatGuestCount(o),
             DateCheckIn = o.DateCheckIn,
