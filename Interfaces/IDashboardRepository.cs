@@ -37,6 +37,9 @@ public interface IDashboardRepository
     /// <summary>Hóa đơn chưa đánh dấu đã thanh toán — để lễ tân ghi nhận tiền mặt / CK.</summary>
     IReadOnlyList<DashboardBillPickRow> LoadBillsForManualPaymentPick(int take = 80);
 
+    /// <summary>Đơn đặt phòng gắn với hóa đơn (nếu có).</summary>
+    int? GetBillOrderId(int billId);
+
     /// <summary>Ghi một khoản thanh toán thành công và đóng hóa đơn.</summary>
     void RecordManualBillPayment(int billId, string method, string? note = null);
 

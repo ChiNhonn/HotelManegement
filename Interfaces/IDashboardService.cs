@@ -26,8 +26,12 @@ public interface IDashboardService
     /// <summary>Hóa đơn chờ thu để chọn khi «Thêm giao dịch».</summary>
     IReadOnlyList<DashboardBillPickRow> GetBillsForManualPaymentPick(int take = 80);
 
-    /// <summary>Ghi nhận thanh toán (tiền mặt / chuyển khoản) cho một hóa đơn.</summary>
-    void RecordManualBillPayment(int billId, string method, string? note = null);
+    /// <summary>
+    /// Ghi nhận thanh toán (tiền mặt / chuyển khoản) cho một hóa đơn.
+    /// <paramref name="finalizeStayIfNeeded"/>: true khi thu từ dashboard (tự trả phòng nếu khách còn ở);
+    /// false khi đã trả phòng từ sơ đồ đặt phòng.
+    /// </summary>
+    void RecordManualBillPayment(int billId, string method, string? note = null, bool finalizeStayIfNeeded = true);
 
     /// <summary>Ghi nhận khoản thu trực tiếp không gắn hóa đơn.</summary>
     void RecordStandalonePayment(decimal amount, string method, string? note = null);

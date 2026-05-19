@@ -191,15 +191,10 @@ public sealed class BookingService : IBookingService
         };
     }
 
-    public void CheckoutEarly(int orderId, DateTime actualCheckoutDate)
+    public int CheckoutEarly(int orderId, DateTime actualCheckoutDate)
     {
+        var o = LoadOrderForCheckout(orderId);
         var day = actualCheckoutDate.Date;
-        var o = _db.Orders
-            .Include(x => x.OrderDetails!)
-            .FirstOrDefault(x => x.Id == orderId && x.SoftDelete == null);
-
-        if (o == null)
-            throw new InvalidOperationException("Không tìm thấy đơn.");
 
         if (OrderStatusHelpers.IsCancelled(o.Status) || OrderStatusHelpers.IsCheckoutDone(o.Status))
             throw new InvalidOperationException("Đơn không còn hiệu lực để trả phòng.");
@@ -212,27 +207,56 @@ public sealed class BookingService : IBookingService
         if (day > sched)
             throw new InvalidOperationException("Ngày trả không được sau ngày trả dự kiến.");
 
-        var roomId = o.OrderDetails?.FirstOrDefault(d => d.IdRoom != null)?.IdRoom;
-        if (roomId is int rid)
-        {
-            var room = _db.Rooms.FirstOrDefault(r => r.Id == rid && r.SoftDelete == null);
-            if (room != null)
-            {
-                room.Status = "dirty";
-                room.UpdateAt = DateTime.Now;
-            }
-        }
+        ApplyCheckout(o, day);
+        return EnsureBillForOrder(o.Id).Id;
+    }
 
-        var line = o.OrderDetails?.FirstOrDefault(d => d.IdRoom != null);
-        if (line != null)
+    public int GetBillIdForOrder(int orderId) => EnsureBillForOrder(orderId).Id;
+
+    public void CompleteStayAfterPayment(int orderId)
+    {
+        var o = LoadOrderForCheckout(orderId);
+        if (OrderStatusHelpers.IsCancelled(o.Status) || OrderStatusHelpers.IsCheckoutDone(o.Status))
+            return;
+
+        var day = DateTime.Today;
+        if (day < o.DateCheckIn.Date)
+            day = o.DateCheckIn.Date;
+
+        ApplyCheckout(o, day);
+    }
+
+    private Order LoadOrderForCheckout(int orderId)
+    {
+        return _db.Orders
+                   .Include(x => x.OrderDetails!)
+                   .FirstOrDefault(x => x.Id == orderId && x.SoftDelete == null)
+               ?? throw new InvalidOperationException("Không tìm thấy đơn.");
+    }
+
+    private void ApplyCheckout(Order o, DateTime day)
+    {
+        var actualNights = Math.Max(1, (day - o.DateCheckIn.Date).Days);
+        var now = DateTime.Now;
+
+        foreach (var od in o.OrderDetails ?? Enumerable.Empty<OrderDetail>())
         {
-            var actualNights = Math.Max(1, (day - o.DateCheckIn.Date).Days);
-            line.Quantity = actualNights;
+            if (od.IdRoom is not int rid)
+                continue;
+
+            od.Quantity = actualNights;
+
+            var room = _db.Rooms.FirstOrDefault(r => r.Id == rid && r.SoftDelete == null);
+            if (room == null)
+                continue;
+
+            room.Status = "dirty";
+            room.UpdateAt = now;
         }
 
         o.DateCheckOut = day;
         o.Status = "checked_out";
-        o.UpdateAt = DateTime.Now;
+        o.UpdateAt = now;
         _db.SaveChanges();
 
         SyncRoomChargesIntoBill(o.Id);

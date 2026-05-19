@@ -81,6 +81,7 @@ public class BillService : IBillService
             Tax = bill.Tax,
             DepositAmount = bill.Order?.DepositAmount ?? 0,
             TotalAmount = totalDue,
+            IsPaid = fullyPaid,
             Items = itemViewModels
         };
     }

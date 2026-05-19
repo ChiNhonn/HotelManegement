@@ -15,6 +15,9 @@ namespace HotelManagement.ViewModels
         public decimal DepositAmount { get; set; } // Tiền cọc từ Order
         public decimal TotalAmount { get; set; } // Tổng thanh toán
 
+        /// <summary>Hóa đơn đã thu đủ (ẩn nút thanh toán).</summary>
+        public bool IsPaid { get; set; }
+
         // Danh sách các dịch vụ, tiền phòng, phụ thu...
         public List<BillItemView> Items { get; set; } = new List<BillItemView>();
     }

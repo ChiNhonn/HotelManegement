@@ -185,6 +185,12 @@ public sealed class DashboardRepository : IDashboardRepository
         return bills;
     }
 
+    public int? GetBillOrderId(int billId) =>
+        _db.Bills.AsNoTracking()
+            .Where(b => b.Id == billId && b.SoftDelete == null)
+            .Select(b => b.IdOrder)
+            .FirstOrDefault();
+
     public void RecordManualBillPayment(int billId, string method, string? note = null)
     {
         method = string.IsNullOrWhiteSpace(method) ? "Tiền mặt" : method.Trim();

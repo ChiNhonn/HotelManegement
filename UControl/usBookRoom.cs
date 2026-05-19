@@ -14,15 +14,24 @@ public partial class usBookRoom : UserControl
     private readonly IRoomBookingMapService _bookingMap;
     private readonly IRoomService _roomService;
     private readonly IBookingService _bookingService;
+    private readonly IBillService _billService;
+    private readonly IDashboardService _dashboardService;
     private DashboardMiniRoomStatus? _cacheFull;
     private DateTime _cacheDay = DateTime.MinValue;
     private bool _populatingRoomTypes;
 
-    public usBookRoom(IRoomBookingMapService bookingMap, IRoomService roomService, IBookingService bookingService)
+    public usBookRoom(
+        IRoomBookingMapService bookingMap,
+        IRoomService roomService,
+        IBookingService bookingService,
+        IBillService billService,
+        IDashboardService dashboardService)
     {
         _bookingMap = bookingMap ?? throw new ArgumentNullException(nameof(bookingMap));
         _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
         _bookingService = bookingService ?? throw new ArgumentNullException(nameof(bookingService));
+        _billService = billService ?? throw new ArgumentNullException(nameof(billService));
+        _dashboardService = dashboardService ?? throw new ArgumentNullException(nameof(dashboardService));
         InitializeComponent();
         cmbStatusFilter.Items.AddRange(new object[] { "Tất cả", "Chỉ phòng trống", "Chỉ đang dọn" });
         cmbStatusFilter.SelectedIndex = 0;
@@ -262,7 +271,12 @@ public partial class usBookRoom : UserControl
             var colOffset = layout.HasFloorLabelColumn ? 1 : 0;
             foreach (var cell in layout.CellsInGrid)
             {
-                var tile = new RoomBookingTile(_roomService, _bookingService, () => dtpViewDate.Value.Date,
+                var tile = new RoomBookingTile(
+                    _roomService,
+                    _bookingService,
+                    _billService,
+                    _dashboardService,
+                    () => dtpViewDate.Value.Date,
                     OnRoomQuickActionDone,
                     hint =>
                     {

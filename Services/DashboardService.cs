@@ -12,11 +12,16 @@ public class DashboardService : IDashboardService
 {
     private readonly IDashboardRepository _repo;
     private readonly IRoomBookingMapService _roomBookingMap;
+    private readonly IBookingService _booking;
 
-    public DashboardService(IDashboardRepository repo, IRoomBookingMapService roomBookingMap)
+    public DashboardService(
+        IDashboardRepository repo,
+        IRoomBookingMapService roomBookingMap,
+        IBookingService booking)
     {
         _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         _roomBookingMap = roomBookingMap ?? throw new ArgumentNullException(nameof(roomBookingMap));
+        _booking = booking ?? throw new ArgumentNullException(nameof(booking));
     }
 
     public DashboardTodayMetrics GetTodayMetrics()
@@ -138,8 +143,13 @@ public class DashboardService : IDashboardService
     public IReadOnlyList<DashboardBillPickRow> GetBillsForManualPaymentPick(int take = 80) =>
         _repo.LoadBillsForManualPaymentPick(take);
 
-    public void RecordManualBillPayment(int billId, string method, string? note = null) =>
+    public void RecordManualBillPayment(int billId, string method, string? note = null, bool finalizeStayIfNeeded = true)
+    {
+        if (finalizeStayIfNeeded && _repo.GetBillOrderId(billId) is int orderId)
+            _booking.CompleteStayAfterPayment(orderId);
+
         _repo.RecordManualBillPayment(billId, method, note);
+    }
 
     public void RecordStandalonePayment(decimal amount, string method, string? note = null) =>
         _repo.RecordStandalonePayment(amount, method, note);

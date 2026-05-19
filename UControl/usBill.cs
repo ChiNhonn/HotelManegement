@@ -1,5 +1,6 @@
 using ClosedXML.Excel;
 using HotelManagement.Forms;
+using HotelManagement.Helpers;
 using HotelManagement.Interfaces;
 using HotelManagement.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +10,6 @@ using QuestPDF.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Printing; // Thêm thư viện dùng để in ấn
 using System.Linq;
 using System.Windows.Forms;
 
@@ -20,7 +20,6 @@ namespace HotelManagement.CustomControls
         private readonly IBillService _billService;
 
         // Biến lưu trữ dữ liệu của hóa đơn đang được chọn để in
-        private BillDetailView _billToPrint;
 
         // ==========================================================
         // 1. KHU VỰC KHỞI TẠO (SETUP & INIT)
@@ -472,92 +471,6 @@ namespace HotelManagement.CustomControls
             }
         }
 
-        // ==========================================================
-        // 5. KHU VỰC IN HÓA ĐƠN (PRINT BILL)
-        // ==========================================================
-
-
-        // Logic vẽ hóa đơn
-        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            int startX = 50;
-            int startY = 50;
-            int offset = 0;
-
-            Font fontTitle = new Font("Arial", 18, FontStyle.Bold);
-            Font fontHeader = new Font("Arial", 12, FontStyle.Bold);
-            Font fontRegular = new Font("Arial", 10, FontStyle.Regular);
-            Font fontBold = new Font("Arial", 10, FontStyle.Bold);
-
-            // HEADER
-            g.DrawString("KHÁCH SẠN HOTEL MANAGEMENT", fontHeader, Brushes.Black, startX, startY + offset);
-            offset += 30;
-            g.DrawString("Địa chỉ: 123 Đường ABC, Quận X, TP.HCM", fontRegular, Brushes.Black, startX, startY + offset);
-            offset += 40;
-
-            g.DrawString("HÓA ĐƠN THANH TOÁN", fontTitle, Brushes.Black, startX + 220, startY + offset);
-            offset += 40;
-
-            // THÔNG TIN KHÁCH
-            g.DrawString($"Mã HĐ: #{_billToPrint.BillId:D5}", fontBold, Brushes.Black, startX, startY + offset);
-            offset += 25;
-            g.DrawString($"Khách hàng: {_billToPrint.CustomerName}", fontRegular, Brushes.Black, startX, startY + offset);
-            offset += 25;
-            g.DrawString($"Ngày vào: {_billToPrint.CheckIn:dd/MM/yyyy HH:mm}", fontRegular, Brushes.Black, startX, startY + offset);
-            g.DrawString($"Ngày ra: {(_billToPrint.CheckOut.HasValue ? _billToPrint.CheckOut.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")}", fontRegular, Brushes.Black, startX + 350, startY + offset);
-            offset += 30;
-
-            g.DrawLine(new Pen(System.Drawing.Color.Black, 1), startX, startY + offset, startX + 700, startY + offset);
-            offset += 15;
-
-            // BẢNG DỊCH VỤ
-            g.DrawString("Nội dung", fontBold, Brushes.Black, startX, startY + offset);
-            g.DrawString("SL", fontBold, Brushes.Black, startX + 350, startY + offset);
-            g.DrawString("Đơn giá", fontBold, Brushes.Black, startX + 450, startY + offset);
-            g.DrawString("Thành tiền", fontBold, Brushes.Black, startX + 580, startY + offset);
-            offset += 25;
-
-            g.DrawLine(new Pen(System.Drawing.Color.Gray, 1), startX, startY + offset, startX + 700, startY + offset);
-            offset += 15;
-
-            if (_billToPrint.Items != null)
-            {
-                foreach (var item in _billToPrint.Items)
-                {
-                    string productName = item.Product.Length > 40 ? item.Product.Substring(0, 40) + "..." : item.Product;
-                    g.DrawString(productName, fontRegular, Brushes.Black, startX, startY + offset);
-                    g.DrawString(item.Quantity.ToString(), fontRegular, Brushes.Black, startX + 350, startY + offset);
-                    g.DrawString(item.UnitPrice.ToString("N0"), fontRegular, Brushes.Black, startX + 450, startY + offset);
-                    g.DrawString(item.SubTotal.ToString("N0"), fontRegular, Brushes.Black, startX + 580, startY + offset);
-                    offset += 25;
-                }
-            }
-
-            g.DrawLine(new Pen(System.Drawing.Color.Black, 1), startX, startY + offset, startX + 700, startY + offset); offset += 20;
-
-            // FOOTER (Thanh toán)
-            int rightAlignX = startX + 400;
-
-            g.DrawString($"Giảm giá:", fontRegular, Brushes.Black, rightAlignX, startY + offset);
-            g.DrawString($"- {_billToPrint.Discount:N0} VNĐ", fontRegular, Brushes.Black, rightAlignX + 150, startY + offset);
-            offset += 25;
-
-            g.DrawString($"Thuế VAT:", fontRegular, Brushes.Black, rightAlignX, startY + offset);
-            g.DrawString($"+ {_billToPrint.Tax:N0} VNĐ", fontRegular, Brushes.Black, rightAlignX + 150, startY + offset);
-            offset += 25;
-
-            g.DrawString($"Đã cọc:", fontRegular, Brushes.Black, rightAlignX, startY + offset);
-            g.DrawString($"- {_billToPrint.DepositAmount:N0} VNĐ", fontRegular, Brushes.Black, rightAlignX + 150, startY + offset);
-            offset += 25;
-
-            g.DrawString($"TỔNG THANH TOÁN:", fontHeader, Brushes.Black, rightAlignX - 30, startY + offset);
-            g.DrawString($"{_billToPrint.TotalAmount:N0} VNĐ", fontHeader, Brushes.Red, rightAlignX + 150, startY + offset);
-            offset += 50;
-
-            g.DrawString("Cảm ơn Quý khách và hẹn gặp lại!", new Font("Arial", 10, FontStyle.Italic), Brushes.Black, startX + 250, startY + offset);
-        }
-
         private void dgvBill_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -592,30 +505,14 @@ namespace HotelManagement.CustomControls
 
             try
             {
-                // Lấy chi tiết hóa đơn từ cơ sở dữ liệu dựa vào ID đã chọn
-                int billIdToPrint = selectedBills[0].Id;
-                _billToPrint = _billService.GetBillDetail(billIdToPrint);
-
-                if (_billToPrint == null)
+                var detail = _billService.GetBillDetail(selectedBills[0].Id);
+                if (detail == null)
                 {
                     MessageBox.Show("Không thể lấy dữ liệu chi tiết của hóa đơn này!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Thiết lập in ấn
-                PrintDocument pd = new PrintDocument();
-                pd.PrintPage += PrintDocument_PrintPage;
-
-                PrintPreviewDialog printPreview = new PrintPreviewDialog
-                {
-                    Document = pd,
-                    Width = 800,
-                    Height = 600,
-                    ShowIcon = false,
-                    Text = "Xem trước hóa đơn"
-                };
-
-                printPreview.ShowDialog();
+                BillPrintHelper.ShowPrintPreview(detail, FindForm());
             }
             catch (Exception ex)
             {

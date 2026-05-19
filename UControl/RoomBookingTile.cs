@@ -14,6 +14,8 @@ public partial class RoomBookingTile : UserControl
 {
     private IRoomService? _rooms;
     private IBookingService? _booking;
+    private IBillService? _bills;
+    private IDashboardService? _dashboard;
     private Func<DateTime>? _viewDate;
     private Action? _onChanged;
     private Action<string>? _applySearchHint;
@@ -34,6 +36,8 @@ public partial class RoomBookingTile : UserControl
     public RoomBookingTile(
         IRoomService rooms,
         IBookingService booking,
+        IBillService bills,
+        IDashboardService dashboard,
         Func<DateTime> viewDate,
         Action onChanged,
         Action<string>? applySearchHint = null)
@@ -41,6 +45,8 @@ public partial class RoomBookingTile : UserControl
     {
         _rooms = rooms ?? throw new ArgumentNullException(nameof(rooms));
         _booking = booking ?? throw new ArgumentNullException(nameof(booking));
+        _bills = bills ?? throw new ArgumentNullException(nameof(bills));
+        _dashboard = dashboard ?? throw new ArgumentNullException(nameof(dashboard));
         _viewDate = viewDate ?? throw new ArgumentNullException(nameof(viewDate));
         _onChanged = onChanged ?? throw new ArgumentNullException(nameof(onChanged));
         _applySearchHint = applySearchHint;
@@ -58,7 +64,8 @@ public partial class RoomBookingTile : UserControl
     }
 
     private bool IsRuntimeReady =>
-        _rooms != null && _booking != null && _viewDate != null && _onChanged != null;
+        _rooms != null && _booking != null && _bills != null && _dashboard != null
+        && _viewDate != null && _onChanged != null;
 
     public void Bind(DashboardMiniRoomCell cell)
     {
@@ -215,8 +222,14 @@ public partial class RoomBookingTile : UserControl
             var owner = OwnerForm();
             if ((owner != null ? dlg.ShowDialog(owner) : dlg.ShowDialog()) != DialogResult.OK)
                 return;
-            _booking.CheckoutEarly(id.Value, dlg.SelectedDate);
+
+            var billId = _booking!.CheckoutEarly(id.Value, dlg.SelectedDate);
             _onChanged!();
+
+            var payNote = $"{_cell.Name} - {d.GuestName}".Trim();
+            using var payDlg = new CheckoutBillPaymentDialog(_bills!, _dashboard!);
+            payDlg.Setup(billId, payNote);
+            payDlg.ShowDialog(owner);
         }
         catch (Exception ex)
         {
