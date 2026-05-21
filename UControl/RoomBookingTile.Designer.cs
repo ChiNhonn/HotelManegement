@@ -43,13 +43,13 @@ namespace HotelManagement.CustomControls
             tblRoot.Controls.Add(lblNum, 0, 0);
             tblRoot.Controls.Add(pnlAction, 0, 1);
             tblRoot.Dock = DockStyle.Fill;
-            tblRoot.Location = new Point(8, 8);
+            tblRoot.Location = new Point(11, 13);
             tblRoot.Margin = new Padding(0);
             tblRoot.Name = "tblRoot";
             tblRoot.RowCount = 2;
-            tblRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tblRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tblRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblRoot.Size = new Size(76, 102);
+            tblRoot.Size = new Size(1478, 776);
             tblRoot.TabIndex = 0;
             // 
             // lblNum
@@ -58,9 +58,9 @@ namespace HotelManagement.CustomControls
             lblNum.Dock = DockStyle.Fill;
             lblNum.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblNum.Location = new Point(0, 0);
-            lblNum.Margin = new Padding(0, 0, 0, 4);
+            lblNum.Margin = new Padding(0, 0, 0, 5);
             lblNum.Name = "lblNum";
-            lblNum.Size = new Size(76, 22);
+            lblNum.Size = new Size(1478, 35);
             lblNum.TabIndex = 0;
             lblNum.Text = "101";
             lblNum.TextAlign = ContentAlignment.TopCenter;
@@ -71,29 +71,28 @@ namespace HotelManagement.CustomControls
             pnlAction.Controls.Add(tblGuest);
             pnlAction.Controls.Add(pnlCleaning);
             pnlAction.Dock = DockStyle.Fill;
-            pnlAction.Location = new Point(0, 26);
-            pnlAction.Margin = new Padding(0, 2, 0, 0);
+            pnlAction.Location = new Point(0, 43);
+            pnlAction.Margin = new Padding(0, 3, 0, 0);
             pnlAction.Name = "pnlAction";
-            pnlAction.Size = new Size(76, 76);
+            pnlAction.Size = new Size(1478, 733);
             pnlAction.TabIndex = 1;
             // 
             // btnPrimary
             // 
+            btnPrimary.BackColor = Color.White;
             btnPrimary.Cursor = Cursors.Hand;
             btnPrimary.Dock = DockStyle.Fill;
             btnPrimary.FlatAppearance.BorderColor = Color.FromArgb(220, 230, 220);
-            btnPrimary.FlatAppearance.BorderSize = 1;
             btnPrimary.FlatStyle = FlatStyle.Flat;
             btnPrimary.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            btnPrimary.ForeColor = Color.FromArgb(15, 23, 42);
             btnPrimary.Location = new Point(0, 0);
             btnPrimary.Margin = new Padding(0);
             btnPrimary.Name = "btnPrimary";
-            btnPrimary.Size = new Size(76, 76);
+            btnPrimary.Size = new Size(1478, 733);
             btnPrimary.TabIndex = 0;
             btnPrimary.Text = "Đặt phòng";
             btnPrimary.UseVisualStyleBackColor = false;
-            btnPrimary.BackColor = Color.White;
-            btnPrimary.ForeColor = Color.FromArgb(15, 23, 42);
             // 
             // tblGuest
             // 
@@ -110,7 +109,7 @@ namespace HotelManagement.CustomControls
             tblGuest.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
             tblGuest.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
             tblGuest.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
-            tblGuest.Size = new Size(76, 76);
+            tblGuest.Size = new Size(1478, 733);
             tblGuest.TabIndex = 1;
             tblGuest.Visible = false;
             // 
@@ -124,9 +123,9 @@ namespace HotelManagement.CustomControls
             btnCheckout.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnCheckout.ForeColor = Color.FromArgb(127, 29, 29);
             btnCheckout.Location = new Point(0, 0);
-            btnCheckout.Margin = new Padding(0, 0, 0, 4);
+            btnCheckout.Margin = new Padding(0, 0, 0, 5);
             btnCheckout.Name = "btnCheckout";
-            btnCheckout.Size = new Size(76, 21);
+            btnCheckout.Size = new Size(1478, 239);
             btnCheckout.TabIndex = 0;
             btnCheckout.Text = "Trả";
             btnCheckout.UseVisualStyleBackColor = false;
@@ -140,10 +139,10 @@ namespace HotelManagement.CustomControls
             btnView.FlatStyle = FlatStyle.Flat;
             btnView.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnView.ForeColor = Color.FromArgb(127, 29, 29);
-            btnView.Location = new Point(0, 21);
-            btnView.Margin = new Padding(0, 0, 0, 4);
+            btnView.Location = new Point(0, 244);
+            btnView.Margin = new Padding(0, 0, 0, 5);
             btnView.Name = "btnView";
-            btnView.Size = new Size(76, 21);
+            btnView.Size = new Size(1478, 239);
             btnView.TabIndex = 1;
             btnView.Text = "Xem";
             btnView.UseVisualStyleBackColor = false;
@@ -157,10 +156,10 @@ namespace HotelManagement.CustomControls
             btnEdit.FlatStyle = FlatStyle.Flat;
             btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnEdit.ForeColor = Color.FromArgb(127, 29, 29);
-            btnEdit.Location = new Point(0, 42);
+            btnEdit.Location = new Point(0, 488);
             btnEdit.Margin = new Padding(0);
             btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(76, 34);
+            btnEdit.Size = new Size(1478, 245);
             btnEdit.TabIndex = 2;
             btnEdit.Text = "Sửa";
             btnEdit.UseVisualStyleBackColor = false;
@@ -172,7 +171,7 @@ namespace HotelManagement.CustomControls
             pnlCleaning.Location = new Point(0, 0);
             pnlCleaning.Margin = new Padding(0);
             pnlCleaning.Name = "pnlCleaning";
-            pnlCleaning.Size = new Size(76, 76);
+            pnlCleaning.Size = new Size(1478, 733);
             pnlCleaning.TabIndex = 2;
             pnlCleaning.Visible = false;
             // 
@@ -187,9 +186,9 @@ namespace HotelManagement.CustomControls
             tblCleaning.Margin = new Padding(0);
             tblCleaning.Name = "tblCleaning";
             tblCleaning.RowCount = 2;
-            tblCleaning.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+            tblCleaning.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
             tblCleaning.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblCleaning.Size = new Size(76, 76);
+            tblCleaning.Size = new Size(1478, 733);
             tblCleaning.TabIndex = 0;
             // 
             // lblCleaningHead
@@ -200,7 +199,7 @@ namespace HotelManagement.CustomControls
             lblCleaningHead.Location = new Point(0, 0);
             lblCleaningHead.Margin = new Padding(0);
             lblCleaningHead.Name = "lblCleaningHead";
-            lblCleaningHead.Size = new Size(76, 24);
+            lblCleaningHead.Size = new Size(1478, 32);
             lblCleaningHead.TabIndex = 0;
             lblCleaningHead.Text = "Đang dọn";
             lblCleaningHead.TextAlign = ContentAlignment.MiddleCenter;
@@ -214,26 +213,25 @@ namespace HotelManagement.CustomControls
             btnCleaningDone.FlatStyle = FlatStyle.Flat;
             btnCleaningDone.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnCleaningDone.ForeColor = Color.FromArgb(30, 41, 59);
-            btnCleaningDone.Location = new Point(0, 24);
-            btnCleaningDone.Margin = new Padding(0, 4, 0, 0);
+            btnCleaningDone.Location = new Point(0, 37);
+            btnCleaningDone.Margin = new Padding(0, 5, 0, 0);
             btnCleaningDone.Name = "btnCleaningDone";
-            btnCleaningDone.Size = new Size(76, 52);
+            btnCleaningDone.Size = new Size(1478, 696);
             btnCleaningDone.TabIndex = 1;
             btnCleaningDone.Text = "Đã dọn xong";
             btnCleaningDone.UseVisualStyleBackColor = false;
             // 
             // RoomBookingTile
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(22, 163, 74);
-            Dock = DockStyle.Fill;
-            Margin = new Padding(5, 5, 5, 10);
-            MinimumSize = new Size(100, 132);
-            Name = "RoomBookingTile";
-            Padding = new Padding(10, 10, 10, 8);
-            Size = new Size(110, 148);
             Controls.Add(tblRoot);
+            Margin = new Padding(8, 10, 8, 14);
+            MinimumSize = new Size(114, 176);
+            Name = "RoomBookingTile";
+            Padding = new Padding(10, 12, 10, 10);
+            Size = new Size(1500, 800);
             tblRoot.ResumeLayout(false);
             pnlAction.ResumeLayout(false);
             tblGuest.ResumeLayout(false);

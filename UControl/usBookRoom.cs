@@ -194,8 +194,9 @@ public partial class usBookRoom : UserControl
         }
     }
 
-    private const float TileRowHeight = 148F;
-    private const float TileColumnWidth = 110F;
+    private const float TileRowHeight = 198F;
+    private const float TileColumnWidth = 130F;
+    private static readonly Padding TileCellMargin = new(8, 10, 8, 14);
 
     /// <summary>Gắn dữ liệu lên lưới Designer (<see cref="tblRoomTiles"/>); ô phòng tạo lúc runtime.</summary>
     private void RebuildInteractiveTiles(DashboardMiniRoomStatus filtered)
@@ -262,8 +263,8 @@ public partial class usBookRoom : UserControl
                     Font = new Font("Segoe UI", 10F, FontStyle.Bold),
                     ForeColor = Color.FromArgb(30, 41, 59),
                     BackColor = Color.FromArgb(248, 250, 252),
-                    Margin = new Padding(0, 0, 8, 10),
-                    Padding = new Padding(10, 0, 4, 0)
+                    Margin = new Padding(4, 6, 12, 14),
+                    Padding = new Padding(12, 0, 8, 0)
                 };
                 tblRoomTiles.Controls.Add(lbl, 0, r);
             }
@@ -284,6 +285,8 @@ public partial class usBookRoom : UserControl
                         RefreshBookingMapLocal();
                     });
                 tile.Bind(cell);
+                tile.Margin = TileCellMargin;
+                tile.Dock = DockStyle.Fill;
                 tblRoomTiles.Controls.Add(tile, cell.GridCol + colOffset, cell.GridRow);
             }
 

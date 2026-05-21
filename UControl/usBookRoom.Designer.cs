@@ -311,7 +311,7 @@ namespace HotelManagement.CustomControls
             scrollRoomTiles.Location = new Point(0, 24);
             scrollRoomTiles.Margin = new Padding(0, 0, 0, 4);
             scrollRoomTiles.Name = "scrollRoomTiles";
-            scrollRoomTiles.Padding = new Padding(16, 12, 16, 16);
+            scrollRoomTiles.Padding = new Padding(20, 16, 20, 20);
             scrollRoomTiles.Size = new Size(1065, 285);
             scrollRoomTiles.TabIndex = 1;
             // 
@@ -320,9 +320,10 @@ namespace HotelManagement.CustomControls
             tblRoomTiles.BackColor = Color.FromArgb(248, 250, 252);
             tblRoomTiles.ColumnCount = 1;
             tblRoomTiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 96F));
-            tblRoomTiles.Location = new Point(16, 12);
+            tblRoomTiles.Location = new Point(20, 16);
             tblRoomTiles.Margin = new Padding(0);
             tblRoomTiles.Name = "tblRoomTiles";
+            tblRoomTiles.Padding = new Padding(4, 4, 8, 8);
             tblRoomTiles.RowCount = 1;
             tblRoomTiles.RowStyles.Add(new RowStyle(SizeType.Absolute, 124F));
             tblRoomTiles.Size = new Size(147, 145);

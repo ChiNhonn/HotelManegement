@@ -185,9 +185,9 @@ public sealed class RoomBookingMapService : IRoomBookingMapService
     {
         ArgumentNullException.ThrowIfNull(filtered);
 
-        const int labelColW = 108;
-        const int cellW = 110;
-        const int cellH = 148;
+        const int labelColW = 116;
+        const int cellW = 130;
+        const int cellH = 198;
         const int minTotalW = 880;
         const int minTotalH = 120;
 
