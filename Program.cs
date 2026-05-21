@@ -78,6 +78,7 @@ internal static class Program
         services.AddTransient<FloorEditDialogForm>();
         services.AddTransient<BillDetailDialogForm>();
         services.AddTransient<BranchEditDiaLogForm>();
+        services.AddTransient<PaymentByBankForm>();
 
         ServiceProvider = services.BuildServiceProvider();
         var main = ServiceProvider.GetRequiredService<CustomerForm>();

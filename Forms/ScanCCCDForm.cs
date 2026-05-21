@@ -54,14 +54,22 @@ namespace HotelManagement.Forms
 
             Bitmap bit = (Bitmap)eventArgs.Frame.Clone();
 
-            picCamera.Invoke(new Action(() => {
-                Image oldImage = picCamera.Image;
-                picCamera.Image = bit;
-                if (oldImage != null)
-                {
-                    oldImage.Dispose();
-                }
-            }));
+            try
+            {
+                picCamera.BeginInvoke(new Action(() => {
+                    if (picCamera.IsDisposed) return;
+                    Image oldImage = picCamera.Image;
+                    picCamera.Image = bit;
+                    if (oldImage != null)
+                    {
+                        oldImage.Dispose();
+                    }
+                }));
+            }
+            catch
+            {
+
+            }
         }
 
         private async void btnExtract_Click_1(object sender, EventArgs e)
@@ -87,7 +95,7 @@ namespace HotelManagement.Forms
 
                 // Gọi API FPT AI
                 string jsonResult = await CallFptAiOcr(imageBytes);
-                //MessageBox.Show(jsonResult, "Log lỗi từ FPT");
+                MessageBox.Show(jsonResult, "Log lỗi từ FPT");
 
                 ExtractData = ParseJsonToModel(jsonResult);
 
@@ -183,6 +191,7 @@ namespace HotelManagement.Forms
                     if (videoSource.IsRunning)
                     {
                         videoSource.SignalToStop();
+                        videoSource.WaitForStop();
                     }
                     videoSource = null;
                 }

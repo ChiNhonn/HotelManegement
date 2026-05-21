@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace HotelManagement.Forms
 {
-    public partial class PaymentForm : Form
+    public partial class Payment : Form
     {
-        public PaymentForm()
+        public Payment()
         {
             InitializeComponent();
         }

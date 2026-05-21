@@ -5,6 +5,7 @@ using HotelManagement.Models;
 using HotelManagement.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,7 +43,6 @@ namespace HotelManagement.Forms
             cboFilter.Items.Add("Tất cả trạng thái");
             cboFilter.Items.Add("Đang ở");
             cboFilter.Items.Add("Đã đi");
-
             cboFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             cboFilter.SelectedIndex = 0;
 
@@ -50,21 +50,9 @@ namespace HotelManagement.Forms
             cboSapXep.Items.Add("Mặc định");
             cboSapXep.Items.Add("Cũ nhất");
             cboSapXep.Items.Add("Mới nhất");
-
             cboSapXep.DropDownStyle = ComboBoxStyle.DropDownList;
             cboSapXep.SelectedIndex = 0;
 
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<IMyDbContext>();
-                int totalCustomers = await context.Customers.CountAsync(c => c.SoftDelete == null);
-
-                // Tạm gỡ sự kiện ValueChanged để tránh load data 2 lần liên tục
-                numShow.ValueChanged -= numShow_ValueChanged;
-                numShow.Maximum = totalCustomers > 0 ? totalCustomers : 100;
-                numShow.Value = totalCustomers > 0 ? totalCustomers : 1;
-                numShow.ValueChanged += numShow_ValueChanged;
-            }
 
             await LoadData();
         }
@@ -135,8 +123,8 @@ namespace HotelManagement.Forms
 
             // Cột Số CCCD
             var colNo = new DataGridViewTextBoxColumn();
-            colNo.Name = "No";
-            colNo.DataPropertyName = "No";
+            colNo.Name = "CCCD";
+            colNo.DataPropertyName = "CCCD";
             colNo.HeaderText = "Số CCCD";
             colNo.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgvCustomer.Columns.Add(colNo);
@@ -252,7 +240,7 @@ namespace HotelManagement.Forms
                     var existingCCCDs = await context.Customers.Select(c => c.CCCD).ToListAsync();
 
                     var infoCustomerForm = new InfoCustomerForm(isEdit, isAdd, selectedCustomer);
-                    infoCustomerForm.ExistingCCCDs = existingCCCDs; 
+                    infoCustomerForm.ExistingCCCDs = existingCCCDs;
 
                     DialogResult result = infoCustomerForm.ShowDialog();
                     if (result == DialogResult.OK)
@@ -307,6 +295,7 @@ namespace HotelManagement.Forms
                     }
                 }
             }
+
         }
 
         private async Task LoadData()
@@ -323,40 +312,80 @@ namespace HotelManagement.Forms
                         lblVIP.Text = allCustomers.Count(c => c.Vip == 1).ToString();
                         lblInHouse.Text = allCustomers.Count(c => c.Status != null && c.Status.Contains("Đang ở")).ToString();
                         lblLeave.Text = allCustomers.Count(c => c.Status != null && c.Status.Contains("Đã đi")).ToString();
+
+                        int total = allCustomers.Count;
+                        numShow.ValueChanged -= numShow_ValueChanged; 
+
+                        numShow.Maximum = total > 0 ? total : 100;
+
+                        //numShow.Value = total > 0 ? total : 1;
+
+                        numShow.ValueChanged += numShow_ValueChanged; 
                     }
 
                     var query = context.Customers.Where(c => c.SoftDelete == null).AsQueryable();
 
                     string keyword = txtFind.Text.Trim();
+
                     if (!string.IsNullOrEmpty(keyword))
+
                     {
+
                         query = query.Where(c =>
+
                             c.FullName.Contains(keyword) ||
+
                             c.CCCD.Contains(keyword) ||
+
                             c.Xa.Contains(keyword) ||
+
                             c.Huyen.Contains(keyword) ||
+
                             c.Tinh.Contains(keyword) ||
+
                             c.Country.Contains(keyword)
+
                         );
+
                     }
+
+
 
                     if (cboFilter.SelectedIndex == 1)
+
                     {
+
                         query = query.Where(c => c.Status == "Đang ở");
-                    }
-                    else if (cboFilter.SelectedIndex == 2)
-                    {
-                        query = query.Where(c => c.Status == "Đã đi");
+
                     }
 
+                    else if (cboFilter.SelectedIndex == 2)
+
+                    {
+
+                        query = query.Where(c => c.Status == "Đã đi");
+
+                    }
+
+
+
                     if (cboSapXep.SelectedIndex == 1)
+
                     {
+
                         query = query.OrderBy(c => c.Id);
+
                     }
+
                     else if (cboSapXep.SelectedIndex == 2)
+
                     {
+
                         query = query.OrderByDescending(c => c.Id);
+
                     }
+
+
 
                     int limit = (int)numShow.Value;
                     if (limit > 0)
@@ -439,12 +468,37 @@ namespace HotelManagement.Forms
 
         private void txtFind_TextAlignChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private async void txtFind_TextChanged(object sender, EventArgs e)
         {
             await LoadData();
         }
+
+        private void btnPayment_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomer.CurrentRow == null || dgvCustomer.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một khách hàng từ danh sách để thanh toán!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var selectedCustomer = dgvCustomer.CurrentRow.DataBoundItem as Customer;
+            if (selectedCustomer == null) return;
+
+            if (selectedCustomer.Status == "Đã đi")
+            {
+                MessageBox.Show($"Khách hàng [{selectedCustomer.FullName}] đã thanh toán và rời đi rồi, không thể thanh toán tiếp!",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            MessageBox.Show($"Tiến hành thanh toán cho khách hàng: {selectedCustomer.FullName} (ID: {selectedCustomer.Id})",
+                            "Thanh toán", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            
+        }
     }
+    
 }

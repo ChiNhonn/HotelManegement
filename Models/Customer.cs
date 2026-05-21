@@ -8,7 +8,6 @@ public partial class Customer
     [Key]
     public int Id { get; set; }
 
-    /// <summary>Mã số khách (form quản lý khách).</summary>
     [MaxLength(20)]
     public string CCCD { get; set; }
 
