@@ -33,6 +33,7 @@ namespace HotelManagement.Forms
             SetSidebarDoubleBuffered(pnlChoice);
             pnlChoice.Paint += PnlChoice_Paint;
             pnlChoice.Resize += (_, _) => LayoutSidebarButtons();
+            Shown += (_, _) => LayoutSidebarButtons();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -98,6 +99,7 @@ namespace HotelManagement.Forms
             ApplySidebarButtonChrome();
             LayoutSidebarButtons();
             pnlSidebarHeader.BringToFront();
+            btnSignOut.BringToFront();
 
             var dash = Program.ServiceProvider.GetRequiredService<usMainForm>();
             chuyentrang(dash);
@@ -208,26 +210,20 @@ namespace HotelManagement.Forms
             int y = SidebarHeaderBottom + 6;
             var navOrder = new[]
             {
-                btnDashboard, btnRooms, btnBookings, btnServices, btnBill, btnCustomers
+                btnDashboard, btnRooms, btnBookings, btnServices, btnBill, btnCustomers, btnSignOut
             };
 
             foreach (var b in navOrder)
             {
+                b.Dock = DockStyle.None;
                 b.Width = w;
                 b.Left = pad;
                 b.Top = y;
-                b.Height = NavButtonHeight;
-                y += NavButtonHeight + NavButtonGap;
+                b.Height = b == btnSignOut ? NavButtonHeight + 4 : NavButtonHeight;
+                y += b.Height + NavButtonGap;
             }
 
-            btnSignOut.Width = w;
-            btnSignOut.Left = pad;
-            btnSignOut.Height = NavButtonHeight + 4;
-            int logoutY = pnlChoice.ClientSize.Height - btnSignOut.Height - pad;
-            int minLogoutY = y + 24;
-            if (logoutY < minLogoutY) logoutY = minLogoutY;
-            btnSignOut.Top = logoutY;
-
+            btnSignOut.BringToFront();
             pnlChoice.Invalidate();
         }
 

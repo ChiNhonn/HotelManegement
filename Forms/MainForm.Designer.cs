@@ -78,7 +78,7 @@
             // 
             btnSignOut.FlatStyle = FlatStyle.Flat;
             btnSignOut.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnSignOut.Location = new Point(10, 780);
+            btnSignOut.Location = new Point(10, 480);
             btnSignOut.Name = "btnSignOut";
             btnSignOut.Size = new Size(288, 56);
             btnSignOut.TabIndex = 7;
@@ -90,7 +90,7 @@
             // 
             btnCustomers.FlatStyle = FlatStyle.Flat;
             btnCustomers.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnCustomers.Location = new Point(10, 483);
+            btnCustomers.Location = new Point(10, 418);
             btnCustomers.Name = "btnCustomers";
             btnCustomers.Size = new Size(288, 56);
             btnCustomers.TabIndex = 5;
@@ -102,7 +102,7 @@
             // 
             btnBill.FlatStyle = FlatStyle.Flat;
             btnBill.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnBill.Location = new Point(10, 418);
+            btnBill.Location = new Point(10, 353);
             btnBill.Name = "btnBill";
             btnBill.Size = new Size(288, 59);
             btnBill.TabIndex = 9;

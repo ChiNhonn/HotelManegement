@@ -8,7 +8,7 @@ public class HotelDbContext : DbContext, IMyDbContext
 {
     /// <summary>SQL Server trên máy hiện tại: instance SQLEXPRESS, DB HotelManagement.</summary>
     public const string ConnectionString =
-        "Server=.\\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;";
+        "Server=.\\SQLEXPRESS01;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;";
 
     public HotelDbContext()
     {
