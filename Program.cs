@@ -40,6 +40,7 @@ internal static class Program
                 sql.UseCompatibilityLevel(120);
             }));
 
+
         services.AddScoped<IRoomBookingMapRepository, RoomBookingMapRepository>();
         services.AddScoped<IRoomBookingMapService, RoomBookingMapService>();
         services.AddScoped<IDashboardRepository, DashboardRepository>();

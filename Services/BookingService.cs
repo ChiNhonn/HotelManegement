@@ -64,14 +64,13 @@ public sealed class BookingService : IBookingService
         if (phone.Length > 20)
             throw new InvalidOperationException("Số điện thoại không được quá 20 ký tự.");
 
-        var customer = _db.Customers.FirstOrDefault(x => x.CitizenId == cccd && x.SoftDelete == null);
+        var customer = _db.Customers.FirstOrDefault(x => x.CCCD == cccd && x.SoftDelete == null);
         if (customer == null)
         {
             customer = new Customer
             {
                 FullName = r.FullName.Trim(),
-                CitizenId = cccd,
-                Phone = phone,
+                CCCD = cccd,
                 CreateAt = DateTime.Now
             };
             _db.Customers.Add(customer);
@@ -80,7 +79,6 @@ public sealed class BookingService : IBookingService
         else
         {
             customer.FullName = r.FullName.Trim();
-            customer.Phone = phone;
             customer.UpdateAt = DateTime.Now;
             _db.SaveChanges();
         }
@@ -178,8 +176,7 @@ public sealed class BookingService : IBookingService
             RoomTypeName = line.Room.RoomType?.Name?.Trim(),
             NightlyPrice = nightly,
             GuestName = o.Customer?.FullName?.Trim() ?? "",
-            CitizenId = o.Customer?.CitizenId?.Trim() ?? "",
-            Phone = o.Customer?.Phone?.Trim() ?? "",
+            CitizenId = o.Customer?.CCCD?.Trim() ?? "",
             CheckIn = o.DateCheckIn,
             CheckOut = o.DateCheckOut,
             Adults = adults,
@@ -306,13 +303,12 @@ public sealed class BookingService : IBookingService
 
         var customer = o.Customer ?? throw new InvalidOperationException("Không tìm thấy khách.");
         var other = _db.Customers.FirstOrDefault(c =>
-            c.CitizenId == cccd && c.SoftDelete == null && c.Id != customer.Id);
+            c.CCCD == cccd && c.SoftDelete == null && c.Id != customer.Id);
         if (other != null)
             throw new InvalidOperationException("CCCD đã thuộc khách khác trong hệ thống.");
 
         customer.FullName = r.FullName.Trim();
-        customer.CitizenId = cccd;
-        customer.Phone = phone;
+        customer.CCCD = cccd;
         customer.UpdateAt = DateTime.Now;
 
         var nights = (co - ci).Days;

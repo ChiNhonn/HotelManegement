@@ -167,7 +167,7 @@ partial class BookingEditDialog
         dtpIn.Format = DateTimePickerFormat.Short;
         dtpIn.Location = new Point(179, 119);
         dtpIn.Name = "dtpIn";
-        dtpIn.Size = new Size(260, 25);
+        dtpIn.Size = new Size(260, 30);
         dtpIn.TabIndex = 7;
         // 
         // lblCapCheckOut
@@ -184,7 +184,7 @@ partial class BookingEditDialog
         dtpOut.Format = DateTimePickerFormat.Short;
         dtpOut.Location = new Point(179, 153);
         dtpOut.Name = "dtpOut";
-        dtpOut.Size = new Size(260, 25);
+        dtpOut.Size = new Size(260, 30);
         dtpOut.TabIndex = 9;
         // 
         // lblCapName
@@ -200,7 +200,7 @@ partial class BookingEditDialog
         txtName.Dock = DockStyle.Fill;
         txtName.Location = new Point(179, 187);
         txtName.Name = "txtName";
-        txtName.Size = new Size(260, 25);
+        txtName.Size = new Size(260, 30);
         txtName.TabIndex = 11;
         // 
         // lblCapCccd
@@ -216,7 +216,7 @@ partial class BookingEditDialog
         txtCccd.Dock = DockStyle.Fill;
         txtCccd.Location = new Point(179, 221);
         txtCccd.Name = "txtCccd";
-        txtCccd.Size = new Size(260, 25);
+        txtCccd.Size = new Size(260, 30);
         txtCccd.TabIndex = 13;
         // 
         // lblCapPhone
@@ -232,7 +232,7 @@ partial class BookingEditDialog
         txtPhone.Dock = DockStyle.Fill;
         txtPhone.Location = new Point(179, 255);
         txtPhone.Name = "txtPhone";
-        txtPhone.Size = new Size(260, 25);
+        txtPhone.Size = new Size(260, 30);
         txtPhone.TabIndex = 15;
         // 
         // lblCapAdults
@@ -250,7 +250,7 @@ partial class BookingEditDialog
         numAdults.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
         numAdults.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
         numAdults.Name = "numAdults";
-        numAdults.Size = new Size(260, 25);
+        numAdults.Size = new Size(260, 30);
         numAdults.TabIndex = 17;
         numAdults.Value = new decimal(new int[] { 1, 0, 0, 0 });
         // 
@@ -268,7 +268,7 @@ partial class BookingEditDialog
         numChildren.Location = new Point(179, 323);
         numChildren.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
         numChildren.Name = "numChildren";
-        numChildren.Size = new Size(260, 25);
+        numChildren.Size = new Size(260, 30);
         numChildren.TabIndex = 19;
         // 
         // lblCapNights
@@ -337,11 +337,11 @@ partial class BookingEditDialog
         // btnOk
         // 
         btnOk.AutoSize = true;
-        btnOk.Location = new Point(343, 8);
+        btnOk.Location = new Point(342, 8);
         btnOk.Margin = new Padding(8, 0, 0, 0);
         btnOk.Name = "btnOk";
         btnOk.Padding = new Padding(14, 6, 14, 6);
-        btnOk.Size = new Size(75, 41);
+        btnOk.Size = new Size(76, 45);
         btnOk.TabIndex = 0;
         btnOk.Text = "Lưu";
         btnOk.UseVisualStyleBackColor = true;
@@ -350,10 +350,10 @@ partial class BookingEditDialog
         // 
         btnCancel.AutoSize = true;
         btnCancel.DialogResult = DialogResult.Cancel;
-        btnCancel.Location = new Point(257, 11);
+        btnCancel.Location = new Point(256, 11);
         btnCancel.Name = "btnCancel";
         btnCancel.Padding = new Padding(12, 6, 12, 6);
-        btnCancel.Size = new Size(75, 41);
+        btnCancel.Size = new Size(75, 45);
         btnCancel.TabIndex = 1;
         btnCancel.Text = "Hủy";
         btnCancel.UseVisualStyleBackColor = true;
@@ -361,7 +361,7 @@ partial class BookingEditDialog
         // BookingEditDialog
         // 
         AcceptButton = btnOk;
-        AutoScaleDimensions = new SizeF(7F, 17F);
+        AutoScaleDimensions = new SizeF(9F, 23F);
         AutoScaleMode = AutoScaleMode.Font;
         CancelButton = btnCancel;
         ClientSize = new Size(460, 560);

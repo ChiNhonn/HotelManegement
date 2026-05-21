@@ -164,8 +164,8 @@ namespace HotelManagement.Forms
                 Huyen = txtHuyen.Text.Trim(),
                 Tinh = txtTinh.Text.Trim(),
                 Country = txtCountry.Text.Trim(),
-                Vip = (int)numVip.Value, 
-                Status = txtStatus.Text.Trim(), 
+                Vip = (int)numVip.Value,
+                Status = txtStatus.Text.Trim(),
                 SoftDelete = null
             };
 
@@ -222,11 +222,44 @@ namespace HotelManagement.Forms
                 Huyen = txtHuyen.Text.Trim(),
                 Tinh = txtTinh.Text.Trim(),
                 Country = txtCountry.Text.Trim(),
-                Vip = (int)numVip.Value, 
+                Vip = (int)numVip.Value,
                 Status = txtStatus.Text.Trim(),
                 UpdateAt = DateTime.Now
             };
             this.DialogResult = DialogResult.OK;
         }
+
+        private void btnScanCCCD_Click(object sender, EventArgs e)
+        {
+            using (ScanCCCDForm scanForm = new ScanCCCDForm())
+            {
+                if (scanForm.ShowDialog() == DialogResult.OK)
+                {
+                    var result = scanForm.ExtractData;
+
+                    if (result != null)
+                    {
+                        txtNo.Text = result.Id;
+                        txtFullName.Text = result.FullName;
+                        dtpBirthDay.Value = DateTime.ParseExact(result.BirthDay, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        if (result.Gender == "Nam")
+                        {
+                            rbNam.Checked = true;
+                        }
+                        else
+                        {
+                            rbNu.Checked = true;
+                        }
+                        txtXa.Text = result.Xa;
+                        txtHuyen.Text = result.Huyen;
+                        txtTinh.Text = result.Tinh;
+                        txtCountry.Text = result.Country;
+
+                        MessageBox.Show("Đã lấy thông tin CCCD thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                }
+            }
+        }
+    }
     }
 }

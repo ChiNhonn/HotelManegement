@@ -127,6 +127,7 @@
             btnScanCCCD.TabIndex = 7;
             btnScanCCCD.Text = "Quét CCCD";
             btnScanCCCD.UseVisualStyleBackColor = false;
+            btnScanCCCD.Click += btnScanCCCD_Click;
             // 
             // tableLayoutPanel2
             // 
@@ -181,9 +182,9 @@
             label7.AutoSize = true;
             label7.Dock = DockStyle.Fill;
             label7.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
-            label7.Location = new Point(3, 271);
+            label7.Location = new Point(3, 278);
             label7.Name = "label7";
-            label7.Size = new Size(99, 40);
+            label7.Size = new Size(99, 33);
             label7.TabIndex = 24;
             label7.Text = "VIP";
             label7.TextAlign = ContentAlignment.TopCenter;
@@ -193,7 +194,7 @@
             label3.AutoSize = true;
             label3.Dock = DockStyle.Fill;
             label3.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
-            label3.Location = new Point(3, 234);
+            label3.Location = new Point(3, 241);
             label3.Name = "label3";
             label3.Size = new Size(99, 37);
             label3.TabIndex = 19;
@@ -207,7 +208,7 @@
             label2.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
             label2.Location = new Point(3, 184);
             label2.Name = "label2";
-            label2.Size = new Size(99, 50);
+            label2.Size = new Size(99, 57);
             label2.TabIndex = 18;
             label2.Text = "Quê quán";
             label2.TextAlign = ContentAlignment.TopCenter;
@@ -251,7 +252,7 @@
             // txtCountry
             // 
             txtCountry.Font = new Font("Segoe UI Light", 10.8F);
-            txtCountry.Location = new Point(108, 237);
+            txtCountry.Location = new Point(108, 244);
             txtCountry.Name = "txtCountry";
             txtCountry.Size = new Size(156, 31);
             txtCountry.TabIndex = 14;
@@ -264,7 +265,7 @@
             flowLayoutPanel2.Dock = DockStyle.Fill;
             flowLayoutPanel2.Location = new Point(108, 187);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(488, 44);
+            flowLayoutPanel2.Size = new Size(488, 51);
             flowLayoutPanel2.TabIndex = 13;
             // 
             // txtXa
@@ -371,7 +372,8 @@
             // 
             // numVip
             // 
-            numVip.Location = new Point(108, 274);
+            numVip.Location = new Point(108, 281);
+            numVip.Maximum = new decimal(new int[] { 2, 0, 0, 0 });
             numVip.Name = "numVip";
             numVip.Size = new Size(156, 27);
             numVip.TabIndex = 26;
