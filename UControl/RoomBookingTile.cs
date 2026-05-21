@@ -182,7 +182,7 @@ public partial class RoomBookingTile : UserControl
             btnPrimary.ForeColor = Color.White;
             btnPrimary.FlatAppearance.BorderColor = Color.FromArgb(240, 180, 180);
             return;
-        }
+        } 
 
         BackColor = BookedRed;
         lblNum.ForeColor = Color.White;
